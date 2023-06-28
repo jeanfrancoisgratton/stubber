@@ -9,10 +9,6 @@ import (
 	"github.com/jwalton/gchalk"
 )
 
-var StubRootDir string
-var AlpineStub, DebianStub, RedHatStub bool
-var GoVersion string
-
 func Changelog() {
 	//fmt.Printf("\x1b[2J")
 	fmt.Printf("\x1bc")
