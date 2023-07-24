@@ -70,7 +70,7 @@ func init() {
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(removeCmd)
 	createCmd.PersistentFlags().StringVarP(&helpers.StubRootDir, "stubdir", "s", ".", "Where to put the skeleton dir.")
-	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.5", "Where to put the skeleton dir.")
+	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Platform, "platform", "p", "amd64", "Platform (architecture).")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "noalpine", "a", true, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "nodebian", "d", true, "Create a Debian packaging stub.")
