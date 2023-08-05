@@ -35,9 +35,18 @@ var clCmd = &cobra.Command{
 }
 
 var createCmd = &cobra.Command{
-	Use:   "create",
-	Short: "Creates the directory structure (skeleton) for the new software",
+	Use:     "create",
+	Short:   "Creates the directory structure (skeleton) for the new software",
+	Example: "software_name",
 	Run: func(cmd *cobra.Command, args []string) {
+		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub {
+			fmt.Println("You need at least to disable one of the following: -a (alpine), -d (debian), -r (redhat)")
+			os.Exit(1)
+		}
+		if len(args) < 3 {
+			fmt.Println("Usage: stubber create [-a|-d|-r] $SOFTWARENAME $VERSIONNUMBER $RELEASENUMBER")
+			os.Exit(2)
+		}
 		if err := executor.CreateStub(args[0], args[1], args[2]); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -57,6 +66,18 @@ var removeCmd = &cobra.Command{
 	},
 }
 
+var updateCmd = &cobra.Command{
+	Use:     "update",
+	Aliases: []string{"up"},
+	Short:   "Updates the build scripts with new Version and Release numbers",
+	Run: func(cmd *cobra.Command, args []string) {
+		if err := executor.Update(); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	},
+}
+
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -69,10 +90,20 @@ func init() {
 	rootCmd.AddCommand(clCmd)
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(removeCmd)
+	rootCmd.AddCommand(updateCmd)
 	createCmd.PersistentFlags().StringVarP(&helpers.StubRootDir, "stubdir", "s", ".", "Where to put the skeleton dir.")
+	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Outout binary name.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "d", "", "Package description.")
 	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Platform, "platform", "p", "amd64", "Platform (architecture).")
-	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "noalpine", "a", true, "Create an Alpine packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "nodebian", "d", true, "Create a Debian packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "noredhat", "r", true, "Create a RedHat packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", true, "Create an Alpine packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", true, "Create a Debian packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", true, "Create a RedHat packaging stub.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "versionnumber", "V", "", "Version number to use.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "releasenumber", "R", "", "Release number to use.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.Platform, "platform", "p", "amd64", "Platform (architecture).")
+	updateCmd.PersistentFlags().StringVarP(&helpers.StubRootDir, "stubdir", "s", ".", "Where to put the skeleton dir.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "d", "", "Package description.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Outout binary name.")
 }

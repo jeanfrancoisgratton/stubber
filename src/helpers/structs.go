@@ -9,6 +9,9 @@ var StubRootDir string
 var AlpineStub, DebianStub, RedHatStub bool
 var GoVersion string
 var Platform string
+var VersionNumber, ReleaseNumber string
+var BinaryName = ""
+var Description = ""
 
 type StubParamsStruct struct {
 	StubRootDir, GoVersion, Platform               string

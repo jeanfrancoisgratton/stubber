@@ -26,7 +26,7 @@ func CreateStub(softname string, version string, release string) error {
 		helpers.StubRootDir = currentdir
 	}
 	if errcode = os.Chdir(helpers.StubRootDir); errcode != nil {
-		return nil
+		return errcode
 	}
 
 	// Now we add the packaging stubs: APK, DEB, RPM
