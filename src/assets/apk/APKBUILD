@@ -7,12 +7,12 @@ pkgdir=/data/packages
 builddir="$startdir/src/BUILD"
 pkgdesc=___DESCRIPTION___
 url="https://github.com/jeanfrancoisgratton/___SOFTWARENAME___"
-arch=x86_64
+arch=___ARCHITECTURE___
 license=GPL2
 #depends="gcompat"
 #install="$pkgname.post-install"
 #source="$pkgname-$pkgver-$pkgrel.tar.bz2::http://localhost/$pkgname-$pkgver-$pkgrel.tar.bz2"
-binaryname="___SOFTWARENAME___"
+binaryname="___BINARYNAME___"
 
 build() {
 	pwd
