@@ -1,20 +1,20 @@
 %define debug_package   %{nil}
 %define _build_id_links none
-%define _name   stubber
+%define _name {{ SOFTWARE NAME }}
 %define _prefix /opt
-%define _version 0.100
-%define _rel 0
+%define _version {{ PACKAGE VERSION }}
+%define _rel {{ PACKAGE VERSION }}
 %define _arch x86_64
-%define _binaryname stubber
+%define _binaryname {{ BINARY NAME }}
 
-Name:       stubber
+Name:       {{ SOFTWARE NAME }}
 Version:    %{_version}
 Release:    %{_rel}
-Summary:    stubber
+Summary:    {{ DESCRIPTION }}
 
-Group:      SSL
+Group:      {{ SECTION }}
 License:    GPL2.0
-URL:        https://github.com/jeanfrancoisgratton/stubber
+URL:        {{ URL }}}}
 
 Source0:    %{name}-%{_version}.tar.gz
 BuildArchitectures: x86_64
@@ -23,7 +23,7 @@ BuildRequires: gcc
 #Obsoletes: vmman1 > 1.140
 
 %description
-Push binary package to NxRM
+{{ DESCRIPTION }}
 
 %prep
 %autosetup

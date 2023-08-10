@@ -1,13 +1,24 @@
 package executor
 
-func stubRedHat() error {
-	return nil
-}
+import (
+	"stubber/helpers"
+	"stubber/templates"
+)
 
-func rpm_install_build_deps() error {
-	return nil
-}
-
-func specfile() error {
-	return nil
+func stubRedHat(softwarename string) error {
+	var err error
+	placeholders := map[string]string{
+		"{{ SOFTWARE NAME }}":   softwarename,
+		"{{ GO VERSION }}":      helpers.GoVersion,
+		"{{ ARCHITECTURE }}":    helpers.Arch,
+		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
+		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
+		"{{ BINARY NAME }}":     helpers.BinaryName,
+		"{{ SECTION }}":         helpers.Section,
+		"{{ DESCRIPTION }}":     helpers.Description,
+	}
+	if err = templates.ProcessEmbeddedAsset("skeleton/stubber.spec", "softwarename", placeholders); err == nil {
+		err = templates.ProcessEmbeddedAsset("skeleton/rpm-install-build-deps.sh", "rpm-install-build-deps.sh", placeholders)
+	}
+	return err
 }
