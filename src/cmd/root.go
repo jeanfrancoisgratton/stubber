@@ -99,9 +99,12 @@ func init() {
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", true, "Create the skeleton stub in the project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", true, "Create the skeleton stub in the project root directory.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
 
 	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "versionnumber", "V", "0.100", "Version number to use.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "releasenumber", "R", "0", "Release number to use.")

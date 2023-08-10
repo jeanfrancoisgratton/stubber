@@ -1,8 +1,7 @@
-Package: stubber
-Version: 0.100-0
-Architecture: amd64
-Maintainer: J.F.Gratton <nexus@famillegratton.net>
-Description: Push package to repo
- Custom tool to push (RPM, DEB, APK) packages to Nexus Repository Manager repos
-Section: Administration Utilities
-Depends: gcc
+Package: {{ SOFTWARE NAME }}
+Version: {{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }}
+Architecture: {{ ARCHITECTURE }}
+Maintainer: {{ MAINTAINER }}
+Description: {{ DESCRIPTION }}
+Section: {{ PACKAGE SECTION }}
+Depends: {{ DEPENDENCIES }}

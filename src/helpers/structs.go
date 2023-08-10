@@ -14,6 +14,9 @@ var BinaryName = ""
 var Description = ""
 var Maintainer = "Jean-Francois Gratton <jean-francois@famillegratton.net>"
 var Packager = "APK Builder <builder@famillegratton.net>"
+var Section = ""
+var Dependencies = ""
+var Url = ""
 
 type StubParamsStruct struct {
 	RootDir, GoVersion, Platform                   string

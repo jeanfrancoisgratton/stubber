@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PKGDIR=stubber-`cat current_pkg_release`_amd64
+PKGDIR={{ SOFTWARE NAME }}-{{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }}_{{ ARCHITECTURE }}
 
 mkdir -p ${PKGDIR}/opt/bin ${PKGDIR}/DEBIAN
 mv control ${PKGDIR}/DEBIAN/

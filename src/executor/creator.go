@@ -25,6 +25,7 @@ func CreateStub(softname string) error {
 		return nil
 	}
 
+	// Second, We create the project root dir if -p is provided
 	if helpers.RootDir == "." {
 		helpers.RootDir = currentdir
 	} else {
@@ -38,7 +39,11 @@ func CreateStub(softname string) error {
 		return errcode
 	}
 
-	// Now we add the packaging stubs: APK, DEB, RPM
+	//
+	// Now we add the packaging stubs: APK, DEB, RPM, and Skeleton
+	//
+
+	// Alpine ( -a )
 	if helpers.AlpineStub {
 		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "__alpine"), os.FileMode(0755)); errcode == nil {
 			if errcode = stubAlpine(softname); errcode != nil {
@@ -47,13 +52,18 @@ func CreateStub(softname string) error {
 		}
 	}
 
+	// Debian ( -d )
 	if helpers.DebianStub {
-		if errcode = stubDebian(); errcode != nil {
-			return errcode
+		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "__alpine"), os.FileMode(0755)); errcode == nil {
+			if errcode = stubDebian(softname); errcode != nil {
+				return errcode
+			}
 		}
 	}
+
+	// Debian ( -r )
 	if helpers.RedHatStub {
-		if errcode = stubRedHat(); errcode != nil {
+		if errcode = stubRedHat(softname); errcode != nil {
 			return errcode
 		}
 	}
