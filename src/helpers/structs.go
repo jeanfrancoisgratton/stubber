@@ -5,19 +5,21 @@
 
 package helpers
 
-var StubRootDir string
-var AlpineStub, DebianStub, RedHatStub bool
+var RootDir string
+var AlpineStub, DebianStub, RedHatStub, SkeletonStub bool
 var GoVersion string
-var Platform string
+var Arch string
 var VersionNumber, ReleaseNumber string
 var BinaryName = ""
 var Description = ""
+var Maintainer = "Jean-Francois Gratton <jean-francois@famillegratton.net>"
+var Packager = "APK Builder <builder@famillegratton.net>"
 
 type StubParamsStruct struct {
-	StubRootDir, GoVersion, Platform               string
+	RootDir, GoVersion, Platform                   string
 	AlpineStub, DebianStub, RedHatStub, UpdateOnly bool
 }
 
 var StubDefault = StubParamsStruct{
-	StubRootDir: ".", GoVersion: "1.20.6", AlpineStub: true, DebianStub: true,
+	RootDir: ".", GoVersion: "1.20.6", AlpineStub: true, DebianStub: true,
 	RedHatStub: true, UpdateOnly: false, Platform: "amd64"}

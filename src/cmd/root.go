@@ -40,14 +40,14 @@ var createCmd = &cobra.Command{
 	Example: "software_name",
 	Run: func(cmd *cobra.Command, args []string) {
 		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub {
-			fmt.Println("You need at least to disable one of the following: -a (alpine), -d (debian), -r (redhat)")
+			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian) or -r (redhat)")
 			os.Exit(1)
 		}
 		if len(args) < 3 {
-			fmt.Println("Usage: stubber create [-a|-d|-r] $SOFTWARENAME $VERSIONNUMBER $RELEASENUMBER")
+			fmt.Println("Usage: stubber create [-a|-d|-r] $SOFTWARENAME")
 			os.Exit(2)
 		}
-		if err := executor.CreateStub(args[0], args[1], args[2]); err != nil {
+		if err := executor.CreateStub(args[0]); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -91,19 +91,23 @@ func init() {
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(removeCmd)
 	rootCmd.AddCommand(updateCmd)
-	createCmd.PersistentFlags().StringVarP(&helpers.StubRootDir, "stubdir", "s", ".", "Where to put the skeleton dir.")
-	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Outout binary name.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "d", "", "Package description.")
+	createCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
+	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
 	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Platform, "platform", "p", "amd64", "Platform (architecture).")
-	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", true, "Create an Alpine packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", true, "Create a Debian packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", true, "Create a RedHat packaging stub.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "versionnumber", "V", "", "Version number to use.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "releasenumber", "R", "", "Release number to use.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Platform, "platform", "p", "amd64", "Platform (architecture).")
-	updateCmd.PersistentFlags().StringVarP(&helpers.StubRootDir, "stubdir", "s", ".", "Where to put the skeleton dir.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "d", "", "Package description.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
+	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", true, "Create the skeleton stub in the project root directory.")
+
+	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "versionnumber", "V", "0.100", "Version number to use.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "releasenumber", "R", "0", "Release number to use.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "GO version.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
+	updateCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Outout binary name.")
 }

@@ -5,9 +5,11 @@ OUTPUT=/opt/bin
 if [ "$#" -gt 0 ]; then
     OUTPUT=$1
 fi
-rm -f templates/assets.go
-cd templates
+
+echo "Embedding resources..."
+cd templates && rm -f assets.go
 go generate
 cd ..
+echo "Building binary..."
 go build -o ${OUTPUT}/stubber .
 

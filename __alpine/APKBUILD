@@ -1,5 +1,5 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
-# PACKAGER: APK Builder <builder@famillegratton.net>
+# Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
 pkgver=0.100
 pkgrel=0

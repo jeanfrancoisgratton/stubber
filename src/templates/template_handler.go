@@ -3,6 +3,8 @@
 package templates
 
 import (
+	"fmt"
+	"os"
 	"strings"
 )
 
@@ -12,12 +14,19 @@ func replacePlaceholders(line, placeholder, value string) string {
 }
 
 // Function to process an embedded asset and replace placeholders
-func processEmbeddedAsset(inputPath string, placeholders map[string]string) (string, error) {
+func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]string) error {
 	// Read the embedded input file
 	data, err := Asset(inputPath)
 	if err != nil {
-		return "", err
+		return fmt.Errorf("error reading embedded input file '%s': %s", inputPath, err)
 	}
+
+	// Create the output file
+	output, err := os.Create(outputPath)
+	if err != nil {
+		return fmt.Errorf("error creating output file '%s': %s", outputPath, err)
+	}
+	defer output.Close()
 
 	// Convert the embedded data to a string
 	content := string(data)
@@ -27,5 +36,11 @@ func processEmbeddedAsset(inputPath string, placeholders map[string]string) (str
 		content = replacePlaceholders(content, placeholder, value)
 	}
 
-	return content, nil
+	// Write the modified content to the output file
+	_, err = output.WriteString(content)
+	if err != nil {
+		return fmt.Errorf("error writing to output file '%s': %s", outputPath, err)
+	}
+
+	return nil
 }
