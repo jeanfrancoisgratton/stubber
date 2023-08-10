@@ -10,7 +10,7 @@ func stubAlpine(softwarename string) error {
 	placeholders := map[string]string{
 		"{{ MAINTAINER }}":      helpers.Maintainer,
 		"{{ PACKAGER }}":        helpers.Packager,
-		"{{ PACKAGE NAME }}":    softwarename,
+		"{{ SOFTWARE NAME }}":   softwarename,
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
 		"{{ DESCRIPTION }}":     helpers.Description,

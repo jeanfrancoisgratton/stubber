@@ -1,6 +1,6 @@
 module stubber
 
-go 1.20
+go 1.21
 
 require (
 	github.com/jwalton/gchalk v1.3.0

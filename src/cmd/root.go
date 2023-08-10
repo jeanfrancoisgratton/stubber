@@ -43,7 +43,7 @@ var createCmd = &cobra.Command{
 			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian) or -r (redhat)")
 			os.Exit(1)
 		}
-		if len(args) < 3 {
+		if len(args) != 1 {
 			fmt.Println("Usage: stubber create [-a|-d|-r] $SOFTWARENAME")
 			os.Exit(2)
 		}
@@ -94,7 +94,7 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
-	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "Where to put the skeleton dir.")
+	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "Where to put the skeleton dir.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
@@ -105,7 +105,7 @@ func init() {
 
 	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "versionnumber", "V", "0.100", "Version number to use.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "releasenumber", "R", "0", "Release number to use.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.20.6", "GO version.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "GO version.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
 	updateCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")

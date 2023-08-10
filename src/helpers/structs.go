@@ -21,5 +21,5 @@ type StubParamsStruct struct {
 }
 
 var StubDefault = StubParamsStruct{
-	RootDir: ".", GoVersion: "1.20.6", AlpineStub: true, DebianStub: true,
+	RootDir: ".", GoVersion: "1.21.0", AlpineStub: true, DebianStub: true,
 	RedHatStub: true, UpdateOnly: false, Platform: "amd64"}
