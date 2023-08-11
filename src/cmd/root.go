@@ -39,12 +39,12 @@ var createCmd = &cobra.Command{
 	Short:   "Creates the directory structure (skeleton) for the new software",
 	Example: "software_name",
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub {
-			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian) or -r (redhat)")
+		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
+			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
 			os.Exit(1)
 		}
 		if len(args) != 1 {
-			fmt.Println("Usage: stubber create [-a|-d|-r] $SOFTWARENAME")
+			fmt.Println("Usage: stubber create [-a|-d|-r|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
 		if err := executor.CreateStub(args[0]); err != nil {
@@ -100,7 +100,7 @@ func init() {
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", true, "Create the skeleton stub in the project root directory.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")

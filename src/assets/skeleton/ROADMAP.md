@@ -1,3 +1,3 @@
-| Branch or tag      | Feature                                               | Status/Comments |
-|--------------------|-------------------------------------------------------|-----------------|
-| {{ SOFTWARE VERSION }} | initial groundwork                                    | *underway*      |
+| Branch or tag         | Feature                                               | Status/Comments |
+|-----------------------|-------------------------------------------------------|-----------------|
+| {{ PACKAGE VERSION }} | initial groundwork                                    | *underway*      |

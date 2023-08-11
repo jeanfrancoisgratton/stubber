@@ -11,26 +11,11 @@ import (
 )
 
 // Usage:
-// stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] NAME
-
-// checkWhitespace() : quick and dirty way to ensure that a filename is properly enclosed by quotes
-//func checkWhitespace(s string) bool {
-//	for _, c := range s {
-//		if c == ' ' || c == '\t' {
-//			return true
-//		}
-//	}
-//	return false
-//}
+// stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] [-k] NAME
 
 func CreateStub(softname string) error {
 	var errcode error
 	var currentdir string
-
-	//// Badly needed for filenames
-	//if checkWhitespace(softname) {
-	//	softname = "'" + softname + "'"
-	//}
 
 	if helpers.BinaryName == "" {
 		helpers.BinaryName = softname
@@ -84,7 +69,14 @@ func CreateStub(softname string) error {
 		}
 	}
 
-	// Skeleton ( -k )
-
+	// Skeleton ( -
+	if helpers.SkeletonStub {
+		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "cmd"), os.FileMode(0755)); errcode != nil {
+			return errcode
+		}
+		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "helpers"), os.FileMode(0755)); errcode == nil {
+			return stubSkeleton(softname)
+		}
+	}
 	return nil
 }
