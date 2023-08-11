@@ -1,6 +1,6 @@
-module __SOFTWARENAME__
+module {{ SOFTWARE NAME }}
 
-go 1.20
+go {{ GO MAJOR MINOR }}
 
 require (
 	github.com/jwalton/gchalk v1.3.0

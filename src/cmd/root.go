@@ -91,6 +91,7 @@ func init() {
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(removeCmd)
 	rootCmd.AddCommand(updateCmd)
+	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	createCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")

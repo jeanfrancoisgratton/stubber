@@ -1,70 +1,35 @@
 package executor
 
-func stubSkeleton() error {
-	return nil
-}
+import (
+	"fmt"
+	"stubber/helpers"
+	"stubber/templates"
+)
 
-// file: build.sh
-func build_sh() error {
-	return nil
-}
+func stubSkeleton(softwarename string) error {
+	var err error
 
-// file: go.mod
-func go_mod() error {
-	return nil
-}
+	placeholders := map[string]string{
+		"{{ SOFTWARE NAME }}":   softwarename,
+		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
+		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
+		"{{ GO VERSION }}":      helpers.GoVersion,
+		"{{ ARCHITECTURE }}":    helpers.Arch,
+		"{{ GO MAJOR MINOR }}":  helpers.ExtractMajorMinorVersionString(helpers.GoVersion),
+		"{{ BINARY NAME }}":     helpers.BinaryName,
+		"{{ SECTION }}":         helpers.Section,
+		"{{ DESCRIPTION }}":     helpers.Description,
+	}
 
-// file: main.go
-func main_go() error {
-	return nil
-}
+	fmt.Printf("Stub: %s\n", helpers.Yellow("Skeleton"))
+	paths := []string{"FIXME.md", "go.version", "IN THIS BRANCH.md", "LICENSE", "PACKAGING.md", "README.md",
+		"ROADMAP.md", "TODO.md", "src/build.sh", "src/go.mod", "src/main.go", "src/upgrade_pkgs.sh", "src/cmd/root.go",
+		"src/helpers/misc.go"}
 
-// file: upgrade_pkgs.sh
-func upgradepkgs_sh() error {
-	return nil
-}
-
-// file: .gitignore
-func gitignore() error {
-	return nil
-}
-
-// file: FIXME.md
-func fixme_md() error {
-	return nil
-}
-
-// file: go.version
-func go_version() error {
-	return nil
-}
-
-// file: IN THIS BRANCH.md
-func inthisbranch_md() error {
-	return nil
-}
-
-// file: LICENSE
-func license() error {
-	return nil
-}
-
-// file: PACKAGING.md
-func packaging_md() error {
-	return nil
-}
-
-// file: README.md
-func readme_md() error {
-	return nil
-}
-
-// file: ROADMAP.md
-func roadmap_md() error {
-	return nil
-}
-
-// file: TODO.md
-func todo_md() error {
+	for _, pathloop := range paths {
+		if err = templates.ProcessEmbeddedAsset("skeleton/"+pathloop, pathloop, placeholders); err != nil {
+			return err
+		}
+	}
 	return nil
 }

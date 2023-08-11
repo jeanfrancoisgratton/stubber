@@ -7,6 +7,7 @@ package helpers
 import (
 	"fmt"
 	"github.com/jwalton/gchalk"
+	"strings"
 )
 
 func Changelog() {
@@ -18,6 +19,19 @@ VERSION		DATE			COMMENT
 -------		----			-------
 0.100		2023.06.25		stub
 `)
+}
+
+// This is a quick-and-dirty way to extract the Major + Minor number of a version string
+// Thus, 1.20.3 would return 1.20, 1.33 would return 1.33, 1.2.3.4 would return 1.2
+func ExtractMajorMinorVersionString(versionNum string) string {
+	var extractedStr string
+	p := strings.SplitN(versionNum, ".", 3)
+	if len(p) >= 2 {
+		extractedStr = p[0] + "." + p[1]
+	} else {
+		extractedStr = versionNum
+	}
+	return extractedStr
 }
 
 func Red(sentence string) string {

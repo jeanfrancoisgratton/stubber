@@ -16,7 +16,9 @@ func replacePlaceholders(line, placeholder, value string) string {
 
 // Function to process an embedded asset and replace placeholders
 func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]string) error {
-	fmt.Printf("File: %s -> %s ... ", helpers.White(inputPath), helpers.White(outputPath))
+	if !helpers.Quiet {
+		fmt.Printf("File: %s -> %s ... ", helpers.White(inputPath), helpers.White(outputPath))
+	}
 
 	// Read the embedded input file
 	data, err := Asset(inputPath)
@@ -49,6 +51,8 @@ func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]
 		return fmt.Errorf("error writing to output file '%s': %s", outputPath, err)
 	}
 
-	fmt.Printf("%s\n", helpers.Green("done"))
+	if !helpers.Quiet {
+		fmt.Printf("%s\n", helpers.Green("done"))
+	}
 	return nil
 }

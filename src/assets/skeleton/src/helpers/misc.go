@@ -1,6 +1,5 @@
-// __SOFTWARECHANGEME__ : Écrit par Jean-François Gratton (jean-francois@famillegratton.net)
+// {{ SOFTWARE NAME }}
 // src/misc/misc.go
-// 2023.06.25 8:58:03
 
 package helpers
 
@@ -16,7 +15,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION			DATE			COMMENT
 -------			----			-------
-__PACKAGEVERSION__	2023.06.25		stub
+{{ PACKAGE VERSION  }}	2023.xx.yy		stub
 `)
 }
 

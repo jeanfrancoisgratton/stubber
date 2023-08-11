@@ -1,4 +1,4 @@
-// __SOFTWARECHANGEME : Écrit par Jean-François Gratton (jean-francois@famillegratton.net)
+// {{ SOFTWARE NAME }}
 // src/cmd/root.go
 
 package cmd
@@ -10,11 +10,11 @@ import (
 )
 
 
-var version = "__VERSIONCHANGEME__-__RELEASECHANGEME__ (2023.xx.yy)"
+var version = "{{ PACKAGE VERSION  }}-{{ PACKAGE RELEASE  }} (2023.xx.yy)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "__SOFTWARECHANGEME__",
+	Use:     "{{ SOFTWARE NAME }}",
 	Short:   "Add a short description here",
 	Long:	 "Add a long description here"
 	Version: version,

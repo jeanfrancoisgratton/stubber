@@ -84,5 +84,7 @@ func CreateStub(softname string) error {
 		}
 	}
 
-	return stubSkeleton()
+	// Skeleton ( -k )
+
+	return nil
 }
