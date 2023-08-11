@@ -1,3 +1,3 @@
-| Task                                 | Comment                                  |
-|--------------------------------------|------------------------------------------|
-| French localization                  | Branch 0.990, if ever done               |
+| Task                                 | Comment                    |
+|--------------------------------------|----------------------------|
+| French localization                  | Branch 1.xxx, if ever done |
