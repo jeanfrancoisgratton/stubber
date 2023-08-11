@@ -12,9 +12,9 @@ import (
 )
 
 // Usage:
-// stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] NAME VERSION RELEASE
+// stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] [-k] NAME
 
-var version = "0.100-0 (2023.06.25)"
+var version = "0.500-0 (2023.08.11)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{

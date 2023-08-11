@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+0.500		2023.08.11		completed apk, deb, rpm, skeleton
 0.100		2023.06.25		stub
 `)
 }
