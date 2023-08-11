@@ -54,18 +54,6 @@ var createCmd = &cobra.Command{
 	},
 }
 
-var removeCmd = &cobra.Command{
-	Use:     "remove",
-	Aliases: []string{"rm", "del"},
-	Short:   "Deletes the directory structure (skeleton) for the new software",
-	Run: func(cmd *cobra.Command, args []string) {
-		if err := executor.DeleteStub(); err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-	},
-}
-
 var updateCmd = &cobra.Command{
 	Use:     "update",
 	Aliases: []string{"up"},
@@ -89,7 +77,6 @@ func init() {
 
 	rootCmd.AddCommand(clCmd)
 	rootCmd.AddCommand(createCmd)
-	rootCmd.AddCommand(removeCmd)
 	rootCmd.AddCommand(updateCmd)
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	createCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
