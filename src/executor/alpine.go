@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"fmt"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -17,6 +18,8 @@ func stubAlpine(softwarename string) error {
 		"{{ ARCHITECTURE }}":    helpers.Arch,
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 	}
+
+	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
 	if err = templates.ProcessEmbeddedAsset("apk/APKBUILD", "__alpine/APKBUILD", placeholders); err == nil {
 		err = templates.ProcessEmbeddedAsset("apk/Makefile", "__alpine/Makefile", placeholders)
 	}

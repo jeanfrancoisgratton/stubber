@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"fmt"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -17,8 +18,10 @@ func stubRedHat(softwarename string) error {
 		"{{ SECTION }}":         helpers.Section,
 		"{{ DESCRIPTION }}":     helpers.Description,
 	}
-	if err = templates.ProcessEmbeddedAsset("skeleton/stubber.spec", "softwarename", placeholders); err == nil {
-		err = templates.ProcessEmbeddedAsset("skeleton/rpm-install-build-deps.sh", "rpm-install-build-deps.sh", placeholders)
+
+	fmt.Printf("Stub: %s\n", helpers.Yellow("RedHat"))
+	if err = templates.ProcessEmbeddedAsset("rpm/stubber.spec", softwarename+".spec", placeholders); err == nil {
+		err = templates.ProcessEmbeddedAsset("rpm/rpm-install-build-deps.sh", "rpm-install-build-deps.sh", placeholders)
 	}
 	return err
 }

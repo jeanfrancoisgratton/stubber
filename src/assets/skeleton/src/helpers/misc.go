@@ -16,7 +16,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION			DATE			COMMENT
 -------			----			-------
-__VERSIONCHANGEME__	2023.06.25		stub
+__PACKAGEVERSION__	2023.06.25		stub
 `)
 }
 

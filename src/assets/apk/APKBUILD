@@ -1,6 +1,6 @@
 # Maintainer: {{ MAINTAINER }}
 # Packager: {{ PACKAGER }}
-pkgname={{ SOFTWARE NAME }}
+pkgname="{{ SOFTWARE NAME }}"
 pkgver={{ PACKAGE VERSION }}
 pkgrel={{ PACKAGE RELEASE }}
 pkgdir=/data/packages

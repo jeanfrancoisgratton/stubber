@@ -1,20 +1,20 @@
 %define debug_package   %{nil}
 %define _build_id_links none
-%define _name {{ SOFTWARE NAME }}
+%define _name "{{ SOFTWARE NAME }}"
 %define _prefix /opt
 %define _version {{ PACKAGE VERSION }}
 %define _rel {{ PACKAGE VERSION }}
 %define _arch x86_64
 %define _binaryname {{ BINARY NAME }}
 
-Name:       {{ SOFTWARE NAME }}
+Name:       "{{ SOFTWARE NAME }}"
 Version:    %{_version}
 Release:    %{_rel}
 Summary:    {{ DESCRIPTION }}
 
 Group:      {{ SECTION }}
 License:    GPL2.0
-URL:        {{ URL }}}}
+URL:        {{ URL }}
 
 Source0:    %{name}-%{_version}.tar.gz
 BuildArchitectures: x86_64

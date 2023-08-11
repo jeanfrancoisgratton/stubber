@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"stubber/helpers"
 )
 
 // Function to replace placeholder variables in a line
@@ -15,16 +16,22 @@ func replacePlaceholders(line, placeholder, value string) string {
 
 // Function to process an embedded asset and replace placeholders
 func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]string) error {
+	fmt.Printf("File: %s -> %s ... ", helpers.White(inputPath), helpers.White(outputPath))
+
 	// Read the embedded input file
 	data, err := Asset(inputPath)
 	if err != nil {
-		return fmt.Errorf("error reading embedded input file '%s': %s", inputPath, err)
+		fmt.Printf("error creating the input file: %s \n", helpers.Red(err.Error()))
+		//return fmt.Errorf("error reading embedded input file '%s': %s", inputPath, err)
+		return err
 	}
 
 	// Create the output file
 	output, err := os.Create(outputPath)
 	if err != nil {
-		return fmt.Errorf("error creating output file '%s': %s", outputPath, err)
+		fmt.Printf("error creating the input file: %s \n", helpers.Red(err.Error()))
+		return err
+		//return fmt.Errorf("error creating output file '%s': %s", outputPath, err)
 	}
 	defer output.Close()
 
@@ -42,5 +49,6 @@ func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]
 		return fmt.Errorf("error writing to output file '%s': %s", outputPath, err)
 	}
 
+	fmt.Printf("%s\n", helpers.Green("done"))
 	return nil
 }

@@ -1,3 +1,3 @@
-| Branch or tag | Feature                                               | Status/Comments |
-|---------------|-------------------------------------------------------|-----------------|
-| 0.100         | initial groundwork                                    | *underway*      |
+| Branch or tag      | Feature                                               | Status/Comments |
+|--------------------|-------------------------------------------------------|-----------------|
+| __PACKAGEVERSION__ | initial groundwork                                    | *underway*      |

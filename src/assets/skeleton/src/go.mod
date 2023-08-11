@@ -1,4 +1,4 @@
-module __SOFTWARECHANGEME__
+module __SOFTWARENAME__
 
 go 1.20
 

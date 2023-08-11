@@ -1,6 +1,7 @@
 package executor
 
 import (
+	"fmt"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -17,9 +18,11 @@ func stubDebian(softwarename string) error {
 		"{{ DESCRIPTION }}":     helpers.Description,
 		"{{ PACKAGE SECTION }}": helpers.Section,
 		"{{ DEPENDENCIES }}":    helpers.Dependencies,
+		"{{ BINARY NAME }}":     helpers.BinaryName,
 	}
 	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control"}
 
+	fmt.Printf("Stub: %s\n", helpers.Yellow("Debian"))
 	for _, pathloop := range paths {
 		if err = templates.ProcessEmbeddedAsset("deb/"+pathloop, "__debian/"+pathloop, placeholders); err != nil {
 			return err

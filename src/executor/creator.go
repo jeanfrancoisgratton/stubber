@@ -13,9 +13,25 @@ import (
 // Usage:
 // stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] NAME
 
+// checkWhitespace() : quick and dirty way to ensure that a filename is properly enclosed by quotes
+//func checkWhitespace(s string) bool {
+//	for _, c := range s {
+//		if c == ' ' || c == '\t' {
+//			return true
+//		}
+//	}
+//	return false
+//}
+
 func CreateStub(softname string) error {
 	var errcode error
 	var currentdir string
+
+	//// Badly needed for filenames
+	//if checkWhitespace(softname) {
+	//	softname = "'" + softname + "'"
+	//}
+
 	if helpers.BinaryName == "" {
 		helpers.BinaryName = softname
 	}
@@ -54,7 +70,7 @@ func CreateStub(softname string) error {
 
 	// Debian ( -d )
 	if helpers.DebianStub {
-		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "__alpine"), os.FileMode(0755)); errcode == nil {
+		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "__debian"), os.FileMode(0755)); errcode == nil {
 			if errcode = stubDebian(softname); errcode != nil {
 				return errcode
 			}
