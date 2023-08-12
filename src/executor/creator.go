@@ -74,9 +74,7 @@ func CreateStub(softname string) error {
 		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "cmd"), os.FileMode(0755)); errcode != nil {
 			return errcode
 		}
-		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "helpers"), os.FileMode(0755)); errcode == nil {
-			return stubSkeleton(softname)
-		}
+		return stubSkeleton(softname)
 	}
 	return nil
 }

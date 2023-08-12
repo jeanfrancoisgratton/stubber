@@ -9,8 +9,8 @@
 // deb/preinst (20B)
 // rpm/rpm-install-build-deps.sh (497B)
 // rpm/stubber.spec (991B)
+// skeleton/CHANGELOG.md (167B)
 // skeleton/FIXME.md (68B)
-// skeleton/IN THIS BRANCH.md (81B)
 // skeleton/LICENSE (35.149kB)
 // skeleton/PACKAGING.md (1.744kB)
 // skeleton/README.md (125B)
@@ -21,7 +21,6 @@
 // skeleton/src/cmd/root.go (886B)
 // skeleton/src/go.mod (130B)
 // skeleton/src/go.sum (1.478kB)
-// skeleton/src/helpers/misc.go (853B)
 // skeleton/src/main.go (84B)
 // skeleton/src/upgrade_pkgs.sh (88B)
 
@@ -271,6 +270,26 @@ func rpmStubberSpec() (*asset, error) {
 	return a, nil
 }
 
+var _skeletonChangelogMd = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xaa\x51\x08\x4a\xcd\x49\x4d\x2c\x4e\x55\x50\xa8\x51\x70\x49\x2c\x49\x55\x80\x80\x1a\x05\xe7\xfc\xdc\xdc\xd4\xbc\x92\x62\x05\x64\x50\xc3\x55\xa3\x0b\x07\x48\x4c\x34\x0e\x92\x30\x57\x8d\x42\x75\xb5\x42\x80\xa3\xb3\xb7\xa3\xbb\xab\x42\x98\x6b\x50\xb0\xa7\xbf\x9f\x42\x6d\x2d\xc4\x12\x23\x03\x23\x63\xbd\x8a\x0a\xbd\xca\x4a\x85\x1a\x05\xcf\xbc\xcc\x92\xcc\xc4\x1c\x85\xb2\xd4\xa2\xe2\xcc\xfc\x3c\x3d\xa8\x8d\x20\x00\x08\x00\x00\xff\xff\xdd\x51\x28\xd5\xa7\x00\x00\x00")
+
+func skeletonChangelogMdBytes() ([]byte, error) {
+	return bindataRead(
+		_skeletonChangelogMd,
+		"skeleton/CHANGELOG.md",
+	)
+}
+
+func skeletonChangelogMd() (*asset, error) {
+	bytes, err := skeletonChangelogMdBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "skeleton/CHANGELOG.md", size: 167, mode: os.FileMode(0777), modTime: time.Unix(1691864615, 0)}
+	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0x53, 0xc3, 0x56, 0x3e, 0x6c, 0x8c, 0xa8, 0x56, 0xc2, 0x54, 0x83, 0x77, 0x88, 0xd8, 0x70, 0x5d, 0xcf, 0x4f, 0xb, 0xdc, 0xc4, 0x17, 0x4, 0x7a, 0xd9, 0x9d, 0xe5, 0xb8, 0x44, 0x87, 0xf, 0xa0}}
+	return a, nil
+}
+
 var _skeletonFixmeMd = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xd2\x55\x88\x56\x88\x55\x48\xcb\xac\xc8\x4d\x55\x30\xb4\x49\x2a\xb2\x53\xe0\x42\x16\x32\x02\x09\xa1\x88\x18\x83\x45\xb8\x40\x24\x0c\x03\x02\x00\x00\xff\xff\x99\xfa\x38\x21\x44\x00\x00\x00")
 
 func skeletonFixmeMdBytes() ([]byte, error) {
@@ -288,26 +307,6 @@ func skeletonFixmeMd() (*asset, error) {
 
 	info := bindataFileInfo{name: "skeleton/FIXME.md", size: 68, mode: os.FileMode(0755), modTime: time.Unix(1691752820, 0)}
 	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xb5, 0xcf, 0xbe, 0xad, 0xe8, 0xfd, 0x60, 0x3c, 0x74, 0x71, 0x39, 0x44, 0xcf, 0x4b, 0xa6, 0xf9, 0x26, 0x48, 0xd0, 0xb1, 0x8c, 0xff, 0x38, 0x7a, 0xf9, 0x84, 0xb2, 0x3f, 0x65, 0x3b, 0x95, 0x29}}
-	return a, nil
-}
-
-var _skeletonInThisBranchMd = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xb2\xf1\x30\xb4\x73\x2a\x4a\xcc\x4b\xce\xb0\x52\xa8\xae\x56\x08\x70\x74\xf6\x76\x74\x77\x55\x08\x73\x0d\x0a\xf6\xf4\xf7\x53\xa8\xad\xb5\xd1\xf7\x30\xb4\xe3\x8a\x8f\x8f\xe7\xb2\xf1\x30\xb2\x0b\xcf\x48\x2c\x51\x28\xcf\xcc\xc9\x51\x48\x4a\x55\xc8\xcc\x53\x28\xc9\xc8\x2c\x56\x48\x02\xeb\xb7\xd1\xf7\x30\xb2\xe3\xe2\x02\x04\x00\x00\xff\xff\x4e\x13\x06\x16\x51\x00\x00\x00")
-
-func skeletonInThisBranchMdBytes() ([]byte, error) {
-	return bindataRead(
-		_skeletonInThisBranchMd,
-		"skeleton/IN THIS BRANCH.md",
-	)
-}
-
-func skeletonInThisBranchMd() (*asset, error) {
-	bytes, err := skeletonInThisBranchMdBytes()
-	if err != nil {
-		return nil, err
-	}
-
-	info := bindataFileInfo{name: "skeleton/IN THIS BRANCH.md", size: 81, mode: os.FileMode(0755), modTime: time.Unix(1691758866, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xf1, 0x79, 0x71, 0xb4, 0xb5, 0xd, 0x6e, 0xa7, 0x1, 0x9d, 0x33, 0x7f, 0xac, 0x4e, 0x42, 0xf1, 0xfe, 0xb, 0xfa, 0xab, 0xec, 0xb0, 0x25, 0x17, 0xde, 0xa2, 0x59, 0xa4, 0x8d, 0x86, 0xc0, 0x29}}
 	return a, nil
 }
 
@@ -511,26 +510,6 @@ func skeletonSrcGoSum() (*asset, error) {
 	return a, nil
 }
 
-var _skeletonSrcHelpersMiscGo = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xac\x8f\xc1\x8a\xdb\x30\x10\x86\xcf\x33\x4f\x31\x18\x0a\x16\x34\x56\x9b\xde\x7a\xf3\xa6\xde\x65\x5b\x92\x2c\x49\x68\x5a\xda\xc3\x2a\xae\x22\xa9\x2b\x4b\x41\x92\xd9\x2c\xc6\xef\x5e\x82\x0d\x1b\x4a\x73\x6a\x74\xd0\xc0\x20\xfd\xdf\xf7\x73\x4e\x5d\x47\xeb\xe5\xed\x66\x5b\xae\x2a\x5a\x94\xf3\x8a\xfa\x1e\x39\xa7\x18\x6a\xde\x98\x38\x5c\x85\xf2\x88\x07\x51\x3f\x09\x25\x49\x4b\x7b\x90\x21\x22\x9a\xe6\xe0\x43\xa2\x1c\x21\xdb\x37\x29\x43\xc8\x94\x49\xba\xdd\x15\xb5\x6f\xf8\xef\x67\x61\x93\x77\x5c\xd5\x5a\xd8\xa7\x0c\x19\xe2\xbe\x75\x35\xcd\xb4\x70\x4a\x5a\xaf\x72\x46\x1d\x02\xe7\xfb\x26\x15\x0f\xc1\xb8\xb4\xcf\xb3\x9f\xc7\xf7\xbb\x1f\xd3\xcf\x19\x43\xf8\x7b\x5d\x67\x0c\xcf\xb6\xf9\x23\x7e\xad\x56\xeb\xfb\xe5\x02\x00\x3e\x95\x9b\x0a\x00\x66\xcb\xf9\xbc\x5a\x6c\x70\x32\x1c\x00\x38\x1b\x93\xc9\x04\xbb\x8e\x1e\xca\xd9\x97\xf2\xae\xa2\xf1\x33\xf5\x3d\x4c\xdf\x4d\x3f\x14\xc7\x63\xf1\xf2\x02\x10\x53\xbb\xc3\x47\x86\xfd\x68\xbb\x92\xbf\xf2\x28\x5d\x92\xae\x96\x14\x53\x30\x4e\xb1\x71\x9e\xec\x83\x4c\x6d\x70\x74\xb2\x5a\x1f\x46\xd9\x37\x31\x7b\x4b\x43\xeb\x62\x6b\x92\xbe\x09\x46\xe9\x74\x0a\x62\xc5\x8d\xb7\xaf\x79\xec\x15\x73\x17\xa4\x74\xd7\x01\x0d\x51\x97\x51\x5b\x6d\x92\xbc\x0e\x6a\x88\xba\x8c\xfa\x2e\xad\xf5\xcf\xd7\x61\x8d\x59\xff\x84\x71\x4e\xb7\xf7\xdf\xe6\x15\x7d\xa4\x85\x0f\x8d\xb0\x39\x23\x13\x29\x69\x49\x51\x34\x92\x44\x1c\x5b\xb3\xc1\x6b\x7c\xf4\x9f\x5e\x97\xdb\xff\x09\x00\x00\xff\xff\x45\xc7\xdb\xf3\x55\x03\x00\x00")
-
-func skeletonSrcHelpersMiscGoBytes() ([]byte, error) {
-	return bindataRead(
-		_skeletonSrcHelpersMiscGo,
-		"skeleton/src/helpers/misc.go",
-	)
-}
-
-func skeletonSrcHelpersMiscGo() (*asset, error) {
-	bytes, err := skeletonSrcHelpersMiscGoBytes()
-	if err != nil {
-		return nil, err
-	}
-
-	info := bindataFileInfo{name: "skeleton/src/helpers/misc.go", size: 853, mode: os.FileMode(0777), modTime: time.Unix(1691767486, 0)}
-	a := &asset{bytes: bytes, info: info, digest: [32]uint8{0xe6, 0x34, 0xb3, 0x30, 0x21, 0xb, 0xf3, 0x4c, 0x2b, 0x58, 0x12, 0xd, 0xa1, 0xd0, 0x9a, 0x39, 0xe9, 0x70, 0xea, 0xb5, 0xd6, 0xf3, 0x3e, 0xf, 0x3f, 0x6c, 0x81, 0x27, 0x16, 0xf7, 0x68, 0xae}}
-	return a, nil
-}
-
 var _skeletonSrcMainGo = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x2a\x48\x4c\xce\x4e\x4c\x4f\x55\xc8\x4d\xcc\xcc\xe3\xe2\xca\xcc\x2d\xc8\x2f\x2a\x51\xd0\xe0\xe2\x54\xaa\xae\x56\x08\xf6\x77\x0b\x09\x77\x0c\x72\x55\xf0\x73\xf4\x75\x55\xa8\xad\xd5\x4f\xce\x4d\x51\xe2\xd2\xe4\xe2\x4a\x2b\xcd\x4b\x06\xeb\xd0\xd0\x54\xa8\xe6\xe2\x4c\xce\x4d\xd1\x73\xad\x48\x4d\x2e\x2d\x49\xd5\xd0\xe4\xaa\xe5\x02\x04\x00\x00\xff\xff\xff\x2c\xd7\xba\x54\x00\x00\x00")
 
 func skeletonSrcMainGoBytes() ([]byte, error) {
@@ -671,8 +650,8 @@ var _bindata = map[string]func() (*asset, error){
 	"deb/preinst":                   debPreinst,
 	"rpm/rpm-install-build-deps.sh": rpmRpmInstallBuildDepsSh,
 	"rpm/stubber.spec":              rpmStubberSpec,
+	"skeleton/CHANGELOG.md":         skeletonChangelogMd,
 	"skeleton/FIXME.md":             skeletonFixmeMd,
-	"skeleton/IN THIS BRANCH.md":    skeletonInThisBranchMd,
 	"skeleton/LICENSE":              skeletonLicense,
 	"skeleton/PACKAGING.md":         skeletonPackagingMd,
 	"skeleton/README.md":            skeletonReadmeMd,
@@ -683,7 +662,6 @@ var _bindata = map[string]func() (*asset, error){
 	"skeleton/src/cmd/root.go":      skeletonSrcCmdRootGo,
 	"skeleton/src/go.mod":           skeletonSrcGoMod,
 	"skeleton/src/go.sum":           skeletonSrcGoSum,
-	"skeleton/src/helpers/misc.go":  skeletonSrcHelpersMiscGo,
 	"skeleton/src/main.go":          skeletonSrcMainGo,
 	"skeleton/src/upgrade_pkgs.sh":  skeletonSrcUpgrade_pkgsSh,
 }
@@ -750,24 +728,21 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"stubber.spec":              {rpmStubberSpec, map[string]*bintree{}},
 	}},
 	"skeleton": {nil, map[string]*bintree{
-		"FIXME.md":          {skeletonFixmeMd, map[string]*bintree{}},
-		"IN THIS BRANCH.md": {skeletonInThisBranchMd, map[string]*bintree{}},
-		"LICENSE":           {skeletonLicense, map[string]*bintree{}},
-		"PACKAGING.md":      {skeletonPackagingMd, map[string]*bintree{}},
-		"README.md":         {skeletonReadmeMd, map[string]*bintree{}},
-		"ROADMAP.md":        {skeletonRoadmapMd, map[string]*bintree{}},
-		"TODO.md":           {skeletonTodoMd, map[string]*bintree{}},
-		"go.version":        {skeletonGoVersion, map[string]*bintree{}},
+		"CHANGELOG.md": {skeletonChangelogMd, map[string]*bintree{}},
+		"FIXME.md":     {skeletonFixmeMd, map[string]*bintree{}},
+		"LICENSE":      {skeletonLicense, map[string]*bintree{}},
+		"PACKAGING.md": {skeletonPackagingMd, map[string]*bintree{}},
+		"README.md":    {skeletonReadmeMd, map[string]*bintree{}},
+		"ROADMAP.md":   {skeletonRoadmapMd, map[string]*bintree{}},
+		"TODO.md":      {skeletonTodoMd, map[string]*bintree{}},
+		"go.version":   {skeletonGoVersion, map[string]*bintree{}},
 		"src": {nil, map[string]*bintree{
 			"build.sh": {skeletonSrcBuildSh, map[string]*bintree{}},
 			"cmd": {nil, map[string]*bintree{
 				"root.go": {skeletonSrcCmdRootGo, map[string]*bintree{}},
 			}},
-			"go.mod": {skeletonSrcGoMod, map[string]*bintree{}},
-			"go.sum": {skeletonSrcGoSum, map[string]*bintree{}},
-			"helpers": {nil, map[string]*bintree{
-				"misc.go": {skeletonSrcHelpersMiscGo, map[string]*bintree{}},
-			}},
+			"go.mod":          {skeletonSrcGoMod, map[string]*bintree{}},
+			"go.sum":          {skeletonSrcGoSum, map[string]*bintree{}},
 			"main.go":         {skeletonSrcMainGo, map[string]*bintree{}},
 			"upgrade_pkgs.sh": {skeletonSrcUpgrade_pkgsSh, map[string]*bintree{}},
 		}},

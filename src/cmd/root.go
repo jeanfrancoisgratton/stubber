@@ -11,7 +11,7 @@ import (
 	"stubber/helpers"
 )
 
-var version = "1.000-0 (2023.08.11)"
+var version = "1.010-0 (2023.08.12)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -79,13 +79,14 @@ func Execute() {
 }
 
 func init() {
-
 	rootCmd.AddCommand(clCmd)
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(updateCmd)
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "version", "V", "", "Package version number.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "release", "R", "", "Package release number.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "Where to put the skeleton dir.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")

@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+1.010		2023.08.12		Re-instated -V and -R flags, added CHANGELOG.md in assets, removed "IN THIS BRANCH" and src/helpers/
 1.000		2023.08.11		final version
 0.500		2023.08.11		completed apk, deb, rpm, skeleton
 0.100		2023.06.25		stub
