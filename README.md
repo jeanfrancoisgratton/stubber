@@ -57,13 +57,13 @@ Of course, regarding the `-r` flag, you need to replace `stubber.spec` with the 
 All templated files are embedded into `src/templates/assets.go` . The files were generated from `src/assets/` using the build script in `src/build.sh`
 
 <H2>Building from source</H2>
-Simple steps:
-- Clone this repo
-- Modify all the templated files in src/assets/ according to your tastes
-- Run: `./build.sh` from the src/ directory
+Simple steps:<br>
+- Clone this repo<br>
+- Modify all the templated files in src/assets/ according to your tastes<br>
+- Run: `./build.sh` from the src/ directory<br>
 
 <H2>Building packages</H2>
-Instructions are provided in PACKAGING.md.<br>
+Instructions are provided in [PACKAGING.md](PACKAGING.md).<br>
 The instructions provided in that file are for use with my own build containers, which are not yet published as they rely too heavily on my own infra at home.<br>
 In the meantime, you can use the packages under the Releases link herein.
 
