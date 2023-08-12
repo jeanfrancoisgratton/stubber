@@ -54,6 +54,11 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sat Aug 12 2023 builder <builder@famillegratton.net> 1.100-0
+- Yet another permission issue (my_email@internet.net)
+- Fixed missing placeholder and various ARCH issues (jean-
+  francois@famillegratton.net)
+
 * Sat Aug 12 2023 builder <builder@famillegratton.net> 1.010-0
 - Debian packaging fixes (my_email@internet.net)
 - Fixed missing flags, removed some assets (jean-francois@famillegratton.net)
