@@ -2,7 +2,7 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.100
+%define _version 1.200
 %define _rel 0
 %define _arch x86_64
 %define _binaryname stubber
@@ -30,6 +30,9 @@ Push binary package to NxRM
 
 %build
 cd %{_sourcedir}/%{_name}-%{_version}/src
+cd templates && rm -f assets.go
+PATH=$PATH:/opt/go/bin go generate
+cd ..
 PATH=$PATH:/opt/go/bin go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
 

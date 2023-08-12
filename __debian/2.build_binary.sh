@@ -7,7 +7,10 @@ mv control ${PKGDIR}/DEBIAN/
 mv preinst ${PKGDIR}/DEBIAN/
 
 echo "Building binary from source"
-cd ../src
+cd ../src/templates
+rm -f assets.go
+go generate
+cd ..
 go build -o ../__debian/${PKGDIR}/opt/bin/stubber .
 strip ../__debian/${PKGDIR}/opt/bin/stubber
 sudo chown 0:0 ../__debian/${PKGDIR}/opt/bin/stubber
