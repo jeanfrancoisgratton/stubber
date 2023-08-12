@@ -54,6 +54,13 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sat Aug 12 2023 builder <builder@famillegratton.net> 1.010-0
+- Debian packaging fixes (my_email@internet.net)
+- Fixed missing flags, removed some assets (jean-francois@famillegratton.net)
+- Gave up on MD formating (jean-francois@famillegratton.net)
+- Minor doc update (jean-francois@famillegratton.net)
+- rpm packaging perms fix (builder@famillegratton.net)
+
 * Fri Aug 11 2023 builder <builder@famillegratton.net> 1.000-0
 - new package built with tito
 
