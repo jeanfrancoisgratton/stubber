@@ -2,6 +2,8 @@
 
 Tool to create the directory structure to build and package a GO software using my current CI-CD infra.
 <br><br>
+
+*A note about this file* : for some weird reason, I can edit this file many times over, with trivial changes, and the Markdown rendering would break, then another trivial change and the rendering is OK, and so on. Apologies for that, but I won't waste time on cosmetic issues like that.
 ____
 
 <H2>How does it work</H2>
@@ -60,10 +62,10 @@ All templated files are embedded into `src/templates/assets.go` . The files were
 Simple steps:<br>
 - Clone this repo<br>
 - Modify all the templated files in src/assets/ according to your tastes<br>
-- Run: `./build.sh` from the src/ directory<br>
+- Run: `build.sh`, from the src/ directory<br>
 
 <H2>Building packages</H2>
-Instructions are provided in [PACKAGING.md](PACKAGING.md).<br>
+Instructions are provided in [PACKAGING.md](PACKAGING.md)
 The instructions provided in that file are for use with my own build containers, which are not yet published as they rely too heavily on my own infra at home.<br>
 In the meantime, you can use the packages under the Releases link herein.
 
