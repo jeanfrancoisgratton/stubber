@@ -2,15 +2,23 @@ package executor
 
 import (
 	"fmt"
+	"strings"
 	"stubber/helpers"
 	"stubber/templates"
 )
 
 func stubDebian(softwarename string) error {
 	var err error
+
+	// Debian uses amd64, not x86_64
+	arch := strings.ToLower(helpers.Arch)
+	if arch == "x86_64" {
+		arch = "amd64"
+	}
+
 	placeholders := map[string]string{
 		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    helpers.Arch,
+		"{{ ARCHITECTURE }}":    arch,
 		"{{ SOFTWARE NAME }}":   softwarename,
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
@@ -20,7 +28,7 @@ func stubDebian(softwarename string) error {
 		"{{ DEPENDENCIES }}":    helpers.Dependencies,
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 	}
-	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control"}
+	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control", "preinst", "prerm", "postinst", "postrm"}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Debian"))
 	for _, pathloop := range paths {

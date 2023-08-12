@@ -1,3 +1,3 @@
 # {{ SOFTWARE NAME }}
 
-Tool to create the directory structure to build and package a GO software using my current CI-CD infra
+Put your description here. This is what will be shown on the repo main page.
