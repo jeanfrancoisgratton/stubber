@@ -2,8 +2,8 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.203
-%define _rel 9
+%define _version 1.201
+%define _rel 0
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -37,6 +37,7 @@ cd ..
 /opt/go/bin/go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -58,26 +59,6 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-9
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-7
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-4
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-2
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-1
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.202-1
-- 
-
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.201-1
-
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.200-0
 - Fixed flags duplication (jean-francois@famillegratton.net)
 - Doc update (builder@famillegratton.net)
