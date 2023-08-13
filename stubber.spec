@@ -2,8 +2,8 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.200
-%define _rel 0
+%define _version 1.201
+%define _rel 1
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -32,9 +32,9 @@ Push binary package to NxRM
 cd %{_sourcedir}/%{_name}-%{_version}/src
 cd templates && rm -f assets.go
 cd ..
-GOBIN=/opt/go/bin go install -a github.com/go-bindata/go-bindata/...@latest
-PATH=$PATH:/opt/go/bin go generate
-PATH=$PATH:/opt/go/bin go build -o %{_sourcedir}/%{_binaryname} .
+sudo GOBIN=/opt/go/bin go install -a github.com/go-bindata/go-bindata/...@latest
+sudo PATH=$PATH:/opt/go/bin go generate
+sudo PATH=$PATH:/opt/go/bin go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
 
 %clean
@@ -58,6 +58,8 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.201-1
+
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.200-0
 - Fixed flags duplication (jean-francois@famillegratton.net)
 - Doc update (builder@famillegratton.net)
