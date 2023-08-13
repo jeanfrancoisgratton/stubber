@@ -58,6 +58,13 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.200-0
+- Fixed flags duplication (jean-francois@famillegratton.net)
+- Doc update (builder@famillegratton.net)
+- Added GO GEN commands (jean-francois@famillegratton.net)
+- Updated fixme (jean-francois@famillegratton.net)
+- Ready to test on Debian (jean-francois@famillegratton.net)
+
 * Sat Aug 12 2023 builder <builder@famillegratton.net> 1.100-0
 - Yet another permission issue (my_email@internet.net)
 - Fixed missing placeholder and various ARCH issues (jean-
