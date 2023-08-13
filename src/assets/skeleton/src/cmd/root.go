@@ -20,15 +20,6 @@ var rootCmd = &cobra.Command{
 This follows my template and allows you with minimal effort to package your software once built`,
 }
 
-var clCmd = &cobra.Command{
-	Use:     "changelog",
-	Aliases: []string{"cl"},
-	Short:   "Shows changelog",
-	Run: func(cmd *cobra.Command, args []string) {
-		helpers.Changelog()
-	},
-}
-
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
