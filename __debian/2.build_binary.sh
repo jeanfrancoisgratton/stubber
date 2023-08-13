@@ -23,4 +23,4 @@ sudo chown 0:0 ../__debian/${PKGDIR}/opt/bin/stubber
 echo "Software built. Now packaging..."
 cd ../__debian/
 dpkg-deb -b ${PKGDIR}
-echo "Package build"
+echo "Package built"
