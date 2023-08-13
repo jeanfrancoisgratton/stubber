@@ -3,7 +3,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 1.203
-%define _rel 2
+%define _rel 4
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -33,8 +33,8 @@ cd %{_sourcedir}/%{_name}-%{_version}/src
 cd templates && rm -f assets.go
 cd ..
 sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-sudo PATH=$PATH:/opt/go/bin go generate
-sudo PATH=$PATH:/opt/go/bin go build -o %{_sourcedir}/%{_binaryname} .
+sudo /opt/go/bin/go generate
+sudo /opt/go/bin/go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
 
 %clean
@@ -58,6 +58,9 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-4
+- 
+
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-2
 - 
 
