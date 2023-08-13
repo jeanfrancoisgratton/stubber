@@ -23,10 +23,15 @@ func stubSkeleton(softwarename string) error {
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Skeleton"))
 	paths := []string{"FIXME.md", "go.version", "CHANGELOG.md", "LICENSE", "PACKAGING.md", "README.md",
-		"ROADMAP.md", "TODO.md", "src/build.sh", "src/go.mod", "src/main.go", "src/upgrade_pkgs.sh", "src/cmd/root.go"}
+		"TODO.md", "gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/upgrade_pkgs.sh", "src/cmd/root.go"}
 
 	for _, pathloop := range paths {
-		if err = templates.ProcessEmbeddedAsset("skeleton/"+pathloop, pathloop, placeholders); err != nil {
+		// We have to add a special condition here because source and target filenames differ for gitignore
+		filename := pathloop
+		if pathloop == "gitignore" {
+			filename = ".gitignore"
+		}
+		if err = templates.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
 		}
 	}
