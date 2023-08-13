@@ -59,6 +59,10 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.201-1
+- Minor fix: changelog update (cosmetic issue) (jean-
+  francois@famillegratton.net)
+
 
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.201-0
 - Fixed flags duplication (jean-francois@famillegratton.net)
