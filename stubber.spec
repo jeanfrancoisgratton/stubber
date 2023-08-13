@@ -59,6 +59,11 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.206-0
+- Typo fix (jean-francois@famillegratton.net)
+- Reverted version bump (jean-francois@famillegratton.net)
+- Added gitignore in assets (jean-francois@famillegratton.net)
+
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.205-0
 - Fixed missing placeholder in rpm stub (jean-francois@famillegratton.net)
 
