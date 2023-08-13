@@ -3,7 +3,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 1.203
-%define _rel 7
+%define _rel 9
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -31,8 +31,8 @@ Push binary package to NxRM
 %build
 cd %{_sourcedir}/%{_name}-%{_version}/src/templates
 rm -f assets.go
-GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-/opt/go/bin/go generate
+sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
+sudo /opt/go/bin/go generate
 cd ..
 /opt/go/bin/go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
@@ -58,6 +58,9 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-9
+- 
+
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.203-7
 - 
 
