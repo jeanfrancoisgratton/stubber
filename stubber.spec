@@ -59,7 +59,8 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
-* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.200-0
+
+* Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.201-0
 - Fixed flags duplication (jean-francois@famillegratton.net)
 - Doc update (builder@famillegratton.net)
 - Added GO GEN commands (jean-francois@famillegratton.net)
