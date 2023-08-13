@@ -31,8 +31,9 @@ Push binary package to NxRM
 %build
 cd %{_sourcedir}/%{_name}-%{_version}/src
 cd templates && rm -f assets.go
-PATH=$PATH:/opt/go/bin go generate
 cd ..
+GOBIN=/opt/go/bin go install -a github.com/go-bindata/go-bindata/...@latest
+PATH=$PATH:/opt/go/bin go generate
 PATH=$PATH:/opt/go/bin go build -o %{_sourcedir}/%{_binaryname} .
 strip %{_sourcedir}/%{_binaryname}
 

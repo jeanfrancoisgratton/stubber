@@ -1,8 +1,7 @@
 Package: stubber
-Version: 1.150-0
+Version: 1.200-0
 Architecture: amd64
 Maintainer: J.F.Gratton <nexus@famillegratton.net>
-Description: Push package to repo
- Custom tool to push (RPM, DEB, APK) packages to Nexus Repository Manager repos
+Description: Tool to create the GO software directory structure
+ Create the skeleton of a GO software, with stubs to build RPMs, DEBs, APKs
 Section: Administration Utilities
-Depends: gcc

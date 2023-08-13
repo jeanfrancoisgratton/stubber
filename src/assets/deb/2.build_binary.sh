@@ -3,8 +3,10 @@
 PKGDIR="{{ SOFTWARE NAME }}-{{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }}_{{ ARCHITECTURE }}"
 
 mkdir -p ${PKGDIR}/opt/bin ${PKGDIR}/DEBIAN
-mv control ${PKGDIR}/DEBIAN/
-mv preinst ${PKGDIR}/DEBIAN/
+mkdir -p ${PKGDIR}/opt/bin ${PKGDIR}/DEBIAN
+for i in control preinst prerm postinst postrm;do
+  mv $i ${PKGDIR}/DEBIAN/
+done
 
 echo "Building binary from source"
 cd ../src

@@ -19,9 +19,13 @@ build() {
 	mkdir -p "$builddir" && cd "$builddir"/.. && rm -rf BUILD && cp -R "$startdir"/../src . && mv src BUILD
     cd "$builddir"
     make -f "$startdir"/Makefile prepare
+    echo "Creating assets generator..."
+    GOBIN=$HOME/bin go install -a github.com/go-bindata/go-bindata/...@latest
     cd templates && rm -f assets.go
+    echo "Generating assets..."
     go generate
     cd ..
+    echo "Building binary..."
     CGO_ENABLED=0 go build -o "$binaryname".exe .
 }
 
