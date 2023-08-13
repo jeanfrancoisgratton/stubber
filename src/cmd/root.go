@@ -11,7 +11,7 @@ import (
 	"stubber/helpers"
 )
 
-var version = "1.210-0 (2023.08.14)"
+var version = "1.206-0 (2023.08.13)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
