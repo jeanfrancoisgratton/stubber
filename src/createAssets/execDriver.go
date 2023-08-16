@@ -1,8 +1,8 @@
 // stubber
 // Écrit par J.F.Gratton (jean-francois@famillegratton.net)
-// creator.go, jfgratton : 2023-06-27
+// execDriver.go, jfgratton : 2023-06-27
 
-package executor
+package createAssets
 
 import (
 	"os"

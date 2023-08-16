@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"os"
-	"stubber/executor"
+	"stubber/createAssets"
 	"stubber/helpers"
 )
 
-var version = "1.206-0 (2023.08.13)"
+var version = "1.500-0 (2023.08.16)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -44,7 +44,7 @@ var createCmd = &cobra.Command{
 			fmt.Println("Usage: stubber create [-a|-d|-r|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
-		if err := executor.CreateStub(args[0]); err != nil {
+		if err := createAssets.CreateStub(args[0]); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -64,7 +64,7 @@ var updateCmd = &cobra.Command{
 			fmt.Println("Usage: stubber update [-a|-d|-r|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
-		if err := executor.CreateStub(args[0]); err != nil {
+		if err := createAssets.CreateStub(args[0]); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
