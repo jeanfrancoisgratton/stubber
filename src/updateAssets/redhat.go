@@ -2,7 +2,6 @@ package createAssets
 
 import (
 	"fmt"
-	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -27,8 +26,8 @@ func stubRedHat(softwarename string) error {
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("RedHat"))
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "specfile"), softwarename+".spec", placeholders); err == nil {
-		err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "rpmbuild-deps.sh"), "rpmbuild-deps.sh", placeholders)
+	if err = templates.ProcessEmbeddedAsset("rpm/specfile", softwarename+".spec", placeholders); err == nil {
+		err = templates.ProcessEmbeddedAsset("rpm/rpmbuild-deps.sh", "rpmbuild-deps.sh", placeholders)
 	}
 	return err
 }

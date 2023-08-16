@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+1.500		2023.08.16		FEATURE: update asset command, to bump version of software
 1.205		2023.08.13		Fixed missing placeholder in RPM stub
 1.201		2023.08.13		Asset generation was silently broken in RPM/DEB/APK building
 1.100		2023.08.12		Added Debian packaging script, added missing placeholders, etc

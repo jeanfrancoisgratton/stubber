@@ -23,7 +23,7 @@ func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]
 	// Read the embedded input file
 	data, err := Asset(inputPath)
 	if err != nil {
-		fmt.Printf("error creating the input file: %s \n", helpers.Red(err.Error()))
+		fmt.Printf("error reading the input file: %s \n", helpers.Red(err.Error()))
 		//return fmt.Errorf("error reading embedded input file '%s': %s", inputPath, err)
 		return err
 	}
@@ -31,7 +31,7 @@ func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]
 	// Create the output file
 	output, err := os.Create(outputPath)
 	if err != nil {
-		fmt.Printf("error creating the input file: %s \n", helpers.Red(err.Error()))
+		fmt.Printf("error creating the output file: %s \n", helpers.Red(err.Error()))
 		return err
 		//return fmt.Errorf("error creating output file '%s': %s", outputPath, err)
 	}

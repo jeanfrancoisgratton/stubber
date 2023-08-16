@@ -5,11 +5,13 @@
 package createAssets
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
 )
+
+// Usage:
+// stubber [-s stub rootdir] [-g "GO VERSION"] [-a] [-d] [-r] [-k] NAME
 
 func CreateStub(softname string) error {
 	var errcode error
@@ -38,7 +40,9 @@ func CreateStub(softname string) error {
 		return errcode
 	}
 
-	fmt.Printf("Creating stub for software %s in %s", helpers.Green(softname), helpers.Green(helpers.RootDir))
+	//
+	// Now we add the packaging stubs: APK, DEB, RPM, and Skeleton
+	//
 
 	// Alpine ( -a )
 	if helpers.AlpineStub {
@@ -53,7 +57,6 @@ func CreateStub(softname string) error {
 	if helpers.DebianStub {
 		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "__debian"), os.FileMode(0755)); errcode == nil {
 			if errcode = stubDebian(softname); errcode != nil {
-				os.Chdir(currentdir)
 				return errcode
 			}
 		}
@@ -62,7 +65,6 @@ func CreateStub(softname string) error {
 	// Debian ( -r )
 	if helpers.RedHatStub {
 		if errcode = stubRedHat(softname); errcode != nil {
-			os.Chdir(currentdir)
 			return errcode
 		}
 	}
@@ -70,14 +72,9 @@ func CreateStub(softname string) error {
 	// Skeleton ( -
 	if helpers.SkeletonStub {
 		if errcode = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "cmd"), os.FileMode(0755)); errcode != nil {
-			os.Chdir(currentdir)
 			return errcode
 		}
-		if errcode := stubSkeleton(softname); errcode != nil {
-			os.Chdir(currentdir)
-			return errcode
-		}
+		return stubSkeleton(softname)
 	}
-	os.Chdir(currentdir)
 	return nil
 }

@@ -2,7 +2,6 @@ package createAssets
 
 import (
 	"fmt"
-	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -24,15 +23,11 @@ func stubAlpine(softwarename string) error {
 		"{{ DESCRIPTION }}":     helpers.Description,
 		"{{ ARCHITECTURE }}":    arch,
 		"{{ BINARY NAME }}":     helpers.BinaryName,
-		"{{ GO VERSION }}":      helpers.GoVersion,
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
-	//	if err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, "apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err == nil {
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err != nil {
-		// Alpine's Makefile takes amd64 for arch name, not x86_64
-		arch = "amd64"
-		err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, "apk", "Makefile"), filepath.Join(helpers.RootDir, "__alpine", "Makefile"), placeholders)
+	if err = templates.ProcessEmbeddedAsset("apk/APKBUILD", "__alpine/APKBUILD", placeholders); err == nil {
+		err = templates.ProcessEmbeddedAsset("apk/Makefile", "__alpine/Makefile", placeholders)
 	}
 	return err
 }
