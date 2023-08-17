@@ -11,7 +11,7 @@ echo "Installing assets generator (go-bindata)"
 cd ../src
 GOBIN=$HOME/bin go install -a github.com/go-bindata/go-bindata/...@latest
 cd templates
-rm -f ASSETS.go
+rm -f assets.go
 echo "Generating assets"
 go generate
 echo "Building binary"

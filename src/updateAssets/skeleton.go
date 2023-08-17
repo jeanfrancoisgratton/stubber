@@ -5,10 +5,11 @@ import (
 	"os"
 	"path/filepath"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
-func updateSkeleton() error {
+// updateSkeleton2 is a placeholder function in case it is needed.
+// The "real" function, the one that is effective, is below... for now
+func updateSkeleton2() error {
 	var err error
 
 	placeholders := map[string]string{
@@ -20,15 +21,17 @@ func updateSkeleton() error {
 	paths := []string{"go.version"}
 
 	for _, pathloop := range paths {
-		// We have to add a special condition here because source and target filenames differ for gitignore
-		filename := pathloop
-		if err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, pathloop), filepath.Join(helpers.RootDir, filename+".new"), placeholders); err != nil {
+		//filename := pathloop
+		if err = replaceStrings(pathloop, placeholders); err != nil {
 			return err
-		} else {
-			if err = os.Rename(filename+".new", filename); err != nil {
-				return err
-			}
 		}
+	}
+	return nil
+}
+
+func updateSkeleton() error {
+	if err := os.WriteFile(filepath.Join(helpers.RootDir, "go.version"), []byte(helpers.GoVersion), 0644); err != nil {
+		return err
 	}
 	return nil
 }

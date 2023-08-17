@@ -26,7 +26,12 @@ func CreateStub(softname string) error {
 
 	// Second, We create the project root dir if -p is provided
 	if helpers.RootDir == "." {
-		helpers.RootDir = currentdir
+		helpers.RootDir = filepath.Join(currentdir, softname)
+		if err := os.MkdirAll(softname, os.FileMode(0755)); err != nil {
+			return nil
+		} else {
+			os.Chdir(filepath.Join(currentdir, softname))
+		}
 	} else {
 		if _, err := os.Stat(helpers.RootDir); os.IsNotExist(err) {
 			if e := os.MkdirAll(helpers.RootDir, os.FileMode(0755)); e != nil {
