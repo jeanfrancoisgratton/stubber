@@ -59,6 +59,17 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Thu Aug 17 2023 RPM Builder <builder@famillegratton.net> 1.500-0
+- Completed debugging (jean-francois@famillegratton.net)
+- Screwup (jean-francois@famillegratton.net)
+- Sync between branches (jean-francois@famillegratton.net)
+- Fixed various filepaths (jean-francois@famillegratton.net)
+- Software version bump (jean-francois@famillegratton.net)
+- Refactoring before creating the updateAssets package (jean-
+  francois@famillegratton.net)
+- Removed helpers.Changelog() from assets (jean-francois@famillegratton.net)
+- minor DEB stub fix (jean-francois@famillegratton.net)
+
 * Sun Aug 13 2023 RPM Builder <builder@famillegratton.net> 1.206-0
 - Typo fix (jean-francois@famillegratton.net)
 - Reverted version bump (jean-francois@famillegratton.net)
