@@ -12,7 +12,7 @@ import (
 	"stubber/updateAssets"
 )
 
-var version = "1.500-0 (2023.08.16)"
+var version = "1.206-0 (2023.08.13)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -57,23 +57,15 @@ var updateCmd = &cobra.Command{
 	Aliases: []string{"up"},
 	Short:   "Updates the build scripts with new Version and Release numbers",
 	Run: func(cmd *cobra.Command, args []string) {
-		var argsZero = "thereIsNoNeedForThisArgument"
 		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
 			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
 			os.Exit(1)
 		}
-		if len(args) != 1 && helpers.RedHatStub {
-			fmt.Println("You need to provide the package name when you update the RedHat specfile.")
+		if len(args) != 1 {
+			fmt.Println("Usage: stubber update [-a|-d|-r|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
-		if helpers.VersionNumber == "" && helpers.ReleaseNumber == "" {
-			fmt.Println("You need to provide at least the -V or -R flag in order to update the software")
-		}
-
-		if helpers.RedHatStub {
-			argsZero = args[0]
-		}
-		if err := updateAssets.UpdateVersions(argsZero); err != nil {
+		if err := updateAssets.UpdateVersions(args[0]); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
@@ -91,33 +83,21 @@ func init() {
 	rootCmd.AddCommand(clCmd)
 	rootCmd.AddCommand(createCmd)
 	rootCmd.AddCommand(updateCmd)
-	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Suppress non-essential output.")
+	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
-
-	createCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
-	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
-	createCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "Where to put the skeleton dir.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
-	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
-	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
-
-	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "Where to put the skeleton dir.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
-	updateCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
-	updateCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
-	updateCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.0", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
+	rootCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
+	rootCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
+	rootCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
+	rootCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
 }

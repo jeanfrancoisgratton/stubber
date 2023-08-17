@@ -5,7 +5,7 @@
 package updateAssets
 
 import (
-	"fmt"
+	"bufio"
 	"os"
 	"strings"
 	"stubber/helpers"
@@ -39,7 +39,7 @@ func UpdateVersions(softwarename string) error {
 
 	// Debian ( -d )
 	if helpers.DebianStub {
-		if errcode = updateDebian(); errcode != nil {
+		if errcode = updateDebian(softwarename); errcode != nil {
 			os.Chdir(currentdir)
 			return errcode
 		}
@@ -64,23 +64,62 @@ func UpdateVersions(softwarename string) error {
 	return nil
 }
 
-func replaceStrings(filein string, placeholders map[string]string) error {
-	var err error
-	var content []byte
+func replaceStrings(filePath string, placeholders map[string]string) error {
+	tempFilePath := filePath + ".tmp"
 
-	if content, err = os.ReadFile(filein); err != nil {
+	inputFile, err := os.Open(filePath)
+	if err != nil {
 		return err
 	}
-	contentStr := string(content)
+	defer inputFile.Close()
 
-	for orgstr, newstr := range placeholders {
-		contentStr = strings.ReplaceAll(contentStr, orgstr, newstr)
-	}
-
-	fmt.Printf("Modified content:\n%s\n", contentStr) // Debug print
-
-	if err = os.WriteFile(filein, []byte(contentStr), 0644); err != nil {
+	outputFile, err := os.Create(tempFilePath)
+	if err != nil {
 		return err
 	}
+	defer outputFile.Close()
+
+	scanner := bufio.NewScanner(inputFile)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		replaced := false
+
+		for key, value := range placeholders {
+			if strings.HasPrefix(line, key) {
+				line = value
+				replaced = true
+				break
+			}
+		}
+
+		if replaced {
+			_, err := outputFile.WriteString(line + "\n")
+			if err != nil {
+				return err
+			}
+		} else {
+			_, err := outputFile.WriteString(line + "\n")
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return err
+	}
+
+	if err := inputFile.Close(); err != nil {
+		return err
+	}
+	if err := outputFile.Close(); err != nil {
+		return err
+	}
+
+	if err := os.Rename(tempFilePath, filePath); err != nil {
+		return err
+	}
+
 	return nil
 }

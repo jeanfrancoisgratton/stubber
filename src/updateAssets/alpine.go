@@ -17,19 +17,21 @@ func updateAlpine() error {
 		goarch = "amd64"
 	}
 	placeholders := map[string]string{
-		"# Maintainer": "# Maintainer: " + helpers.Maintainer,
-		"# Packager:":  "# Packager: " + helpers.Packager,
-		"pkgver":       "pkgver=" + helpers.VersionNumber,
-		"pkgrel":       "pkgrel=" + helpers.ReleaseNumber,
-		"arch":         "arch=" + goarch,
+		"# Maintainer":                    "# Maintainer: " + helpers.Maintainer,
+		"# Packager:":                     "# Packager: " + helpers.Packager,
+		"pkgver":                          "pkgver=" + helpers.VersionNumber,
+		"pkgrel":                          "pkgrel=" + helpers.ReleaseNumber,
+		"arch":                            "arch=" + goarch,
+		"sudo /opt/bin/install_golang.sh": "sudo /opt/bin/install_golang.sh " + helpers.GoVersion + " " + goarch,
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
-	paths := {"APKBUILD", "Makefile"}
+	paths := []string{"APKBUILD", "Makefile"}
 
-	for _, path : range paths
-	if err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", "APKBUILD"), placeholders); err == nil {
-		err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", "Makefile"), placeholders)
+	for _, path := range paths {
+		if err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", path), placeholders); err != nil {
+			return err
+		}
 	}
-	return err
+	return nil
 }

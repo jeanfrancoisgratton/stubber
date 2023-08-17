@@ -7,7 +7,7 @@ import (
 	"stubber/helpers"
 )
 
-func updateDebian() error {
+func updateDebian(softwarename string) error {
 	var err error
 	//var goarch string
 
@@ -18,15 +18,17 @@ func updateDebian() error {
 	}
 
 	placeholders := map[string]string{
+		// Control
+		"Version:":      "Version: " + helpers.VersionNumber,
+		"Architecture:": "Architecture: " + arch,
+		"Maintainer:":   "Mainteainer: " + helpers.Maintainer,
+		"Description:":  "Description: " + helpers.Description,
+		"Section:":      "Section: " + helpers.Section,
+		"Depends:":      "Depends: " + helpers.Dependencies,
+		// 2.build_binary.sh
+		"PKGDIR=": "PKGDIR=" + softwarename + "-" + helpers.VersionNumber + "-" + helpers.ReleaseNumber + "_" + arch,
+		// 1.install-build-deps.sh
 		"sudo /opt/bin/install_golang.sh": "sudo /opt/bin/install_golang.sh " + helpers.GoVersion + " " + arch,
-		"{{ ARCHITECTURE }}":              arch,
-		"{{ PACKAGE VERSION }}":           helpers.VersionNumber,
-		"{{ PACKAGE RELEASE }}":           helpers.ReleaseNumber,
-		"{{ MAINTAINER }}":                helpers.Maintainer,
-		"{{ DESCRIPTION }}":               helpers.Description,
-		"{{ PACKAGE SECTION }}":           helpers.Section,
-		"{{ DEPENDENCIES }}":              helpers.Dependencies,
-		"{{ BINARY NAME }}":               helpers.BinaryName,
 	}
 	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "control"}
 

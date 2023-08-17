@@ -2,35 +2,38 @@ package updateAssets
 
 import (
 	"fmt"
-	"path/filepath"
+	"strings"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
 func updateRedHat(softwarename string) error {
 	var err error
-	arch := helpers.Arch
+	goarch := helpers.Arch
+
+	// Debian uses amd64, not x86_64
+	arch := strings.ToLower(helpers.Arch)
 	if arch == "amd64" {
 		arch = "x86_64"
-	}
-	placeholders := map[string]string{
-		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    arch,
-		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
-		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
-		"{{ BINARY NAME }}":     helpers.BinaryName,
-		"{{ SECTION }}":         helpers.Section,
-		"{{ DESCRIPTION }}":     helpers.Description,
-		"{{ URL }}":             helpers.Url,
+		goarch = "amd64"
 	}
 
+	placeholders := map[string]string{
+		// rpmbuild-deps.sh
+		"grep ^BuildRequires \"": "grep ^BuildRequires \"" + softwarename + ".spec\" |awk -F\\: '{print \"sudo dnf install -y\"$2}'|sed -e 's/,/ /g' | sh",
+		"sudo wget":              "sudo wget -q https://go.dev/dl/go" + helpers.GoVersion + ".linux-" + goarch + ".tar.gz -O /tmp/go.tar.gz",
+		// specfile
+		"%define _version":    "%define _version " + helpers.VersionNumber,
+		"%define _rel":        "%define _rel  " + helpers.ReleaseNumber,
+		"%define _arch":       "%define _arch " + arch,
+		"%define _binaryname": "%define _binaryname " + helpers.BinaryName,
+	}
+	paths := []string{"rpmbuild-deps.sh", softwarename + ".spec"}
+
 	fmt.Printf("Stub: %s\n", helpers.Yellow("RedHat"))
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "specfile"), softwarename+".spec", placeholders); err == nil {
-		// The dependency script takes amd64 as an arch, not x86_64
-		if arch == "x86_64" {
-			placeholders["{{ ARCHITECTURE }} "] = "arch=amd64"
+	for _, pathloop := range paths {
+		if err = replaceStrings(pathloop, placeholders); err != nil {
+			return err
 		}
-		err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "rpmbuild-deps.sh"), filepath.Join(helpers.RootDir, "rpmbuild-deps.sh"), placeholders)
 	}
 	return nil
 }
