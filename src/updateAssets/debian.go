@@ -1,14 +1,15 @@
-package createAssets
+package updateAssets
 
 import (
 	"fmt"
+	"path/filepath"
 	"strings"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
-func stubDebian(softwarename string) error {
+func updateDebian() error {
 	var err error
+	//var goarch string
 
 	// Debian uses amd64, not x86_64
 	arch := strings.ToLower(helpers.Arch)
@@ -17,22 +18,23 @@ func stubDebian(softwarename string) error {
 	}
 
 	placeholders := map[string]string{
-		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    arch,
-		"{{ SOFTWARE NAME }}":   softwarename,
-		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
-		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
-		"{{ MAINTAINER }}":      helpers.Maintainer,
-		"{{ DESCRIPTION }}":     helpers.Description,
-		"{{ PACKAGE SECTION }}": helpers.Section,
-		"{{ DEPENDENCIES }}":    helpers.Dependencies,
-		"{{ BINARY NAME }}":     helpers.BinaryName,
+		"sudo /opt/bin/install_golang.sh": "sudo /opt/bin/install_golang.sh " + helpers.GoVersion + " " + arch,
+		"{{ ARCHITECTURE }}":              arch,
+		"{{ PACKAGE VERSION }}":           helpers.VersionNumber,
+		"{{ PACKAGE RELEASE }}":           helpers.ReleaseNumber,
+		"{{ MAINTAINER }}":                helpers.Maintainer,
+		"{{ DESCRIPTION }}":               helpers.Description,
+		"{{ PACKAGE SECTION }}":           helpers.Section,
+		"{{ DEPENDENCIES }}":              helpers.Dependencies,
+		"{{ BINARY NAME }}":               helpers.BinaryName,
 	}
-	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control", "preinst", "prerm", "postinst", "postrm"}
+	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "control"}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Debian"))
 	for _, pathloop := range paths {
-		if err = templates.ProcessEmbeddedAsset("deb/"+pathloop, "__debian/"+pathloop, placeholders); err != nil {
+		// err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", "Makefile"), placeholders)
+		if err = replaceStrings(filepath.Join(helpers.RootDir, "__debian", pathloop), placeholders); err != nil {
+			//if err = templates.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join(helpers.RootDir, "__debian", pathloop), placeholders); err != nil {
 			return err
 		}
 	}

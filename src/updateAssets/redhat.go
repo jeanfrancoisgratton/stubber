@@ -1,20 +1,19 @@
-package createAssets
+package updateAssets
 
 import (
 	"fmt"
+	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
 )
 
-func stubRedHat(softwarename string) error {
+func updateRedHat(softwarename string) error {
 	var err error
-
 	arch := helpers.Arch
 	if arch == "amd64" {
 		arch = "x86_64"
 	}
 	placeholders := map[string]string{
-		"{{ SOFTWARE NAME }}":   softwarename,
 		"{{ GO VERSION }}":      helpers.GoVersion,
 		"{{ ARCHITECTURE }}":    arch,
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
@@ -26,8 +25,12 @@ func stubRedHat(softwarename string) error {
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("RedHat"))
-	if err = templates.ProcessEmbeddedAsset("rpm/specfile", softwarename+".spec", placeholders); err == nil {
-		err = templates.ProcessEmbeddedAsset("rpm/rpmbuild-deps.sh", "rpmbuild-deps.sh", placeholders)
+	if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "specfile"), softwarename+".spec", placeholders); err == nil {
+		// The dependency script takes amd64 as an arch, not x86_64
+		if arch == "x86_64" {
+			placeholders["{{ ARCHITECTURE }} "] = "arch=amd64"
+		}
+		err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "rpmbuild-deps.sh"), filepath.Join(helpers.RootDir, "rpmbuild-deps.sh"), placeholders)
 	}
-	return err
+	return nil
 }

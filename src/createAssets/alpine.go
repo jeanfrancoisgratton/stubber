@@ -29,10 +29,10 @@ func stubAlpine(softwarename string) error {
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
 	//	if err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, "apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err == nil {
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err != nil {
+	if err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err == nil {
 		// Alpine's Makefile takes amd64 for arch name, not x86_64
 		arch = "amd64"
-		err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, "apk", "Makefile"), filepath.Join(helpers.RootDir, "__alpine", "Makefile"), placeholders)
+		err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "Makefile"), filepath.Join("__alpine", "Makefile"), placeholders)
 	}
 	return err
 }

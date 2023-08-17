@@ -1,0 +1,29 @@
+# Maintainer: jfgmaintainer
+# Packager: jfgpackager
+pkgname="test.allo"
+pkgver=1.000
+pkgrel=0
+pkgdir=/data/packages
+builddir="$startdir/src/BUILD"
+pkgdesc=
+url="https://github.com/jeanfrancoisgratton/test.allo"
+arch=x86_64
+license=GPL2
+#depends="gcompat"
+#install="$pkgname.post-install"
+#source="$pkgname-$pkgver-$pkgrel.tar.bz2::http://localhost/$pkgname-$pkgver-$pkgrel.tar.bz2"
+binaryname="ttttt"
+
+build() {
+	pwd
+	mkdir -p "$builddir" && cd "$builddir"/.. && rm -rf BUILD && cp -R "$startdir"/../src . && mv src BUILD
+    cd "$builddir"
+    make -f "$startdir"/Makefile prepare
+    CGO_ENABLED=0 go build -o "$binaryname".exe .
+}
+
+package() {
+        make -f "$startdir"/Makefile BUILDDIR="$builddir" PREFIX=/opt PKGNM="$binaryname" DESTDIR="$pkgdir" install
+}
+
+

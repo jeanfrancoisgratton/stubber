@@ -1,33 +1,35 @@
-package createAssets
+package updateAssets
 
 import (
 	"fmt"
+	"path/filepath"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
-func stubAlpine(softwarename string) error {
+func updateAlpine() error {
 	var err error
+	goarch := helpers.Arch
 
 	// alpine uses x86_64, not amd64
 	arch := helpers.Arch
 	if arch == "amd64" {
 		arch = "x86_64"
+		goarch = "amd64"
 	}
 	placeholders := map[string]string{
-		"{{ MAINTAINER }}":      helpers.Maintainer,
-		"{{ PACKAGER }}":        helpers.Packager,
-		"{{ SOFTWARE NAME }}":   softwarename,
-		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
-		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
-		"{{ DESCRIPTION }}":     helpers.Description,
-		"{{ ARCHITECTURE }}":    arch,
-		"{{ BINARY NAME }}":     helpers.BinaryName,
+		"# Maintainer": "# Maintainer: " + helpers.Maintainer,
+		"# Packager:":  "# Packager: " + helpers.Packager,
+		"pkgver":       "pkgver=" + helpers.VersionNumber,
+		"pkgrel":       "pkgrel=" + helpers.ReleaseNumber,
+		"arch":         "arch=" + goarch,
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
-	if err = templates.ProcessEmbeddedAsset("apk/APKBUILD", "__alpine/APKBUILD", placeholders); err == nil {
-		err = templates.ProcessEmbeddedAsset("apk/Makefile", "__alpine/Makefile", placeholders)
+	paths := {"APKBUILD", "Makefile"}
+
+	for _, path : range paths
+	if err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", "APKBUILD"), placeholders); err == nil {
+		err = replaceStrings(filepath.Join(helpers.RootDir, "__alpine", "Makefile"), placeholders)
 	}
 	return err
 }

@@ -57,18 +57,23 @@ var updateCmd = &cobra.Command{
 	Aliases: []string{"up"},
 	Short:   "Updates the build scripts with new Version and Release numbers",
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub {
-			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), or -r (redhat)")
+		var argsZero = "thereIsNoNeedForThisArgument"
+		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
+			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
 			os.Exit(1)
 		}
-		if len(args) != 1 {
-			fmt.Println("Usage: stubber update [-a|-d|-r] $SOFTWARENAME")
+		if len(args) != 1 && helpers.RedHatStub {
+			fmt.Println("You need to provide the package name when you update the RedHat specfile.")
 			os.Exit(2)
 		}
 		if helpers.VersionNumber == "" && helpers.ReleaseNumber == "" {
 			fmt.Println("You need to provide at least the -V or -R flag in order to update the software")
 		}
-		if err := updateAssets.UpdateVersions(args[0]); err != nil {
+
+		if helpers.RedHatStub {
+			argsZero = args[0]
+		}
+		if err := updateAssets.UpdateVersions(argsZero); err != nil {
 			fmt.Println(err)
 			os.Exit(1)
 		}
