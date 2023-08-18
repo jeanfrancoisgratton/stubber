@@ -29,5 +29,4 @@ func Execute() {
 
 func init() {
 
-	rootCmd.AddCommand(clCmd)
 }
