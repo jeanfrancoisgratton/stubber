@@ -59,6 +59,14 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sat Aug 19 2023 RPM Builder <builder@famillegratton.net> 1.505-2
+- Added extra cleanup task to DEB package (builder@famillegratton.net)
+- Typo fix, version bump in RPM stub (jean-francois@famillegratton.net)
+- Doc update (jean-francois@famillegratton.net)
+- Fixed issue of a unresolved function name in cmd/root.go, version bump (jean-
+  francois@famillegratton.net)
+- Bug fix: undefined command in cmd/root.go (jean-francois@famillegratton.net)
+
 * Thu Aug 17 2023 RPM Builder <builder@famillegratton.net> 1.500-0
 - Completed debugging (jean-francois@famillegratton.net)
 - Screwup (jean-francois@famillegratton.net)
