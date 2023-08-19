@@ -67,7 +67,7 @@ Instructions are provided in [PACKAGING.md](PACKAGING.md)
 The instructions provided in that file are for use with my own build containers, which are not yet published as they rely too heavily on my own infra at home.<br>
 In the meantime, you can use the packages under the Releases link herein.
 
-<H2>Issues, caveat, etc</H2>
+<H2>Issues, caveats, etc</H2>
 - This software creates a directory structure, but does **not** create a git repo (maybe some future version ? A Perforce repo, too, while at it ?)
 - Sometimes `go.mod/go.sum` just do not work properly and might need a re-initialization (`go mod init`). I haven't yet isolated the cause of this misbehaviour.
 - This software is mainly geared for X86_64 and AMD64 architectures. I've had limited opportunities to test it on other architectures (briefly tested on a Mac M1's arm64 arch). This means that some files might need extra tweaking after execution.

@@ -12,7 +12,7 @@ import (
 	"stubber/updateAssets"
 )
 
-var version = "1.505-0 (2023.08.18)"
+var version = "1.505-1 (2023.08.18)"
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
