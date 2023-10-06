@@ -71,7 +71,7 @@ The instructions provided in that file are for use with my own build containers,
 In the meantime, you can use the packages under the Releases link herein.
 
 <H2>Issues, caveats, etc</H2>
-- This software creates a directory structure, but does **not** create a git repo (maybe some future version ? A Perforce repo, too, while at it ?)
-- Sometimes `go.mod/go.sum` just do not work properly and might need a re-initialization (`go mod init`). I haven't yet isolated the cause of this misbehaviour. Because of this, running `./build.sh` from the `src/` directory right after execution of this tool might or might not work without `go.{mod,sum}` thinkering.
-- This software is mainly geared for X86_64 and AMD64 architectures. I've had limited opportunities to test it on other architectures (briefly tested on a Mac M1's arm64 arch). This means that some files might need extra tweaking after execution.
-- **Always**, **always**, **always** (did I mention: always ?) review the generated files after execution. This tool is a generic tool to create stubs, and update them (version bumps, etc) later, but again: *generic tool*.
+- This software creates a directory structure, but does **not** create a git repo (maybe some future version ? A Perforce repo, too, while at it ?)<br>
+- Sometimes `go.mod/go.sum` just do not work properly and might need a re-initialization (`go mod init`). I haven't yet isolated the cause of this misbehaviour. Because of this, running `./build.sh` from the `src/` directory right after execution of this tool might or might not work without `go.{mod,sum}` thinkering.<br>
+- This software is mainly geared for X86_64 and AMD64 architectures. I've had limited opportunities to test it on other architectures (briefly tested on a Mac M1's arm64 arch). This means that some files might need extra tweaking after execution.<br>
+- **Always**, **always**, **always** (did I mention: always ?) review the generated files after execution. This tool is a generic tool to create stubs, and update them (version bumps, etc) later, but again: *generic tool*.<br>
