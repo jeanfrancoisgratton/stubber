@@ -1,0 +1,26 @@
+RPM :
+
+specfile
+--------
+L3, L10: name -> pas d'apostrophe
+L15 : Group cannot be empty
+L17 : URL cannot be empty
+
+
+DEB :
+
+control
+-------
+Put newline at end of file
+
+
+APK :
+
+APKBUILD
+--------
+L8 : put value in quotes
+
+MAKEFILE
+--------
+replace x86_64 in Makefile with amd64
+build command should use the correct binary name
