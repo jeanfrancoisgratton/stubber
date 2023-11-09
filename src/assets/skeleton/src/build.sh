@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-OUTPUT=/opt/bin
+
 
 if [ "$#" -gt 0 ]; then
-    OUTPUT=$1
+    BINARY={{ BINARY NAME }}
 fi
-go build -o ${OUTPUT}/{{ BINARY NAME }} .
 
+go build -o /opt/bin/${BINARY} .
