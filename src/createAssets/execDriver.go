@@ -43,7 +43,7 @@ func CreateStub(softname string) error {
 		return errcode
 	}
 
-	fmt.Printf("Creating stub for software %s in %s", helpers.Green(softname), helpers.Green(helpers.RootDir))
+	fmt.Printf("Creating stub for software %s in %s\n", helpers.Green(softname), helpers.Green(helpers.RootDir))
 
 	// Alpine ( -a )
 	if helpers.AlpineStub {

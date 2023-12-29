@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+1.52.01		2023.12.29		Output fix, added missing go.version file in assets/
 1.52.00		2023.11.08		build.sh changes
 1.51.00		2023.10.19		Version scheme refactor, misc minor changes
 1.505		2023.08.18		Removed unresolved function call in cmd/root.go, doc update
