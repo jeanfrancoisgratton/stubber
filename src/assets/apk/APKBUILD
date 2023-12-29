@@ -1,6 +1,6 @@
 # Maintainer: {{ MAINTAINER }}
 # Packager: {{ PACKAGER }}
-pkgname="{{ SOFTWARE NAME }}"
+pkgname={{ SOFTWARE NAME }}
 pkgver={{ PACKAGE VERSION }}
 pkgrel={{ PACKAGE RELEASE }}
 pkgdir=/data/packages
@@ -12,7 +12,7 @@ license=GPL2
 #depends="gcompat"
 #install="$pkgname.post-install"
 #source="$pkgname-$pkgver-$pkgrel.tar.bz2::http://localhost/$pkgname-$pkgver-$pkgrel.tar.bz2"
-binaryname="{{ BINARY NAME }}"
+binaryname={{ BINARY NAME }}
 
 build() {
 	pwd
