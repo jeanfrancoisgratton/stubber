@@ -2,7 +2,7 @@ ALPINE :
 MAKEFILE fetches go with x86_64 arch when it should be amd64
 
 RPM :
-Same with install_rpm_deps.sh
+Same with rpmbuild_deps.sh
 
 ==================================
 
