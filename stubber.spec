@@ -60,6 +60,23 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 %changelog
 * Fri Dec 29 2023 RPM Builder <builder@famillegratton.net> 1.52.00-0
+- GO and package versions update (jean-francois@famillegratton.net)
+- Automatic commit of package [stubber] release [1.52.00-0].
+  (builder@famillegratton.net)
+- Syntax-typo fixes (jean-francois@famillegratton.net)
+- Finalized synching (jean-francois@famillegratton.net)
+- sync zenika -> (jean-francois@famillegratton.net)
+- Sync zenika-> (jean-francois@famillegratton.net)
+- Fixed version number on Debian package (jean-francois@famillegratton.net)
+- Removed unused line (jean-francois@famillegratton.net)
+- Sync Zenika-> (jean-francois@famillegratton.net)
+- Doc update (jean-francois@famillegratton.net)
+- Permission fix on build script (builder@famillegratton.net)
+
+* Fri Dec 29 2023 RPM Builder <builder@famillegratton.net>
+- GO and package versions update (jean-francois@famillegratton.net)
+
+* Fri Dec 29 2023 RPM Builder <builder@famillegratton.net> 1.52.00-0
 - Syntax-typo fixes (jean-francois@famillegratton.net)
 - Finalized synching (jean-francois@famillegratton.net)
 - sync zenika -> (jean-francois@famillegratton.net)
