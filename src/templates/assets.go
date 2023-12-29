@@ -19,6 +19,7 @@
 // ../assets/skeleton/README.md
 // ../assets/skeleton/TODO.md
 // ../assets/skeleton/gitignore
+// ../assets/skeleton/go.version
 // ../assets/skeleton/src/build.sh
 // ../assets/skeleton/src/cmd/root.go
 // ../assets/skeleton/src/go.mod
@@ -481,6 +482,26 @@ func skeletonGitignore() (*asset, error) {
 	return a, nil
 }
 
+var _skeletonGoVersion = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\xaa\xae\x56\x70\xf7\x57\x08\x73\x0d\x0a\xf6\xf4\xf7\x53\xa8\xad\xe5\x02\x04\x00\x00\xff\xff\x4c\xdd\x85\x92\x11\x00\x00\x00")
+
+func skeletonGoVersionBytes() ([]byte, error) {
+	return bindataRead(
+		_skeletonGoVersion,
+		"skeleton/go.version",
+	)
+}
+
+func skeletonGoVersion() (*asset, error) {
+	bytes, err := skeletonGoVersionBytes()
+	if err != nil {
+		return nil, err
+	}
+
+	info := bindataFileInfo{name: "skeleton/go.version", size: 17, mode: os.FileMode(420), modTime: time.Unix(1703880530, 0)}
+	a := &asset{bytes: bytes, info: info}
+	return a, nil
+}
+
 var _skeletonSrcBuildSh = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x52\x56\xd4\x2f\x2d\x2e\xd2\x4f\xca\xcc\xd3\x4f\xcd\x2b\x53\x28\xce\xe0\xe2\xe2\xe2\xca\x4c\x53\x88\x56\x50\x52\x51\x56\x52\xd0\x4d\x2f\x51\x30\x50\x88\xb5\x56\x28\xc9\x48\xcd\xe3\x52\x50\x50\x50\x70\xf2\xf4\x73\x0c\x8a\xb4\xad\xae\x86\xb2\x14\xfc\x1c\x7d\x5d\x15\x6a\x6b\xb9\xd2\x32\xb9\xb8\xd2\xf3\x15\x92\x4a\x33\x73\x52\x14\x74\xf3\x15\xf4\xf3\x0b\x4a\xc0\xe6\xaa\x54\x43\x54\xd6\x2a\xe8\x71\x01\x02\x00\x00\xff\xff\x6c\xca\x49\x97\x6f\x00\x00\x00")
 
 func skeletonSrcBuildShBytes() ([]byte, error) {
@@ -672,6 +693,7 @@ var _bindata = map[string]func() (*asset, error){
 	"skeleton/README.md":           skeletonReadmeMd,
 	"skeleton/TODO.md":             skeletonTodoMd,
 	"skeleton/gitignore":           skeletonGitignore,
+	"skeleton/go.version":          skeletonGoVersion,
 	"skeleton/src/build.sh":        skeletonSrcBuildSh,
 	"skeleton/src/cmd/root.go":     skeletonSrcCmdRootGo,
 	"skeleton/src/go.mod":          skeletonSrcGoMod,
@@ -747,6 +769,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"README.md":    &bintree{skeletonReadmeMd, map[string]*bintree{}},
 		"TODO.md":      &bintree{skeletonTodoMd, map[string]*bintree{}},
 		"gitignore":    &bintree{skeletonGitignore, map[string]*bintree{}},
+		"go.version":   &bintree{skeletonGoVersion, map[string]*bintree{}},
 		"src": &bintree{nil, map[string]*bintree{
 			"build.sh": &bintree{skeletonSrcBuildSh, map[string]*bintree{}},
 			"cmd": &bintree{nil, map[string]*bintree{
