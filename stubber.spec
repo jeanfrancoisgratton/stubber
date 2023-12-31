@@ -59,6 +59,9 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Dec 31 2023 RPM Builder <builder@famillegratton.net> 1.52.02-0
+- Misc asset fixes (jean-francois@famillegratton.net)
+
 * Sun Dec 31 2023 RPM Builder <builder@famillegratton.net> 1.52.01-1
 - Release number bump (jean-francois@famillegratton.net)
 - Fixed default GO version to 1.21.5 (jean-francois@famillegratton.net)
