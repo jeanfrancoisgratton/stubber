@@ -2,6 +2,9 @@ package createAssets
 
 import (
 	"fmt"
+	"io/fs"
+	"os"
+	"strings"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -33,6 +36,10 @@ func stubSkeleton(softwarename string) error {
 		}
 		if err = templates.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
+		}
+		if strings.HasSuffix(filename, ".sh") {
+			os.Chmod(filename, fs.FileMode(0755))
+
 		}
 	}
 	return nil
