@@ -59,6 +59,14 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Sun Dec 31 2023 RPM Builder <builder@famillegratton.net> 1.52.01-1
+- Release number bump (jean-francois@famillegratton.net)
+- Fixed default GO version to 1.21.5 (jean-francois@famillegratton.net)
+- Update NEED_FIXES.txt (jean-francois@famillegratton.net)
+- Update NEED_FIXES.txt (jean-francois@famillegratton.net)
+- Fixed assets path (jean-francois@famillegratton.net)
+- Asset fixes (jean-francois@famillegratton.net)
+
 * Fri Dec 29 2023 RPM Builder <builder@famillegratton.net> 1.52.00-0
 - GO and package versions update (jean-francois@famillegratton.net)
 - Automatic commit of package [stubber] release [1.52.00-0].
