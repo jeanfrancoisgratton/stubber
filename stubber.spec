@@ -59,6 +59,11 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 
 %changelog
+* Tue Jan 09 2024 RPM Builder <builder@famillegratton.net> 1.53.00-0
+- Assets fixes (jean-francois@famillegratton.net)
+- Minor version fix, will not re-release for that (jean-
+  francois@famillegratton.net)
+
 * Sun Dec 31 2023 RPM Builder <builder@famillegratton.net> 1.52.02-0
 - Misc asset fixes (jean-francois@famillegratton.net)
 
