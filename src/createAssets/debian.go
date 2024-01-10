@@ -2,6 +2,7 @@ package createAssets
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 	"stubber/helpers"
@@ -36,6 +37,7 @@ func stubDebian(softwarename string) error {
 		if err = templates.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
 			return err
 		}
+		os.Chmod(filepath.Join("__debian", pathloop), os.FileMode(0755))
 	}
 	return nil
 }

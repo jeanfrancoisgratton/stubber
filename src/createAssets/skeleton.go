@@ -25,8 +25,8 @@ func stubSkeleton(softwarename string) error {
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Skeleton"))
-	paths := []string{"FIXME.md", "go.version", "CHANGELOG.md", "LICENSE", "PACKAGING.md", "README.md",
-		"TODO.md", "gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/upgrade_pkgs.sh", "src/cmd/root.go"}
+	paths := []string{"FIXME-TODO.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md", "PACKAGING.md",
+		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/upgrade_pkgs.sh", "src/cmd/root.go"}
 
 	for _, pathloop := range paths {
 		// We have to add a special condition here because source and target filenames differ for gitignore

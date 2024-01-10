@@ -16,7 +16,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.52.02 (2023.12.31)",
+	Version: "1.53.00 (2024.01.09)",
 	Long: `This tools allows you to a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -96,7 +96,7 @@ func init() {
 	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
 
@@ -110,7 +110,7 @@ func init() {
 	updateCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	updateCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "", "Debian package section.")
+	updateCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
 }
