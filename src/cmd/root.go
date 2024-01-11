@@ -16,7 +16,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.53.00 (2024.01.09)",
+	Version: "1.53.01 (2024.01.11)",
 	Long: `This tools allows you to a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
