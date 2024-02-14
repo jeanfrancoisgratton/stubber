@@ -2,7 +2,7 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.53.01
+%define _version 1.54.00
 %define _rel 0
 %define _arch x86_64
 %define _binaryname stubber
@@ -23,7 +23,7 @@ BuildRequires: gcc
 #Obsoletes: vmman1 > 1.140
 
 %description
-Push binary package to NxRM
+Creates a GO software skeleton
 
 %prep
 %autosetup
@@ -42,12 +42,24 @@ strip %{_sourcedir}/%{_binaryname}
 rm -rf $RPM_BUILD_ROOT
 
 %pre
+if getent group devops > /dev/null; then
+  exit 0
+else
+  if getent group 2500; then
+    groupadd devops
+  else
+    groupadd -g 2500 devops
+  fi
+fi
 exit 0
 
 %install
 install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
+cd /opt/bin
+sudo chgrp -R devops .
+sudo chmod 775 /opt/bin/%{_binaryname}
 
 %preun
 

@@ -2,6 +2,7 @@ package createAssets
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
@@ -22,17 +23,26 @@ func stubAlpine(softwarename string) error {
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
 		"{{ DESCRIPTION }}":     helpers.Description,
-		"{{ ARCHITECTURE }}":    arch,
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 		"{{ GO VERSION }}":      helpers.GoVersion,
 	}
 
 	fmt.Printf("Stub: %s\n", helpers.Yellow("Alpine"))
+	paths := []string{"APKBUILD", "Makefile", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
 	//	if err = templates.ProcessEmbeddedAsset(filepath.Join(helpers.RootDir, "apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err == nil {
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "APKBUILD"), filepath.Join("__alpine", "APKBUILD"), placeholders); err == nil {
-		// Alpine's Makefile takes amd64 for arch name, not x86_64
-		arch = "amd64"
-		err = templates.ProcessEmbeddedAsset(filepath.Join("apk", "Makefile"), filepath.Join("__alpine", "Makefile"), placeholders)
+
+	for _, pathloop := range paths {
+		targetFname := ""
+		// target filename is different when dealing with the install scripts (that is, everything except APKBUILD and the Makefile)
+		if pathloop != "APKBUILD" && pathloop != "Makefile" {
+			targetFname = helpers.BinaryName + "." + pathloop
+		} else {
+			targetFname = pathloop
+		}
+		if err = templates.ProcessEmbeddedAsset(filepath.Join("apk", pathloop), filepath.Join("__alpine", targetFname), placeholders); err != nil {
+			return err
+		}
+		os.Chmod(filepath.Join("__alpine", targetFname), os.FileMode(0755))
 	}
-	return err
+	return nil
 }

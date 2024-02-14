@@ -16,7 +16,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.53.01 (2024.01.11)",
+	Version: "1.54.00 (2024.02.14)",
 	Long: `This tools allows you to a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -84,12 +84,11 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.21.6", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.22.0", "Where to put the skeleton dir.")
 
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Arch, "arch", "A", "amd64", "Arch (architecture).")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")

@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ash
 
 cd /opt/bin
 sudo chgrp -R devops .

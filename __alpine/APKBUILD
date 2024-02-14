@@ -1,7 +1,7 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.53.01
+pkgver=1.54.00
 pkgrel=0
 pkgdir=/data/packages
 builddir="$startdir/src/BUILD"
@@ -10,7 +10,7 @@ url="https://github.com/jeanfrancoisgratton/stubber"
 arch=x86_64
 license=GPL2
 depends="gcompat"
-#install="$pkgname.post-install"
+install="$pkgname.pre-install $pkgname.post-install"
 #source="$pkgname-$pkgver-$pkgrel.tar.bz2::http://localhost/$pkgname-$pkgver-$pkgrel.tar.bz2"
 binaryname="stubber"
 

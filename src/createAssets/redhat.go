@@ -10,14 +10,9 @@ import (
 func stubRedHat(softwarename string) error {
 	var err error
 
-	arch := helpers.Arch
-	if arch == "amd64" {
-		arch = "x86_64"
-	}
 	placeholders := map[string]string{
 		"{{ SOFTWARE NAME }}":   softwarename,
 		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    arch,
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
 		"{{ BINARY NAME }}":     helpers.BinaryName,

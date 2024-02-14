@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -12,15 +11,9 @@ import (
 func stubDebian(softwarename string) error {
 	var err error
 
-	// Debian uses amd64, not x86_64
-	arch := strings.ToLower(helpers.Arch)
-	if arch == "x86_64" {
-		arch = "amd64"
-	}
-
 	placeholders := map[string]string{
 		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    arch,
+		"{{ ARCHITECTURE }}":    "amd64",
 		"{{ SOFTWARE NAME }}":   softwarename,
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,

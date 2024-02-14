@@ -17,7 +17,6 @@ func stubSkeleton(softwarename string) error {
 		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
 		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
 		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ ARCHITECTURE }}":    helpers.Arch,
 		"{{ GO MAJOR MINOR }}":  helpers.ExtractMajorMinorVersionString(helpers.GoVersion),
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 		"{{ SECTION }}":         helpers.Section,

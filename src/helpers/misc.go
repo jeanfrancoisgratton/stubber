@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+1.54.00		2024.02.14		Go version bump, arm64 is no longer supported, more post/pre install/upgrade/remove scripts
 1.53.01		2024.01.11		Go version bump, release number bump
 1.53.00		2024.01.09		Misc fixes in assets generation, removed/renamed some files
 1.52.02		2023.12.31		Assets fixes

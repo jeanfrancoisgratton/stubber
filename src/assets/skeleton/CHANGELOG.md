@@ -1,6 +1,6 @@
 | Release  | Date       | Comments             |
 |----------|------------|----------------------|
-| {{ PACKAGE VERSION }}    | 2023.xx.yy | Initial version.     |
+| {{ PACKAGE VERSION }}    | 2024.xx.yy | Initial version.     |
 
 
 
