@@ -71,6 +71,15 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Wed Feb 14 2024 RPM Builder <builder@famillegratton.net>
+- Go version bump, arm64 arch removal, more binary package scripts (jean-
+  francois@famillegratton.net)
+- Fix to upgradeBuildDeps (jean-francois@famillegratton.net)
+- Added FIXME issues, renamed upgrade_pkgs.sh (jean-
+  francois@famillegratton.net)
+- Version bump : forgotten files (jean-francois@famillegratton.net)
+- Go and software version bump (jean-francois@famillegratton.net)
+
 * Tue Jan 09 2024 RPM Builder <builder@famillegratton.net> 1.53.00-0
 - Assets fixes (jean-francois@famillegratton.net)
 - Minor version fix, will not re-release for that (jean-
