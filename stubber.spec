@@ -3,7 +3,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 1.54.01
-%define _rel 0
+%define _rel 1
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -71,6 +71,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
+- Forgot bumping release in deb packaging (builder@famillegratton.net)
+- Ensuring that all binary packages have the same version/release number (jean-
+  francois@famillegratton.net)
+
 * Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
 - Fixes in RPM and APK packaging scripts (jean-francois@famillegratton.net)
 - Removed arch variable as we no longer support arm64 (jean-
