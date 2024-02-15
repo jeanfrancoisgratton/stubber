@@ -16,7 +16,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.54.00 (2024.02.14)",
+	Version: "1.54.01 (2024.02.15)",
 	Long: `This tools allows you to a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -97,7 +97,7 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Github repo URL.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "https://url-not-set/", "Github repo URL.")
 
 	updateCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	updateCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")

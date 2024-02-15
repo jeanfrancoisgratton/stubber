@@ -3,7 +3,7 @@ all:
 	CGO_ENABLED=0 go build . -o ./{{ BINARY NAME }}.exe
 
 prepare:
-	sudo /opt/bin/install_golang.sh {{ GO VERSION }} {{ ARCHITECTURE }}
+	sudo /opt/bin/install_golang.sh {{ GO VERSION }} amd64
 	sudo apk update --no-cache
 
 install:
