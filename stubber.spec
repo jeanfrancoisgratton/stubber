@@ -71,6 +71,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
+- Fixes in RPM and APK packaging scripts (jean-francois@famillegratton.net)
+- Removed arch variable as we no longer support arm64 (jean-
+  francois@famillegratton.net)
+
 * Wed Feb 14 2024 RPM Builder <builder@famillegratton.net>
 - Go version bump, arm64 arch removal, more binary package scripts (jean-
   francois@famillegratton.net)
