@@ -72,6 +72,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 %changelog
 * Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
+- Forgot bumping release in deb packaging (builder@famillegratton.net)
+- Ensuring that all binary packages have the same version/release number (jean-
+  francois@famillegratton.net)
+
+* Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
 - Fixes in RPM and APK packaging scripts (jean-francois@famillegratton.net)
 - Removed arch variable as we no longer support arm64 (jean-
   francois@famillegratton.net)
