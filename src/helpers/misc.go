@@ -17,6 +17,7 @@ func Changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
+1.55.00		2024.02.16		More packaging fixes
 1.54.01		2024.02.15		Fixes in APK and RPM packaging scripts
 1.54.00		2024.02.14		Go version bump, arm64 is no longer supported, more post/pre install/upgrade/remove scripts
 1.53.01		2024.01.11		Go version bump, release number bump

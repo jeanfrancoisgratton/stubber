@@ -1,8 +1,8 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.54.01
-pkgrel=1
+pkgver=1.55.00
+pkgrel=0
 pkgdir=/data/packages
 builddir="$startdir/src/BUILD"
 pkgdesc="Create GOLANG software skeleton"
