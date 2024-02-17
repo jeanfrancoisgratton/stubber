@@ -71,6 +71,10 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Fri Feb 16 2024 RPM Builder <builder@famillegratton.net>
+- Assets update (jean-francois@famillegratton.net)
+- Packaging fixes (jean-francois@famillegratton.net)
+
 * Thu Feb 15 2024 RPM Builder <builder@famillegratton.net>
 - Forgot bumping release in deb packaging (builder@famillegratton.net)
 - Ensuring that all binary packages have the same version/release number (jean-
