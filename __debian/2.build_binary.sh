@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PKGDIR=stubber-1.55.00-0_amd64
+PKGDIR=stubber-1.55.01-0_amd64
 
 mkdir -p ${PKGDIR}/opt/bin ${PKGDIR}/DEBIAN
 for i in control preinst prerm postinst postrm;do
