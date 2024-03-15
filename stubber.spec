@@ -74,6 +74,9 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 * Fri Mar 15 2024 RPM Builder <builder@famillegratton.net>
 - APKBUILD now respects the -u flag (jean-francois@famillegratton.net)
 
+* Fri Mar 15 2024 RPM Builder <builder@famillegratton.net>
+- APKBUILD now respects the -u flag (jean-francois@famillegratton.net)
+
 * Fri Feb 16 2024 RPM Builder <builder@famillegratton.net>
 - Assets update (jean-francois@famillegratton.net)
 - Packaging fixes (jean-francois@famillegratton.net)
