@@ -72,6 +72,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 %changelog
 * Fri Mar 15 2024 RPM Builder <builder@famillegratton.net>
+- Fixed perms on deps script (builder@famillegratton.net)
+- Fixed issue with go mod tidy (builder@famillegratton.net)
+- APKBUILD now respects the -u flag (jean-francois@famillegratton.net)
+
+* Fri Mar 15 2024 RPM Builder <builder@famillegratton.net>
 - APKBUILD now respects the -u flag (jean-francois@famillegratton.net)
 
 * Fri Mar 15 2024 RPM Builder <builder@famillegratton.net>
