@@ -1,0 +1,8 @@
+Package: {{ SOFTWARE NAME }}
+Version: {{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }}
+Architecture: {{ ARCHITECTURE }}
+Maintainer: {{ MAINTAINER }}
+Description: {{ DESCRIPTION }}
+Section: {{ PACKAGE SECTION }}
+Depends: {{ DEPENDENCIES }}
+
