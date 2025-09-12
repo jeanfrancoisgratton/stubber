@@ -81,6 +81,7 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+
 * Wed Jul 09 2025 Binary package builder <builder@famillegratton.net> 1.78.01-1
 - GO version bump (jean-francois@famillegratton.net)
 
