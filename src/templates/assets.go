@@ -26,7 +26,7 @@
 // ../assets/skeleton/gitignore
 // ../assets/skeleton/go.version
 // ../assets/skeleton/src/build.sh
-// ../assets/skeleton/src/checkImports.sh
+// ../assets/skeleton/src/importsCheck.sh
 // ../assets/skeleton/src/cmd/root.go
 // ../assets/skeleton/src/go.mod
 // ../assets/skeleton/src/go.sum
@@ -633,7 +633,7 @@ var _skeletonSrcCheckimportsSh = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xf
 func skeletonSrcCheckimportsShBytes() ([]byte, error) {
 	return bindataRead(
 		_skeletonSrcCheckimportsSh,
-		"skeleton/src/checkImports.sh",
+		"skeleton/src/importsCheck.sh",
 	)
 }
 
@@ -643,7 +643,7 @@ func skeletonSrcCheckimportsSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/checkImports.sh", size: 1174, mode: os.FileMode(420), modTime: time.Unix(1757676663, 0)}
+	info := bindataFileInfo{name: "skeleton/src/importsCheck.sh", size: 1174, mode: os.FileMode(420), modTime: time.Unix(1757676663, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -800,49 +800,51 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"apk/APKBUILD":                                             apkApkbuild,
-	"apk/Makefile":                                             apkMakefile,
-	"apk/post-deinstall":                                       apkPostDeinstall,
-	"apk/post-install":                                         apkPostInstall,
-	"apk/post-upgrade":                                         apkPostUpgrade,
-	"apk/pre-deinstall":                                        apkPreDeinstall,
-	"apk/pre-install":                                          apkPreInstall,
-	"apk/pre-upgrade":                                          apkPreUpgrade,
-	"deb/1.install-build-deps.sh":                              deb1InstallBuildDepsSh,
-	"deb/2.build_binary.sh":                                    deb2Build_binarySh,
-	"deb/3.restore_repo.sh":                                    deb3Restore_repoSh,
-	"deb/control":                                              debControl,
-	"deb/postinst":                                             debPostinst,
-	"deb/postrm":                                               debPostrm,
-	"deb/preinst":                                              debPreinst,
-	"deb/prerm":                                                debPrerm,
-	"rpm/rpmbuild-deps.sh":                                     rpmRpmbuildDepsSh,
-	"rpm/specfile":                                             rpmSpecfile,
+	"apk/APKBUILD":                apkApkbuild,
+	"apk/Makefile":                apkMakefile,
+	"apk/post-deinstall":          apkPostDeinstall,
+	"apk/post-install":            apkPostInstall,
+	"apk/post-upgrade":            apkPostUpgrade,
+	"apk/pre-deinstall":           apkPreDeinstall,
+	"apk/pre-install":             apkPreInstall,
+	"apk/pre-upgrade":             apkPreUpgrade,
+	"deb/1.install-build-deps.sh": deb1InstallBuildDepsSh,
+	"deb/2.build_binary.sh":       deb2Build_binarySh,
+	"deb/3.restore_repo.sh":       deb3Restore_repoSh,
+	"deb/control":                 debControl,
+	"deb/postinst":                debPostinst,
+	"deb/postrm":                  debPostrm,
+	"deb/preinst":                 debPreinst,
+	"deb/prerm":                   debPrerm,
+	"rpm/rpmbuild-deps.sh":        rpmRpmbuildDepsSh,
+	"rpm/specfile":                rpmSpecfile,
 	"skeleton/.github/workflows/publish_release.yaml.disabled": skeletonGithubWorkflowsPublish_releaseYamlDisabled,
-	"skeleton/CHANGELOG.md":                                    skeletonChangelogMd,
-	"skeleton/ISSUES.md":                                       skeletonIssuesMd,
-	"skeleton/LICENSE":                                         skeletonLicense,
-	"skeleton/README.md":                                       skeletonReadmeMd,
-	"skeleton/gitignore":                                       skeletonGitignore,
-	"skeleton/go.version":                                      skeletonGoVersion,
-	"skeleton/src/build.sh":                                    skeletonSrcBuildSh,
-	"skeleton/src/checkImports.sh":                             skeletonSrcCheckimportsSh,
-	"skeleton/src/cmd/root.go":                                 skeletonSrcCmdRootGo,
-	"skeleton/src/go.mod":                                      skeletonSrcGoMod,
-	"skeleton/src/go.sum":                                      skeletonSrcGoSum,
-	"skeleton/src/main.go":                                     skeletonSrcMainGo,
-	"skeleton/src/updateBuildDeps.sh":                          skeletonSrcUpdatebuilddepsSh,
+	"skeleton/CHANGELOG.md":           skeletonChangelogMd,
+	"skeleton/ISSUES.md":              skeletonIssuesMd,
+	"skeleton/LICENSE":                skeletonLicense,
+	"skeleton/README.md":              skeletonReadmeMd,
+	"skeleton/gitignore":              skeletonGitignore,
+	"skeleton/go.version":             skeletonGoVersion,
+	"skeleton/src/build.sh":           skeletonSrcBuildSh,
+	"skeleton/src/importsCheck.sh":    skeletonSrcCheckimportsSh,
+	"skeleton/src/cmd/root.go":        skeletonSrcCmdRootGo,
+	"skeleton/src/go.mod":             skeletonSrcGoMod,
+	"skeleton/src/go.sum":             skeletonSrcGoSum,
+	"skeleton/src/main.go":            skeletonSrcMainGo,
+	"skeleton/src/updateBuildDeps.sh": skeletonSrcUpdatebuilddepsSh,
 }
 
 // AssetDir returns the file names below a certain
 // directory embedded in the file by go-bindata.
 // For example if you run go-bindata on data/... and data contains the
 // following hierarchy:
-//     data/
-//       foo.txt
-//       img/
-//         a.png
-//         b.png
+//
+//	data/
+//	  foo.txt
+//	  img/
+//	    a.png
+//	    b.png
+//
 // then AssetDir("data") would return []string{"foo.txt", "img"}
 // AssetDir("data/img") would return []string{"a.png", "b.png"}
 // AssetDir("foo.txt") and AssetDir("notexist") would return an error
@@ -913,7 +915,7 @@ var _bintree = &bintree{nil, map[string]*bintree{
 		"go.version":   &bintree{skeletonGoVersion, map[string]*bintree{}},
 		"src": &bintree{nil, map[string]*bintree{
 			"build.sh":        &bintree{skeletonSrcBuildSh, map[string]*bintree{}},
-			"checkImports.sh": &bintree{skeletonSrcCheckimportsSh, map[string]*bintree{}},
+			"importsCheck.sh": &bintree{skeletonSrcCheckimportsSh, map[string]*bintree{}},
 			"cmd": &bintree{nil, map[string]*bintree{
 				"root.go": &bintree{skeletonSrcCmdRootGo, map[string]*bintree{}},
 			}},

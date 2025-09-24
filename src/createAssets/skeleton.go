@@ -27,7 +27,7 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 
 	fmt.Printf("Stub: %s\n", hf.Yellow("Skeleton"))
 	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
-		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/checkImports.sh", "src/cmd/root.go",
+		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/importsCheck.sh", "src/cmd/root.go",
 		/*".github/workflows/publish_release.yaml.disabled"*/}
 
 	for _, pathloop := range paths {

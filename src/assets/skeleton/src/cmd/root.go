@@ -14,8 +14,8 @@ var rootCmd = &cobra.Command{
 	Use:     "{{ SOFTWARE NAME }}",
 	Short:   "Add a short description here",
 	Version: "{{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }} ({{ RELEASE DATE }})",
-	Long: `This tools allows you to a software directory structure.
-This follows my template and allows you with minimal effort to package your software once built`,
+	Long: `This tools allows you to create a software directory structure.
+This follows my template and allows you to package your software with minimal effort once built`,
 }
 
 // Shows changelog
