@@ -81,6 +81,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Wed Sep 24 2025 Binary package builder <builder@famillegratton.net> 1.80.01-0
+- Package version bump (builder@famillegratton.net)
+- renamed the import checker script (jean-francois@famillegratton.net)
+- gitignore fix (jean-francois@famillegratton.net)
+
 
 * Wed Jul 09 2025 Binary package builder <builder@famillegratton.net> 1.78.01-1
 - GO version bump (jean-francois@famillegratton.net)
