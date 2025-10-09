@@ -4,8 +4,8 @@ package templates
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"strings"
@@ -21,7 +21,7 @@ func replacePlaceholders(line, placeholder, value string) string {
 func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]string) *cerr.CustomError {
 	//var err error
 	if !helpers.Quiet {
-		fmt.Printf("File: %s -> %s ... ", hf.White(inputPath), hf.White(outputPath))
+		fmt.Printf("File: %s -> %s ... ", hftx.White(inputPath), hftx.White(outputPath))
 	}
 
 	// Read the embedded input file
@@ -59,7 +59,7 @@ func ProcessEmbeddedAsset(inputPath, outputPath string, placeholders map[string]
 	}
 
 	if !helpers.Quiet {
-		fmt.Printf("%s\n", hf.Green("done"))
+		fmt.Printf("%s\n", hftx.Green("done"))
 	}
 	return nil
 }

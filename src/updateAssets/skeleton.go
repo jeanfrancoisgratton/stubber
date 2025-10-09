@@ -2,7 +2,7 @@ package updateAssets
 
 import (
 	"fmt"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
@@ -17,7 +17,7 @@ func updateSkeleton2() error {
 		"{{ GO VERSION }}": helpers.GoVersion,
 	}
 
-	fmt.Printf("Stub: %s\n", hf.Yellow("Skeleton"))
+	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
 	// This for..loop seems like overkill, but I plan on further, potential file modifications, so here we are...
 	paths := []string{"go.version"}
 

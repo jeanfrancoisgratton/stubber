@@ -2,8 +2,8 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
@@ -31,7 +31,7 @@ func stubAlpine(softwarename string) *cerr.CustomError {
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
 
-	fmt.Printf("Stub: %s\n", hf.Yellow("Alpine"))
+	fmt.Printf("Stub: %s\n", hftx.Yellow("Alpine"))
 	paths := []string{"APKBUILD", "Makefile", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
 
 	for _, pathloop := range paths {
