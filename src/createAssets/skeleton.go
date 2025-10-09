@@ -8,8 +8,8 @@ import (
 	"stubber/helpers"
 	"stubber/templates"
 
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 )
 
 func stubSkeleton(softwarename string) *cerr.CustomError {
@@ -25,7 +25,7 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
 
-	fmt.Printf("Stub: %s\n", hf.Yellow("Skeleton"))
+	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
 	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
 		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/_importCheck.sh", "src/cmd/root.go",
 		/*".github/workflows/publish_release.yaml.disabled"*/}

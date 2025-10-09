@@ -5,7 +5,7 @@
 
 package createAssets
 
-import cerr "github.com/jeanfrancoisgratton/customError"
+import cerr "github.com/jeanfrancoisgratton/customError/v3"
 
 func UpdateVersion() *cerr.CustomError {
 	return &cerr.CustomError{Fatality: cerr.Undefined, Title: "Not implemented", Message: "UpdateVersion() is not yet implemented.", Code: -2}

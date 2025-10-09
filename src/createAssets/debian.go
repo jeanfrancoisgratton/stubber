@@ -2,8 +2,8 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
@@ -27,7 +27,7 @@ func stubDebian(softwarename string) *cerr.CustomError {
 	}
 	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control", "preinst", "prerm", "postinst", "postrm"}
 
-	fmt.Printf("Stub: %s\n", hf.Yellow("Debian"))
+	fmt.Printf("Stub: %s\n", hftx.Yellow("Debian"))
 	for _, pathloop := range paths {
 		if err := templates.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
 			return err

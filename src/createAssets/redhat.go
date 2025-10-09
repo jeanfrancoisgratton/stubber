@@ -2,8 +2,8 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
@@ -38,7 +38,7 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 			return err
 		}
 	}
-	fmt.Printf("Stub: %s\n", hf.Yellow("RedHat"))
+	fmt.Printf("Stub: %s\n", hftx.Yellow("RedHat"))
 	if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "specfile"), softwarename+".spec", placeholders); err == nil {
 		err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "rpmbuild-deps.sh"), "rpmbuild-deps.sh", placeholders)
 	}

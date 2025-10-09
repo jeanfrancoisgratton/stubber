@@ -6,8 +6,8 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
@@ -45,7 +45,7 @@ func CreateStub(softname string) *cerr.CustomError {
 		return &cerr.CustomError{Title: "Unable to mkdir", Message: err.Error()}
 	}
 
-	fmt.Printf("Creating stub for software %s in %s\n", hf.Green(softname), hf.Green(helpers.RootDir))
+	fmt.Printf("Creating stub for software %s in %s\n", hftx.Green(softname), hftx.Green(helpers.RootDir))
 
 	// Alpine ( -a )
 	if helpers.AlpineStub {

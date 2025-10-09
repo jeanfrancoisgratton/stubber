@@ -2,7 +2,7 @@ package updateAssets
 
 import (
 	"fmt"
-	hf "github.com/jeanfrancoisgratton/helperFunctions"
+	hf "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"path/filepath"
 	"strings"
 	"stubber/helpers"
