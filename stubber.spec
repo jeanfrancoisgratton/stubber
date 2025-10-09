@@ -81,6 +81,10 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.80.03-0
+- Package version number bump (builder@famillegratton.net)
+- updated GO and builddeps (jean-francois@famillegratton.net)
+
 * Wed Sep 24 2025 Binary package builder <builder@famillegratton.net> 1.80.02-0
 - Fix attempt #3 on checkImports (jean-francois@famillegratton.net)
 
