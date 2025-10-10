@@ -81,6 +81,9 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.81.01-0
+- Fixed missing completion file in assets/ (jean-francois@famillegratton.net)
+
 * Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.81.00-0
 - added shell completion feature (jean-francois@famillegratton.net)
 
