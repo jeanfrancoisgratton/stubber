@@ -81,6 +81,9 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.81.00-0
+- added shell completion feature (jean-francois@famillegratton.net)
+
 * Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.80.03-0
 - Package version number bump (builder@famillegratton.net)
 - updated GO and builddeps (jean-francois@famillegratton.net)
