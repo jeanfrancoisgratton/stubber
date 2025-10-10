@@ -18,16 +18,16 @@ var completionCmd = &cobra.Command{
 	Long: `Generate completion scripts for your shell.
 
 Bash:
-  $ source <(dvol completion bash)
+  $ source <(stubber completion bash)
   # To persist:
-  $ dvol completion bash | sudo tee /etc/bash_completion.d/dvol > /dev/null
+  $ stubber completion bash | sudo tee /etc/bash_completion.d/stubber > /dev/null
 
 Zsh:
-  $ dvol completion zsh > ~/.zsh/_dvol
+  $ stubber completion zsh > ~/.zsh/stubber
   $ echo 'fpath=($HOME/.zsh $fpath)' >> ~/.zshrc
   $ echo 'autoload -Uz compinit && compinit' >> ~/.zshrc
   # Or, for current session:
-  $ source <(dvol completion zsh)
+  $ source <(stubber completion zsh)
 `,
 }
 

@@ -1,7 +1,7 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.81.01
+pkgver=1.81.02
 pkgrel=0
 pkgdir=/data/packages
 builddir="$startdir/src/BUILD"

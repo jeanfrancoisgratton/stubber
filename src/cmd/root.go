@@ -17,7 +17,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.81.01 (2025.10.08)",
+	Version: "1.81.02 (2025.10.08)",
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -124,7 +124,7 @@ func changelog() {
 	fmt.Print(`
 VERSION		DATE			COMMENT
 -------		----			-------
-1.81.01		2025.10.09		GO version bump, upgraded customError and helperFunctions, enabled shell completion
+1.81.02		2025.10.09		GO version bump, upgraded customError and helperFunctions, enabled shell completion
 1.80.02		2025.09.23		Renamed the imports checker script
 1.80.00		2025.09.12		GO version bump, added a new cyclic imports check script in src/
 1.78.01		2025.07.09		fixed typo in CHANGELOG.md var placeholder. GO version bump
