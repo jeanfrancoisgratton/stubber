@@ -1,5 +1,5 @@
 Package: stubber
-Version: 1.83.00-0
+Version: 1.84.00-0
 Architecture: amd64
 Maintainer: J.F.Gratton <nexus@famillegratton.net>
 Description: Tool to create the GO software directory structure

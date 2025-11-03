@@ -2,12 +2,13 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
+
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 )
 
 func stubAlpine(softwarename string) *cerr.CustomError {
@@ -32,12 +33,12 @@ func stubAlpine(softwarename string) *cerr.CustomError {
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Alpine"))
-	paths := []string{"APKBUILD", "Makefile", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
+	paths := []string{"APKBUILD", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
 
 	for _, pathloop := range paths {
 		targetFname := ""
 		// target filename is different when dealing with the install scripts (that is, everything except APKBUILD and the Makefile)
-		if pathloop != "APKBUILD" && pathloop != "Makefile" {
+		if pathloop != "APKBUILD" {
 			targetFname = helpers.BinaryName + "." + pathloop
 		} else {
 			targetFname = pathloop

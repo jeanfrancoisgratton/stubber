@@ -1,18 +1,24 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.83.00
+pkgver=1.84.00
 pkgrel=0
 pkgdir=/data/packages
-builddir="$startdir/src/BUILD"
 pkgdesc="Create GOLANG software skeleton"
 url="https://github.com/jeanfrancoisgratton/stubber"
 arch=x86_64
 license=GPL2
 #depends="gcompat"
+makedepends="go"
 install="$pkgname.pre-install $pkgname.post-install"
 #source="$pkgname-$pkgver-$pkgrel.tar.bz2::http://localhost/$pkgname-$pkgver-$pkgrel.tar.bz2"
+builddir="$startdir/src/BUILD"
 binaryname="stubber"
+
+prepare() {
+	mkdir -p "$builddir"
+	cp -R "$startdir"/../src/* "$builddir"/
+}
 
 build() {
 	pwd
