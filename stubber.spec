@@ -79,6 +79,10 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Mon Nov 03 2025 Binary package builder <builder@famillegratton.net> 1.83.00-0
+- Removed gcompat dependency (builder@famillegratton.net)
+- Removed gcompat from link chain (jean-francois@famillegratton.net)
+
 * Sun Nov 02 2025 Binary package builder <builder@famillegratton.net> 1.82.00-0
 - removed mentions of strip, tuned the build process in Alpine (jean-
   francois@famillegratton.net)
