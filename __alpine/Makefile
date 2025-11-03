@@ -1,6 +1,6 @@
 all: 
 	cd ../src
-	CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" . -o ./stubber.exe
+	CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -linkmode=internal -buildid=" . -o ./stubber.exe
 
 prepare:
 	sudo /opt/bin/install_golang.sh 1.25.3 amd64

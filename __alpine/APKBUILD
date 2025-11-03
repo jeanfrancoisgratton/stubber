@@ -1,7 +1,7 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.82.00
+pkgver=1.83.00
 pkgrel=0
 pkgdir=/data/packages
 builddir="$startdir/src/BUILD"
@@ -26,7 +26,7 @@ build() {
     go generate
     cd ..
     echo "Building binary..."
-    CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o "$binaryname".exe .
+    CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -linkmode=internal -buildid=" -o "$binaryname".exe .
 }
 
 package() {

@@ -1,6 +1,6 @@
 all: 
 	cd ../src
-	CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" . -o ./{{ BINARY NAME }}.exe
+	CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -linkmode=internal -buildid=" . -o ./{{ BINARY NAME }}.exe
 
 prepare:
 	sudo /opt/bin/install_golang.sh {{ GO VERSION }} amd64
