@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PKGDIR=stubber-1.81.02-0_amd64
+PKGDIR=stubber-1.82.00-0_amd64
 
 mkdir -p ${PKGDIR}/opt/bin ${PKGDIR}/DEBIAN
 for i in control preinst prerm postinst postrm;do
@@ -16,8 +16,7 @@ echo "Generating assets"
 go generate
 echo "Building binary"
 cd ..
-CGO_ENABLED=0 go build -o ../__debian/${PKGDIR}/opt/bin/stubber .
-strip ../__debian/${PKGDIR}/opt/bin/stubber
+CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o ../__debian/${PKGDIR}/opt/bin/stubber .
 sudo chown 0:0 ../__debian/${PKGDIR}/opt/bin/stubber
 
 echo "Software built. Now packaging..."

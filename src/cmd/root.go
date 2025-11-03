@@ -86,7 +86,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.25.2", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.25.3", "Where to put the skeleton dir.")
 
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")

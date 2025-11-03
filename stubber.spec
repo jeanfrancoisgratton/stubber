@@ -12,7 +12,7 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.81.02
+%define _version 1.82.00
 %define _rel 0
 #%define _arch x86_64
 %define _binaryname stubber
@@ -44,9 +44,7 @@ rm -f assets.go
 sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
 sudo /opt/go/bin/go generate
 cd ..
-CGO_ENABLED=0 /opt/go/bin/go build -o %{_sourcedir}/%{_binaryname} .
-strip %{_sourcedir}/%{_binaryname}
-
+CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_sourcedir}/%{_binaryname} .
 
 %clean
 rm -rf $RPM_BUILD_ROOT

@@ -61,4 +61,4 @@ go generate && cd ..
 echo "Building binary..."
 
 echo "Building ${OUTPUT}/${FULLNAME}"
-CGO_ENABLED=0 go build -o ${OUTPUT}/${FULLNAME} .
+CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o ${OUTPUT}/${FULLNAME} .
