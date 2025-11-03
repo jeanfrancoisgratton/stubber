@@ -79,6 +79,11 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 
 %changelog
+* Sun Nov 02 2025 Binary package builder <builder@famillegratton.net> 1.82.00-0
+- removed mentions of strip, tuned the build process in Alpine (jean-
+  francois@famillegratton.net)
+- stripping binaries at build-time (jean-francois@famillegratton.net)
+
 * Thu Oct 09 2025 Binary package builder <builder@famillegratton.net> 1.81.02-0
 - Fixed wrong program name in completion subcommand (jean-
   francois@famillegratton.net)
