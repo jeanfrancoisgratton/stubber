@@ -46,8 +46,6 @@ PATH=$PATH:/opt/go/bin CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-exit 0
-
 %install
 install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
@@ -58,7 +56,7 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 %postun
 
 %files
-%defattr(-,root,root,-)
+%defattr(0755,root,root,-)
 %{_bindir}/%{_binaryname}
 
 
