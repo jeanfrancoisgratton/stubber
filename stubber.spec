@@ -53,18 +53,19 @@ rm -rf $RPM_BUILD_ROOT
 if getent group devops > /dev/null; then
   exit 0
 else
-  if getent group 2500; then
+  if getent group 2500 > /dev/null; then
     groupadd devops
   else
     groupadd -g 2500 devops
   fi
 fi
-exit 0
 
 %install
 install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
+chgrp devops %{_bindir}/%{_binaryname} || :
+chmod 0775 %{_bindir}/%{_binaryname} || :
 
 %preun
 
@@ -72,15 +73,9 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 %files
 %defattr(-,root,root,-)
-%attr(-,root,devops,-) %{_prefix}/bin/%{_binaryname}
+%attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
-* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-0
-- Completed build script cleanup both in core and assets (jean-
-  francois@famillegratton.net)
-- asset specfile cleanup (jean-francois@famillegratton.net)
-- version bump completed (jean-francois@famillegratton.net)
-
 * Mon Nov 03 2025 Binary package builder <builder@famillegratton.net> 1.84.00-0
 - resynched APKBUILD (builder@famillegratton.net)
 - Completed removal of PIE-linking on Alpine (jean-francois@famillegratton.net)
