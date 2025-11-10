@@ -72,9 +72,17 @@ install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryn
 
 %files
 %defattr(-,root,root,-)
-%attr(0775,root,devops,-) %{_prefix}/bin/%{_binaryname}
+%attr(-,root,devops,-) %{_prefix}/bin/%{_binaryname}
 
 %changelog
+* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-0
+- Automatic commit of package [stubber] release [1.90.00-0].
+  (builder@famillegratton.net)
+- Completed build script cleanup both in core and assets (jean-
+  francois@famillegratton.net)
+- asset specfile cleanup (jean-francois@famillegratton.net)
+- version bump completed (jean-francois@famillegratton.net)
+
 * Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-0
 - Completed build script cleanup both in core and assets (jean-
   francois@famillegratton.net)
