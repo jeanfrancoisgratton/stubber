@@ -12,7 +12,7 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.84.00
+%define _version 1.90.00
 %define _rel 0
 #%define _arch x86_64
 %define _binaryname stubber
@@ -65,9 +65,6 @@ exit 0
 install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
-cd /opt/bin
-sudo chgrp -R devops .
-sudo chmod 775 /opt/bin/%{_binaryname}
 
 %preun
 
@@ -75,8 +72,7 @@ sudo chmod 775 /opt/bin/%{_binaryname}
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/%{_binaryname}
-
+%attr(0775,root,devops,-) %{_prefix}/bin/%{_binaryname}
 
 %changelog
 * Mon Nov 03 2025 Binary package builder <builder@famillegratton.net> 1.84.00-0
