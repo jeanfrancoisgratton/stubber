@@ -13,7 +13,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 1.90.00
-%define _rel 0
+%define _rel 1
 #%define _arch x86_64
 %define _binaryname stubber
 
@@ -76,6 +76,9 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-1
+- dependencies cleanup (builder@famillegratton.net)
+
 * Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-0
 - reverted tito tag (builder@famillegratton.net)
 - more specfile fixes (jean-francois@famillegratton.net)
