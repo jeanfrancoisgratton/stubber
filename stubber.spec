@@ -76,6 +76,19 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-0
+- reverted tito tag (builder@famillegratton.net)
+- more specfile fixes (jean-francois@famillegratton.net)
+- specfile changelog cleanup (builder@famillegratton.net)
+- Automatic commit of package [stubber] release [1.90.00-0].
+  (builder@famillegratton.net)
+- Automatic commit of package [stubber] release [1.90.00-0].
+  (builder@famillegratton.net)
+- Completed build script cleanup both in core and assets (jean-
+  francois@famillegratton.net)
+- asset specfile cleanup (jean-francois@famillegratton.net)
+- version bump completed (jean-francois@famillegratton.net)
+
 * Mon Nov 03 2025 Binary package builder <builder@famillegratton.net> 1.84.00-0
 - resynched APKBUILD (builder@famillegratton.net)
 - Completed removal of PIE-linking on Alpine (jean-francois@famillegratton.net)
