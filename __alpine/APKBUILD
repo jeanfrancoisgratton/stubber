@@ -2,7 +2,7 @@
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
 pkgver=1.90.01
-pkgrel=0
+pkgrel=1
 pkgdir=/data/packages
 pkgdesc="Create GOLANG software skeleton"
 url="https://github.com/jeanfrancoisgratton/stubber"
@@ -23,6 +23,13 @@ prepare() {
 
 build() {
 	cd "$builddir"
+
+    echo "Creating assets generator..."
+    GOBIN=$HOME/bin go install -a github.com/go-bindata/go-bindata/...@latest
+    cd templates && rm -f assets.go
+    echo "Generating assets..."
+    go generate
+    cd ..
 
 	# Ensure no global PIE flags leak in
 	unset GOFLAGS
