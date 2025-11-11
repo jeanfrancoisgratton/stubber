@@ -12,8 +12,8 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.90.00
-%define _rel 1
+%define _version 1.90.01
+%define _rel 0
 #%define _arch x86_64
 %define _binaryname stubber
 
@@ -41,8 +41,10 @@ Creates a GO software skeleton
 %build
 cd %{_sourcedir}/%{_name}-%{_version}/src/templates
 rm -f assets.go
-sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-sudo /opt/go/bin/go generate
+GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
+#sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
+/opt/go/bin/go generate
+#sudo /opt/go/bin/go generate
 cd ..
 CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_sourcedir}/%{_binaryname} .
 

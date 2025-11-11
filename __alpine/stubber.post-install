@@ -1,6 +1,6 @@
 #!/usr/bin/env ash
 
 cd /opt/bin
-sudo chgrp -R devops .
-sudo chmod 775 /opt/bin/stubber
+chgrp -R devops .
+chmod 775 /opt/bin/stubber
 

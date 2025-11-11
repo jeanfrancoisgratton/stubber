@@ -1,7 +1,7 @@
 #!/usr/bin/env ash
 
 cd /opt/bin
-sudo chgrp -R devops .
-sudo chmod 775 /opt/bin/{{ BINARY NAME }}
+chgrp -R devops .
+chmod 775 /opt/bin/{{ BINARY NAME }}
 
 exit 0
