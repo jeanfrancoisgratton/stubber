@@ -76,6 +76,14 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.01-0
+- Re-instated sudo for go-bindata and go generate (builder@famillegratton.net)
+- Automatic commit of package [stubber] release [1.90.01-0].
+  (builder@famillegratton.net)
+- Cleaned build scripts up (jean-francois@famillegratton.net)
+- Fix missing dependency in build script (builder@famillegratton.net)
+- builddeps update (builder@famillegratton.net)
+
 * Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-1
 - dependencies cleanup (builder@famillegratton.net)
 
