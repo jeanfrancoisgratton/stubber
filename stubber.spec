@@ -41,10 +41,8 @@ Creates a GO software skeleton
 %build
 cd %{_sourcedir}/%{_name}-%{_version}/src/templates
 rm -f assets.go
-GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-#sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-/opt/go/bin/go generate
-#sudo /opt/go/bin/go generate
+sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
+sudo /opt/go/bin/go generate
 cd ..
 CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_sourcedir}/%{_binaryname} .
 
@@ -78,11 +76,6 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
-* Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.01-0
-- Cleaned build scripts up (jean-francois@famillegratton.net)
-- Fix missing dependency in build script (builder@famillegratton.net)
-- builddeps update (builder@famillegratton.net)
-
 * Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.00-1
 - dependencies cleanup (builder@famillegratton.net)
 
