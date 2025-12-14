@@ -76,6 +76,18 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Sun Dec 14 2025 Binary package builder <builder@famillegratton.net> 1.91.00-0
+- Fixed wrong release number (builder@famillegratton.net)
+- Updated build dependencies (builder@famillegratton.net)
+- Fixed go dep installation script (builder@famillegratton.net)
+- GO version bump, removed environment vars from build() step in APKBUILD
+  (jean-francois@famillegratton.net)
+- added assets to repo (builder@famillegratton.net)
+- Added a dependency script (jean-francois@famillegratton.net)
+- tab indentation fix (jean-francois@famillegratton.net)
+- Re-instated removed asset generation snippet (jean-
+  francois@famillegratton.net)
+
 * Mon Nov 10 2025 Binary package builder <builder@famillegratton.net> 1.90.01-0
 - Re-instated sudo for go-bindata and go generate (builder@famillegratton.net)
 - Automatic commit of package [stubber] release [1.90.01-0].
