@@ -1,7 +1,7 @@
 # Maintainer: Jean-Francois Gratton <jean-francois@famillegratton.net>
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
-pkgver=1.90.01
+pkgver=1.91.00
 pkgrel=1
 pkgdir=/data/packages
 pkgdesc="Create GOLANG software skeleton"
@@ -28,13 +28,6 @@ build() {
     echo "Generating assets..."
     go generate
     cd ..
-
-    # Ensure no global PIE flags leak in
-    unset GOFLAGS
-    export GOENV=off
-    export CGO_ENABLED=0
-    export GOOS=linux GOARCH=amd64
-    export GO111MODULE=on
 
     go env | egrep 'GOFLAGS|CGO_ENABLED|GOOS|GOARCH' || true
 

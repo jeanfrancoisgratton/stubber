@@ -108,7 +108,7 @@ func (fi bindataFileInfo) Sys() interface{} {
 	return nil
 }
 
-var _apkApkbuild = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x84\x93\x5f\x6f\xda\x3c\x14\xc6\xaf\xf1\xa7\x38\x32\x48\x7d\xdf\xa9\x26\x6b\xd5\x76\x13\x92\x2f\x52\x48\x59\x34\xfe\x29\xb4\x9d\x76\x55\x99\xe4\x34\x58\x18\x3b\x72\x9c\xae\x1b\xf0\xdd\xa7\x24\x04\xe8\x56\x69\x57\x51\x9e\xe7\x9c\x9f\xed\xe7\xd8\x6d\x18\x0b\xa9\x9d\x90\x1a\x6d\x0f\x36\x1b\x18\xfb\xe1\xe4\xde\x0f\x27\x41\x04\xbb\x1d\x69\xc3\x4c\xc4\x2b\x91\xee\xcd\x99\xdf\xff\xea\x0f\x6b\x2b\x5b\xa5\x5a\xac\x91\x6f\x36\x30\x9f\xde\xdd\x7f\xf3\xa3\x00\x26\xfe\x38\xd8\x7b\x2f\x68\xf9\xb1\x03\x1e\x83\x68\x1e\x4e\x27\x7b\xd3\xa2\x3a\x35\xa3\x60\x14\xf8\xf3\xa6\x33\x91\x96\x7b\x89\x70\xc2\xcb\xea\xb5\xf3\x4a\xc5\x3c\xe6\x74\xb3\x81\x41\x30\xef\x47\xe1\xec\xbe\xa6\x51\x52\x58\x55\xe9\x0f\xd1\xa8\xfa\x17\x36\x5e\xf2\xd7\xcf\x37\x4f\x37\x57\x44\xc9\x18\x75\x8e\x7c\x38\x1b\x5d\x92\x76\x82\x19\xea\x24\xe7\x34\x8d\xcd\x3a\x13\x8e\x12\xa9\x73\x27\x94\xe2\xb4\xb3\x3f\x4d\x37\xb3\xc8\xf6\x2a\x1c\x45\x93\xbb\x77\x54\x8b\xac\xc8\x52\x2b\x12\xfc\xa3\xf4\x6f\xd5\x22\x4b\xf0\x7d\xee\x41\xa7\xa4\x9d\x9b\xc2\xc6\x78\xdc\x0e\xeb\xd4\x49\x56\x5f\x8b\xaa\xeb\x84\xed\x2e\x7e\x5d\xf6\x7a\x4b\xe7\xb2\x9e\xe7\x29\x13\x0b\xb5\x34\xb9\xf3\xfe\xd5\x42\xc9\xa2\x90\x2a\x29\xc3\xa5\x9d\xdc\x09\xeb\x12\x69\xbd\xdc\xc6\xde\xed\x43\x38\x1a\x50\x42\x16\x52\x0b\xfb\xb3\x99\xe9\x6d\x38\xf1\xa3\xef\x87\x89\x92\xcc\x62\x26\x2c\xfe\xf7\x3f\x6c\x48\x6b\xbd\x4a\xa4\x05\x96\x01\xed\x34\x54\x4a\x5a\x71\x06\x2c\x82\x23\x9d\x7a\xdd\x6e\xb5\xc2\x87\xd3\x3a\x8f\xec\x48\xbd\x97\x9a\x15\x27\x6f\x28\xa4\xd5\x86\x40\xe7\x85\x45\xd0\x06\x52\x65\x16\x42\xc1\x2c\x0c\xe0\x59\x89\x34\x07\x85\x62\x05\x52\x93\x56\xa1\x73\x74\x30\x9c\xde\x8d\xfc\xe1\x9c\xb4\xf0\x35\x33\xb6\xfc\x0f\x26\x8f\xdc\x3c\x3f\x1f\x94\xfe\x70\xfa\x14\x4c\xfc\xdb\x51\x30\xe0\x1f\x4f\xea\xa6\x73\xae\xa4\x2e\x5e\x61\x38\xf5\xa3\xfe\x17\x2e\xd6\xc9\xcd\xd5\x89\x7f\x71\x71\x31\x9e\x0e\x1e\x46\x01\x37\x9a\x90\x56\x6a\x00\xf5\x0b\x6c\x01\x53\x8b\x19\x9c\xed\x17\xde\x9e\xe0\xb7\x25\x74\x5b\xe3\xce\x60\xbb\x05\x67\x0b\xac\xce\x33\x77\xc2\xc9\xf8\x1c\xb4\xd1\x6c\x16\x06\xe7\x20\xb5\x43\xab\x85\x02\x25\xf5\x0a\x6d\x85\xaf\x22\x00\xe6\xac\x2c\xef\xe6\x12\x98\x4a\xaa\x23\x73\xca\x72\x60\x3f\x80\x55\x05\x32\xe1\xc0\xca\xae\xb5\x49\x90\x37\x1c\x0a\xcc\x94\x29\x1e\x26\x48\xa1\x5b\xc6\xbc\x7f\x40\x75\xd0\xcd\xf5\x63\x65\xe0\xf5\x3b\xa3\x9e\xc9\x9c\xb7\x28\xf3\x3c\xb8\xeb\x4f\xd7\xd7\x27\x13\xf1\xde\x50\x9b\xc6\xa6\xef\x8d\x4b\x76\xbf\x03\x00\x00\xff\xff\xa3\x5d\xbe\x28\x4e\x04\x00\x00")
+var _apkApkbuild = []byte("\x1f\x8b\x08\x00\x00\x00\x00\x00\x00\xff\x84\x52\x5d\x6b\xdb\x30\x14\x7d\x8e\x7e\xc5\x45\x09\x74\x1b\x55\x0c\x65\xed\x46\xc0\x0f\x6e\xea\x7a\x66\x69\x1c\xec\x76\x63\x4f\x45\xb1\x34\x47\x44\x91\xc5\xb5\xd2\x7d\x38\xf9\xef\x23\xfe\x68\xd2\xad\xb0\x27\xe3\x73\x74\xce\xbd\xe7\xde\x3b\x84\x3b\xae\x8c\xe3\xca\x48\x9c\x40\x5d\xc3\x5d\x10\xcf\xef\x83\x78\x1e\xa6\xb0\xdf\x93\x21\x2c\x78\xbe\xe6\x45\x47\x2e\x82\xe9\xe7\x20\x6a\x29\xbb\x2e\x0c\xdf\x48\xbf\xae\x21\x4b\x6e\xef\xbf\x06\x69\x08\xf3\xe0\x2e\xec\xb8\x27\x89\xfe\x51\x01\x5f\xc2\x34\x8b\x93\x79\x47\xa2\xd4\xa7\x64\x1a\xce\xc2\x20\xeb\x95\x42\xa1\xef\x09\xee\xb8\x67\xdb\xda\x55\x83\xca\x2a\xf7\x69\x5d\xc3\x4d\x98\x4d\xd3\x78\x71\xdf\xba\x51\xb2\x45\xdd\xe0\x0f\xe9\xac\xf9\xe7\x98\xaf\xfc\x9f\x1f\xaf\x1e\xaf\xde\x13\xad\x72\x69\x2a\xe9\x47\x8b\xd9\x05\x19\x0a\x69\xa5\x11\x95\x4f\x8b\xbc\xdc\x58\xee\x28\x51\xa6\x72\x5c\x6b\x9f\x8e\xba\x34\x63\x8b\x92\x75\x28\x1c\xc1\xb2\x72\xaf\xa0\x28\xd9\xd6\x16\xc8\x85\xfc\xeb\xe9\xbf\x28\x4a\x26\xe4\xeb\xbe\xcf\x38\x25\xc3\xaa\xdc\x62\x2e\x8f\xed\xb0\x51\x3b\xc9\xe6\x8b\x52\x8f\x1d\xc7\xf1\xf2\xf7\xc5\x64\xb2\x72\xce\x4e\x3c\x4f\x97\x39\xd7\xab\xb2\x72\xde\xff\x24\x94\x2c\xb7\x4a\x8b\xc3\x70\xe9\xa8\x72\x1c\x9d\x50\xe8\x55\x98\x7b\xd7\x0f\xf1\xec\x86\x12\xb2\x54\x86\xe3\xaf\x7e\xa7\xd7\xf1\x3c\x48\xbf\x3d\x6f\x94\x58\x94\x96\xa3\x7c\xf3\x16\x6a\x32\xd8\xac\x85\x42\x60\x16\xe8\xa8\x77\xa5\x64\x90\x5b\x60\x29\x1c\xdd\xa9\x37\x1e\x37\x15\xde\x9d\xbe\xf3\xc8\x9e\xb4\xbd\xb4\x5e\xb9\x78\xe1\x42\x06\x45\x09\xd2\x3c\xc1\x0e\x64\x81\xd2\xc2\x59\x94\xdc\xce\x82\x28\xdb\x4d\xa3\xe4\x31\x9c\x07\xd7\xb3\xf0\x66\x17\x25\x49\xb6\x8b\x92\x20\x9d\x7e\x3a\x83\xdd\x0e\x1c\x6e\x25\x21\x83\x21\x64\x8e\x3b\x95\x9f\x83\x29\x0d\x5b\xc4\xe1\x39\x28\xe3\x24\x1a\xae\x41\x2b\xb3\x96\xd8\xd8\x37\xd5\x80\x39\x54\x87\x33\x58\x01\xd3\xe2\xbb\xe6\x45\xe5\x53\x56\x01\xfb\x01\xac\x79\xa0\x84\x0f\xec\xa0\xda\x94\x42\xfa\xbd\x0f\x05\x56\x1e\x1a\x7e\x1e\x16\x85\xf1\x21\x51\x77\xab\x6d\xa6\x7e\xd3\xec\x90\xad\x3d\x69\xea\x95\xd6\x79\x4b\x65\x4e\xd8\xcd\x87\xcb\xcb\x93\xf0\xde\x0b\xd7\x5e\xd8\xeb\x5e\xb0\x64\xff\x27\x00\x00\xff\xff\x8e\xba\x50\xe5\xb9\x03\x00\x00")
 
 func apkApkbuildBytes() ([]byte, error) {
 	return bindataRead(
@@ -123,7 +123,7 @@ func apkApkbuild() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/APKBUILD", size: 1102, mode: os.FileMode(493), modTime: time.Unix(1762202951, 0)}
+	info := bindataFileInfo{name: "apk/APKBUILD", size: 953, mode: os.FileMode(493), modTime: time.Unix(1765731211, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -143,7 +143,7 @@ func apkPostDeinstall() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/post-deinstall", size: 27, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "apk/post-deinstall", size: 27, mode: os.FileMode(484), modTime: time.Unix(1731712968, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -163,7 +163,7 @@ func apkPostInstall() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/post-install", size: 95, mode: os.FileMode(493), modTime: time.Unix(1762829085, 0)}
+	info := bindataFileInfo{name: "apk/post-install", size: 95, mode: os.FileMode(493), modTime: time.Unix(1763869296, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -183,7 +183,7 @@ func apkPostUpgrade() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/post-upgrade", size: 27, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "apk/post-upgrade", size: 27, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -203,7 +203,7 @@ func apkPreDeinstall() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/pre-deinstall", size: 27, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "apk/pre-deinstall", size: 27, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -223,7 +223,7 @@ func apkPreInstall() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/pre-install", size: 340, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "apk/pre-install", size: 340, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -243,7 +243,7 @@ func apkPreUpgrade() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "apk/pre-upgrade", size: 27, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "apk/pre-upgrade", size: 27, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -263,7 +263,7 @@ func deb1InstallBuildDepsSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/1.install-build-deps.sh", size: 471, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/1.install-build-deps.sh", size: 471, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -283,7 +283,7 @@ func deb2Build_binarySh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/2.build_binary.sh", size: 582, mode: os.FileMode(493), modTime: time.Unix(1762132763, 0)}
+	info := bindataFileInfo{name: "deb/2.build_binary.sh", size: 582, mode: os.FileMode(493), modTime: time.Unix(1763869296, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -303,7 +303,7 @@ func deb3Restore_repoSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/3.restore_repo.sh", size: 101, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/3.restore_repo.sh", size: 101, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -323,7 +323,7 @@ func debControl() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/control", size: 235, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/control", size: 235, mode: os.FileMode(484), modTime: time.Unix(1731712969, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -343,7 +343,7 @@ func debPostinst() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/postinst", size: 89, mode: os.FileMode(493), modTime: time.Unix(1762829085, 0)}
+	info := bindataFileInfo{name: "deb/postinst", size: 89, mode: os.FileMode(493), modTime: time.Unix(1763869296, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -363,7 +363,7 @@ func debPostrm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/postrm", size: 28, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/postrm", size: 28, mode: os.FileMode(484), modTime: time.Unix(1731712970, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -383,7 +383,7 @@ func debPreinst() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/preinst", size: 167, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/preinst", size: 167, mode: os.FileMode(484), modTime: time.Unix(1731712970, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -403,7 +403,7 @@ func debPrerm() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "deb/prerm", size: 27, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "deb/prerm", size: 27, mode: os.FileMode(484), modTime: time.Unix(1731712970, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -423,7 +423,7 @@ func rpmRpmbuildDepsSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "rpm/rpmbuild-deps.sh", size: 588, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "rpm/rpmbuild-deps.sh", size: 588, mode: os.FileMode(493), modTime: time.Unix(1745281719, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -443,7 +443,7 @@ func rpmSpecfile() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "rpm/specfile", size: 1159, mode: os.FileMode(493), modTime: time.Unix(1762814503, 0)}
+	info := bindataFileInfo{name: "rpm/specfile", size: 1159, mode: os.FileMode(493), modTime: time.Unix(1763869296, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -463,7 +463,7 @@ func skeletonGithubWorkflowsPublish_releaseYamlDisabled() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/.github/workflows/publish_release.yaml.disabled", size: 1170, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/.github/workflows/publish_release.yaml.disabled", size: 1170, mode: os.FileMode(484), modTime: time.Unix(1731712970, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -483,7 +483,7 @@ func skeletonChangelogMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/CHANGELOG.md", size: 191, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/CHANGELOG.md", size: 191, mode: os.FileMode(488), modTime: time.Unix(1752108851, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -503,7 +503,7 @@ func skeletonIssuesMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/ISSUES.md", size: 68, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/ISSUES.md", size: 68, mode: os.FileMode(484), modTime: time.Unix(1731713736, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -523,7 +523,7 @@ func skeletonLicense() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/LICENSE", size: 35149, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/LICENSE", size: 35149, mode: os.FileMode(484), modTime: time.Unix(1731712970, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -543,7 +543,7 @@ func skeletonReadmeMd() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/README.md", size: 99, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/README.md", size: 99, mode: os.FileMode(484), modTime: time.Unix(1731712971, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -563,7 +563,7 @@ func skeletonGitignore() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/gitignore", size: 313, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/gitignore", size: 313, mode: os.FileMode(484), modTime: time.Unix(1731715102, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -583,7 +583,7 @@ func skeletonGoVersion() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/go.version", size: 17, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/go.version", size: 17, mode: os.FileMode(484), modTime: time.Unix(1731712971, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -603,7 +603,7 @@ func skeletonSrc_importcheckSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/_importCheck.sh", size: 1174, mode: os.FileMode(420), modTime: time.Unix(1758741732, 0)}
+	info := bindataFileInfo{name: "skeleton/src/_importCheck.sh", size: 1174, mode: os.FileMode(420), modTime: time.Unix(1758742348, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -623,7 +623,7 @@ func skeletonSrcBuildSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/build.sh", size: 602, mode: os.FileMode(493), modTime: time.Unix(1762814503, 0)}
+	info := bindataFileInfo{name: "skeleton/src/build.sh", size: 602, mode: os.FileMode(493), modTime: time.Unix(1763869296, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -643,7 +643,7 @@ func skeletonSrcCmdCompletionGo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/cmd/completion.go", size: 1460, mode: os.FileMode(420), modTime: time.Unix(1760055343, 0)}
+	info := bindataFileInfo{name: "skeleton/src/cmd/completion.go", size: 1460, mode: os.FileMode(420), modTime: time.Unix(1760056926, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -663,7 +663,7 @@ func skeletonSrcCmdRootGo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/cmd/root.go", size: 1207, mode: os.FileMode(493), modTime: time.Unix(1758697343, 0)}
+	info := bindataFileInfo{name: "skeleton/src/cmd/root.go", size: 1207, mode: os.FileMode(493), modTime: time.Unix(1758742348, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -683,7 +683,7 @@ func skeletonSrcGoMod() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/go.mod", size: 96, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/src/go.mod", size: 96, mode: os.FileMode(484), modTime: time.Unix(1731712971, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -703,7 +703,7 @@ func skeletonSrcGoSum() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/go.sum", size: 1478, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/src/go.sum", size: 1478, mode: os.FileMode(484), modTime: time.Unix(1731712971, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -723,7 +723,7 @@ func skeletonSrcMainGo() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/main.go", size: 84, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/src/main.go", size: 84, mode: os.FileMode(484), modTime: time.Unix(1731712971, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -743,7 +743,7 @@ func skeletonSrcUpdatebuilddepsSh() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "skeleton/src/updateBuildDeps.sh", size: 88, mode: os.FileMode(493), modTime: time.Unix(1757677216, 0)}
+	info := bindataFileInfo{name: "skeleton/src/updateBuildDeps.sh", size: 88, mode: os.FileMode(484), modTime: time.Unix(1731712972, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
