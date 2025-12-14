@@ -2,7 +2,7 @@
 # Packager: APK Builder <builder@famillegratton.net>
 pkgname=stubber
 pkgver=1.91.00
-pkgrel=1
+pkgrel=0
 pkgdir=/data/packages
 pkgdesc="Create GOLANG software skeleton"
 url="https://github.com/jeanfrancoisgratton/stubber"
