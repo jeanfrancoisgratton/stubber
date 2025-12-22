@@ -21,3 +21,5 @@ _SCRATCHPAD/
 
 *.tar
 .DS*
+
+src/.depupdate*
