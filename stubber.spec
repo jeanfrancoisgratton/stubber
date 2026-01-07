@@ -76,6 +76,9 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Tue Jan 06 2026 Binary package builder <builder@famillegratton.net> 1.93.00-0
+- updated the build script (jean-francois@famillegratton.net)
+
 * Sun Dec 21 2025 Binary package builder <builder@famillegratton.net> 1.92.00-0
 - Version bump, updated builddeps update check script (jean-
   francois@famillegratton.net)
