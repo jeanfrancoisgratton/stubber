@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"runtime"
 	"stubber/createAssets"
 	"stubber/helpers"
 	"stubber/updateAssets"
@@ -17,7 +18,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.93.00 (2026.01.06)",
+	Version: "1.93.00 (2026.01.06), Go version = " + runtime.Version(),
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
