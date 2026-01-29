@@ -13,7 +13,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 1.93.00
-%define _rel 0
+%define _rel 1
 #%define _arch x86_64
 %define _binaryname stubber
 

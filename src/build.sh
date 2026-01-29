@@ -2,7 +2,7 @@
 
 set -eu
 
-BINARY="dtools"
+BINARY="stubber"
 OUTPUT="/opt/bin"
 COMPLETION=false
 DRY_RUN=false
