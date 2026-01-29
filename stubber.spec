@@ -76,6 +76,11 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Thu Jan 29 2026 Binary package builder <builder@famillegratton.net> 1.94.00-0
+- Added new files in assets (jean-francois@famillegratton.net)
+- Added GO version value (jean-francois@famillegratton.net)
+- build deps update (builder@famillegratton.net)
+
 * Thu Jan 29 2026 Binary package builder <builder@famillegratton.net> 1.93.00-1
 - Build script fix (jean-francois@famillegratton.net)
 
