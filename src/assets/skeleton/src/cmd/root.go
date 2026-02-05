@@ -19,16 +19,6 @@ var rootCmd = &cobra.Command{
 This follows my template and allows you to package your software with minimal effort once built`,
 }
 
-// Shows changelog
-var clCmd = &cobra.Command{
-	Use:     "changelog",
-	Aliases: []string{"cl"},
-	Short:   "Shows the Changelog",
-	Run: func(cmd *cobra.Command, args []string) {
-		changeLog()
-	},
-}
-
 func Execute() {
 	err := rootCmd.Execute()
 	if err != nil {
@@ -39,21 +29,4 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-
-	rootCmd.AddCommand(clCmd)
-}
-
-func changeLog() {
-	//fmt.Printf("\x1b[2J")
-	fmt.Printf("\x1bc")
-
-	fmt.Println("CHANGELOG")
-	fmt.Println("=========")
-	fmt.Println()
-
-	fmt.Print(`
-VERSION			DATE			COMMENT
--------			----			-------
-{{ PACKAGE VERSION }}		{{ RELEASE DATE }}		Initial release
-`)
 }
