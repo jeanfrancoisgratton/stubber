@@ -5,6 +5,7 @@ import (
 	"io/fs"
 	"os"
 	"strings"
+
 	"stubber/helpers"
 	"stubber/templates"
 
@@ -26,8 +27,8 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
-	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md", "ROADMAP.md", "TODO.md",
-		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/_importCheck.sh", "src/cmd/root.go",
+	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
+		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go",
 		/*".github/workflows/publish_release.yaml.disabled"*/}
 
 	for _, pathloop := range paths {
