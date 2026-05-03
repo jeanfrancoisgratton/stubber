@@ -4,10 +4,11 @@ set -eu
 
 BINARY=stubber
 OUTPUT="/opt/bin"
+COMPLETION=false
 DRY_RUN=false
 
 usage() {
-  echo "Usage: $0 [-b|--binary NAME] [--dry-run] [OUTPUT_DIR]" >&2
+  echo "Usage: $0 [-b|--binary NAME] [--dry-run] [--completion] [OUTPUT_DIR]" >&2
   exit 2
 }
 
@@ -29,6 +30,9 @@ while [ "$#" -gt 0 ]; do
       ;;
     --dry-run|--dry_run)
       DRY_RUN=true
+      ;;
+    --completion)
+      COMPLETION=true
       ;;
     --)
       shift
@@ -60,6 +64,10 @@ fi
 
 mkdir -p "$OUTPUT"
 
+echo "Embedding resources..."
+cd templates && rm -f assets.go
+go generate && cd ..
+
 OUTPATH="${OUTPUT%/}/$FULLNAME"
 if [ "$DRY_RUN" = "true" ]; then
   DRYRUN_OUTPATH="${OUTPATH}.DRYRUN"
@@ -71,3 +79,4 @@ else
 fi
 
 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o "$BUILD_OUTPATH"   .
+
