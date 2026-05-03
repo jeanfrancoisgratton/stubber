@@ -2,9 +2,11 @@ package createAssets
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
 	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
-	"path/filepath"
 	"stubber/helpers"
 	"stubber/templates"
 )
@@ -24,23 +26,21 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
 
-	paths := []string{"specfile", "rpmbuild-deps.sh" /*, "tito.props"*/}
+	paths := []string{"specfile", "rpmbuild-deps.sh", "Makefile", "updateChangelog.sh"}
 
+	fmt.Printf("Stub: %s\n", hftx.Yellow("RedHat"))
 	for _, pathloop := range paths {
 		filename := pathloop
 		if pathloop == "specfile" {
 			filename = softwarename + ".spec"
 		}
-		//if pathloop == "tito.props" {
-		//	filename = filepath.Join(".tito", "tito.props")
-		//}
-		if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", pathloop), filename, placeholders); err != nil {
+		if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", pathloop), filepath.Join("__redhat", filename), placeholders); err != nil {
 			return err
 		}
 	}
-	fmt.Printf("Stub: %s\n", hftx.Yellow("RedHat"))
-	if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "specfile"), softwarename+".spec", placeholders); err == nil {
-		err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", "rpmbuild-deps.sh"), "rpmbuild-deps.sh", placeholders)
-	}
+
+	os.Chmod(filepath.Join("__redhat", "rpmbuild-deps.sh"), os.FileMode(0755))
+	os.Chmod(filepath.Join("__redhat", "updateChangelog.sh"), os.FileMode(0755))
+	os.Chmod("__redhat", os.FileMode(0755))
 	return err
 }

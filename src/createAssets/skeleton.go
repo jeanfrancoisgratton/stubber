@@ -28,8 +28,7 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
 	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
-		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go",
-		/*".github/workflows/publish_release.yaml.disabled"*/}
+		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go"}
 
 	for _, pathloop := range paths {
 		// We have to add a special condition here because source and target filenames differ for some of the files

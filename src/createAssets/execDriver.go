@@ -6,10 +6,11 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
+
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"stubber/helpers"
 )
 
@@ -62,7 +63,6 @@ func CreateStub(softname string) *cerr.CustomError {
 		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__debian"), os.FileMode(0755)); err == nil {
 			if err := stubDebian(softname); err != nil {
 				os.Chdir(currentdir)
-				//return &cerr.CustomError{Title: "Unable to create the __debian build dir", Message: err.Error()}
 				return err
 			}
 		}
@@ -70,10 +70,21 @@ func CreateStub(softname string) *cerr.CustomError {
 
 	// RedHat ( -r )
 	if helpers.RedHatStub {
-		if err := stubRedHat(softname); err != nil {
-			os.Chdir(currentdir)
-			//return &cerr.CustomError{Title: "Unable to create the __debian build dir", Message: err.Error()}
-			return err
+		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__redhat"), os.FileMode(0755)); err == nil {
+			if err := stubRedHat(softname); err != nil {
+				os.Chdir(currentdir)
+				return err
+			}
+		}
+	}
+
+	// ArchLinux -A
+	if helpers.ArchLinuxStub {
+		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__archlinux"), os.FileMode(0755)); err == nil {
+			if err := stubArchLinux(softname); err != nil {
+				os.Chdir(currentdir)
+				return err
+			}
 		}
 	}
 
@@ -83,12 +94,7 @@ func CreateStub(softname string) *cerr.CustomError {
 			os.Chdir(currentdir)
 			return &cerr.CustomError{Title: "Unable to create the skeleton structure", Message: err.Error()}
 		}
-		//if helpers.EnableGithubActions {
-		//	if err = os.MkdirAll(filepath.Join(helpers.RootDir, ".github", "workflows"), os.FileMode(0755)); err != nil {
-		//		os.Chdir(currentdir)
-		//		return &cerr.CustomError{Title: "Unable to create the github actions stub", Message: err.Error()}
-		//	}
-		//}
+
 		if errcode := stubSkeleton(softname); errcode != nil {
 			os.Chdir(currentdir)
 			return errcode

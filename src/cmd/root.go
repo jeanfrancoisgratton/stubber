@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
 
 	"github.com/spf13/cobra"
 	"stubber/createAssets"
@@ -17,7 +18,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "1.94.01 (2026.02.05), Go version = " + runtime.Version(),
+	Version: "2.00.00 (2026.05.02), Go version = " + strings.TrimPrefix("go", runtime.Version()),
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -27,12 +28,12 @@ var createCmd = &cobra.Command{
 	Short:   "Creates the directory structure (skeleton) for the new software",
 	Example: "software_name",
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
-			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
+		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
+			fmt.Println("You need to enable at least one of the following: -A (archlinux), -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
 			os.Exit(1)
 		}
 		if len(args) != 1 {
-			fmt.Println("Usage: stubber create [-a|-d|-r|-k] $SOFTWARENAME")
+			fmt.Println("Usage: stubber create [-A|-a|-d|-r|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
 		if err := createAssets.CreateStub(args[0]); err != nil {
@@ -62,11 +63,11 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.ArchLinuxStub, "archlinux", "A", false, "Create an Archlinux packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
-	//createCmd.PersistentFlags().BoolVarP(&helpers.EnableGithubActions, "gha", "w", false, "Copy gha files from .github/workflows/ .")
 	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")

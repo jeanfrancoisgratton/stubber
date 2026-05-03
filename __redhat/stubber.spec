@@ -1,18 +1,8 @@
-%ifarch aarch64
-%global _arch aarch64
-%global BuildArchitectures aarch64
-%endif
-
-%ifarch x86_64
-%global _arch x86_64
-%global BuildArchitectures x86_64
-%endif
-
 %define debug_package   %{nil}
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 1.95.00
+%define _version 2.00.00
 %define _rel 0
 #%define _arch x86_64
 %define _binaryname stubber
@@ -39,7 +29,8 @@ Creates a GO software skeleton
 %autosetup
 
 %build
-cd %{_sourcedir}/%{_name}-%{_version}/src/templates
+cd src
+go mod download
 rm -f assets.go
 sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
 sudo /opt/go/bin/go generate
@@ -50,18 +41,9 @@ CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_so
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-if getent group devops > /dev/null; then
-  exit 0
-else
-  if getent group 2500 > /dev/null; then
-    groupadd devops
-  else
-    groupadd -g 2500 devops
-  fi
-fi
 
 %install
-install -Dpm 0755 %{_sourcedir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
+install -Dpm 0755 %{_builddir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
 chgrp devops %{_bindir}/%{_binaryname} || :

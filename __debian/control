@@ -1,8 +1,8 @@
 Package: stubber
-Version: 1.95.00-0
+Version: 2.00.00-0
 Architecture: amd64
 Maintainer: J.F.Gratton <nexus@famillegratton.net>
 Description: Tool to create the GO software directory structure
- Create the skeleton of a GO software, with stubs to build RPMs, DEBs, APKs
+ Create the skeleton of a GO software, with stubs to build RPMs, DEBs, APKs, Archlinux packages
 Section: Development Utilities
 Build-Depends: golang-any

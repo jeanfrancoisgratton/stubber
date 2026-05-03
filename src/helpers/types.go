@@ -1,6 +1,6 @@
 // stubber
 // Écrit par J.F. Gratton <jean-francois@famillegratton.net>
-// Orininal name: src/helpers/structs.go
+// Orininal name: src/helpers/types.go
 // Original time: 2023/06/28 08:20
 
 package helpers
@@ -9,7 +9,7 @@ import "time"
 
 // Command-line flags
 var RootDir string
-var AlpineStub, DebianStub, RedHatStub, SkeletonStub bool
+var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub bool
 var GoVersion = "1.25.2"
 var Arch string
 var VersionNumber string
