@@ -8,7 +8,7 @@ for i in control preinst prerm postinst postrm;do
 done
 
 echo "Building binary"
-cd ..
+cd ../src
 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o ../__debian/${PKGDIR}/opt/bin/stubber .
 sudo chown 0:0 ../__debian/${PKGDIR}/opt/bin/stubber
 
