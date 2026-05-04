@@ -1,14 +1,19 @@
+// stubber
+// Written by J.F.Gratton <jean-francois@famillegratton.net>
+// Original filename: src/createAssets/alpine.go
+// Original timestamp: 2026/05/03 21:39:24
+
 package createAssets
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"stubber/helpers"
-	"stubber/templates"
 
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"stubber/assets"
+	"stubber/helpers"
 )
 
 func stubAlpine(softwarename string) *cerr.CustomError {
@@ -43,7 +48,7 @@ func stubAlpine(softwarename string) *cerr.CustomError {
 		} else {
 			targetFname = pathloop
 		}
-		if err := templates.ProcessEmbeddedAsset(filepath.Join("apk", pathloop), filepath.Join("__alpine", targetFname), placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset(filepath.Join("apk", pathloop), filepath.Join("__alpine", targetFname), placeholders); err != nil {
 			return err
 		}
 		os.Chmod(filepath.Join("__alpine", targetFname), os.FileMode(0755))

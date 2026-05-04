@@ -54,11 +54,11 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	rootCmd.AddCommand(completionCmd, createCmd)
+	rootCmd.AddCommand(completionCmd, createCmd, assetsCmd)
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.25.7", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.26.2", "Where to put the skeleton dir.")
 
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")

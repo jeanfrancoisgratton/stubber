@@ -7,13 +7,6 @@ for i in control preinst prerm postinst postrm;do
   mv $i ${PKGDIR}/DEBIAN/
 done
 
-echo "Installing assets generator (go-bindata)"
-cd ../src
-GOBIN=$HOME/bin go install -a github.com/go-bindata/go-bindata/...@latest
-cd templates
-rm -f assets.go
-echo "Generating assets"
-go generate
 echo "Building binary"
 cd ..
 CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o ../__debian/${PKGDIR}/opt/bin/stubber .

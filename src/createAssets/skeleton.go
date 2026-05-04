@@ -6,11 +6,10 @@ import (
 	"os"
 	"strings"
 
-	"stubber/helpers"
-	"stubber/templates"
-
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"stubber/assets"
+	"stubber/helpers"
 )
 
 func stubSkeleton(softwarename string) *cerr.CustomError {
@@ -28,21 +27,21 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
 	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
-		"gitignore", "src/build.sh", "src/go.mod", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go"}
+		"gitignore", "src/build.sh", "src/go.mod.tmpl", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go"}
 
 	for _, pathloop := range paths {
 		// We have to add a special condition here because source and target filenames differ for some of the files
 		filename := pathloop
 
 		// We'll have to consider using a switch {} block here if it keeps growing...
-		if pathloop == "gitignore" {
+		switch {
+		case pathloop == "gitignore":
 			filename = ".gitignore"
+		case pathloop == "src/go.mod.tmpl.tmpl":
+			filename = "src/go.mod"
 		}
-		//if pathloop == "publish_release.yaml.disabled" {
-		//	filename = filepath.Join(".github", "workflows", "publish_release.yaml.disabled")
-		//}
 
-		if err := templates.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
 		}
 		if strings.HasSuffix(filename, ".sh") {

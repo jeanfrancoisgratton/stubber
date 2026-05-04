@@ -2,12 +2,13 @@ package createAssets
 
 import (
 	"fmt"
-	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
 	"os"
 	"path/filepath"
+
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"stubber/assets"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
 func stubDebian(softwarename string) *cerr.CustomError {
@@ -29,7 +30,7 @@ func stubDebian(softwarename string) *cerr.CustomError {
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Debian"))
 	for _, pathloop := range paths {
-		if err := templates.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
 			return err
 		}
 		os.Chmod(filepath.Join("__debian", pathloop), os.FileMode(0755))

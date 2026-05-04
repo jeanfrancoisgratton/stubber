@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 	"stubber/helpers"
 )
 

@@ -10,7 +10,7 @@ import "time"
 // Command-line flags
 var RootDir string
 var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub bool
-var GoVersion = "1.25.2"
+var GoVersion = "1.26.2"
 var Arch string
 var VersionNumber string
 var ReleaseNumber string

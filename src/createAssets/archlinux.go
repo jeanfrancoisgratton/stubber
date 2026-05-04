@@ -11,9 +11,9 @@ import (
 	"path/filepath"
 
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"stubber/assets"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
 func stubArchLinux(softwarename string) *cerr.CustomError {
@@ -28,12 +28,12 @@ func stubArchLinux(softwarename string) *cerr.CustomError {
 	fmt.Printf("Stub: %s\n", hftx.Yellow("ArchLinux"))
 	paths := []string{"1.install-build-deps.sh", "2.build-package.sh", "PKGBUILD"}
 
-	for _, pathloop := range paths {
+	for _, path := range paths {
 
-		if err := templates.ProcessEmbeddedAsset(filepath.Join("arch", pathloop), filepath.Join("__archlinux", pathloop), placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset(filepath.Join("arch", path), filepath.Join("__archlinux", path), placeholders); err != nil {
 			return err
 		}
-		os.Chmod(filepath.Join("__archlinux", pathloop), os.FileMode(0755))
+		os.Chmod(filepath.Join("__archlinux", path), os.FileMode(0755))
 	}
 	return nil
 }

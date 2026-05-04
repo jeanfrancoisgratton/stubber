@@ -15,8 +15,3 @@ cd /opt ; sudo rm -rf go;sudo tar zxf go.tar.gz; sudo rm -f go.tar.gz
 
 echo "Completed."
 
-# Stubber-specific (go-bindata)
-cd - ;cd src
-go get -u github.com/go-bindata/go-bindata/...
-cd ..
-sudo ln -s /opt/go/bin/go-bindata /usr/bin/go-bindata

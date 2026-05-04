@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v3/terminalfx"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"stubber/assets"
 	"stubber/helpers"
-	"stubber/templates"
 )
 
 func stubRedHat(softwarename string) *cerr.CustomError {
@@ -34,7 +34,7 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 		if pathloop == "specfile" {
 			filename = softwarename + ".spec"
 		}
-		if err = templates.ProcessEmbeddedAsset(filepath.Join("rpm", pathloop), filepath.Join("__redhat", filename), placeholders); err != nil {
+		if err = assets.ProcessEmbeddedAsset(filepath.Join("rpm", pathloop), filepath.Join("__redhat", filename), placeholders); err != nil {
 			return err
 		}
 	}

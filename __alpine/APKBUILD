@@ -22,13 +22,6 @@ prepare() {
 
 build() {
     cd "$builddir"
-    echo "Creating assets generator..."
-    GOBIN=$HOME/bin go install -a github.com/go-bindata/go-bindata/...@latest
-    cd templates && rm -f assets.go
-    echo "Generating assets..."
-    go generate
-    cd ..
-
     go env | egrep 'GOFLAGS|CGO_ENABLED|GOOS|GOARCH' || true
 
     # Static, non-PIE, internal linker

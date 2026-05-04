@@ -30,11 +30,6 @@ Creates a GO software skeleton
 
 %build
 cd src
-go mod download
-rm -f assets.go
-sudo GOBIN=/opt/go/bin /opt/go/bin/go install -a github.com/go-bindata/go-bindata/...@latest
-sudo /opt/go/bin/go generate
-cd ..
 CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_sourcedir}/%{_binaryname} .
 
 %clean
