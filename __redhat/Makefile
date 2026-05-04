@@ -8,7 +8,7 @@ DEST      := /data
 REPOROOT  := $(shell git rev-parse --show-toplevel)
 NEXUSREPO := dnfLocal
 
-.PHONY: tarball rpm clean upload changelog commitcl
+.PHONY: tarball rpm rpmcl clean upload changelog commitcl
 
 # Intended workflow: make rpm → make upload → make commitcl
 
@@ -19,13 +19,16 @@ tarball:
 changelog: tarball
 	$(REPOROOT)/__redhat/updateChangelog.sh
 
-rpm: tarball changelog
+rpm: tarball
+	rpmbuild -bb $(SPEC)
+	find $(RPMS) -name '*.rpm' -exec cp {} $(DEST)/ \;
+
+rpmcl: tarball changelog
 	rpmbuild -bb $(SPEC)
 	find $(RPMS) -name '*.rpm' -exec cp {} $(DEST)/ \;
 
 upload:
 	nxtools upload -r $(NEXUSREPO) $(DEST)/$(NAME)-$(VERSION)-$(RELEASE).x86_64.rpm
-
 
 commitcl:
 	git add stubber.spec
