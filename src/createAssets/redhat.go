@@ -26,7 +26,7 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
 
-	paths := []string{"specfile", "rpmbuild-deps.sh", "Makefile", "updateChangelog.sh"}
+	paths := []string{"specfile", "rpmbuild-deps.sh", "Makefile", "updateChangelog.sh", "PACKAGE_RPM.md"}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("RedHat"))
 	for _, pathloop := range paths {
