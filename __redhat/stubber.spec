@@ -4,7 +4,7 @@
 %define _prefix /opt
 %define _version 2.00.00
 %define _rel 0
-#%define _arch x86_64
+%define _arch x86_64
 %define _binaryname stubber
 
 Name:       stubber
@@ -19,8 +19,6 @@ URL:        https://github.com/jeanfrancoisgratton/stubber
 Source0:    %{name}-%{_version}.tar.gz
 #BuildArchitectures: x86_64
 BuildRequires: gcc
-#Requires: sudo
-#Obsoletes: vmman1 > 1.140
 
 %description
 Creates a GO software skeleton
@@ -30,7 +28,8 @@ Creates a GO software skeleton
 
 %build
 cd src
-CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_sourcedir}/%{_binaryname} .
+CGO_ENABLED=0 /opt/go/bin/go build -trimpath -ldflags="-s -w -buildid=" -o %{_builddir}/%{name}-%{version}/%{_binaryname} .
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -38,7 +37,8 @@ rm -rf $RPM_BUILD_ROOT
 %pre
 
 %install
-install -Dpm 0755 %{_builddir}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
+rm -rf %{buildroot}
+install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
 chgrp devops %{_bindir}/%{_binaryname} || :
