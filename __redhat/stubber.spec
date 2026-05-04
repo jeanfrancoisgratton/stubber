@@ -53,6 +53,17 @@ chmod 0775 %{_bindir}/%{_binaryname} || :
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon May 04 2026 Binary package builder <builder@famillegratton.net> 2.00.00-0
+- more build fixes, doc updates
+- fixed rpmbuild in both templated assets and actual specfile
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- replaced sed with awk
+- Fixed badly copied script
+- cleaned the Makefile
+- Completed addition of __redhat and __archlinux to the stub
+- interim commmit
+- interim commit
+
 * Thu Apr 23 2026 Binary package builder <builder@famillegratton.net> 1.95.00-0
 - fixed missing files in assets (jean-francois@famillegratton.net)
 
