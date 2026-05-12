@@ -2,8 +2,8 @@
 # Packager: Package builder <builder@famillegratton.net>
 
 pkgname=stubber
-pkgver=2.00.00
-pkgrel=0
+pkgver=2.00.01
+pkgrel=1
 pkgdesc="Tool to create the GO software directory structure"
 arch=('x86_64')
 url="https://git.famillegratton.net:3000/mainline/stubber.git"
@@ -38,7 +38,14 @@ build() {
 
 check() {
   cd "${srcdir}/${_builddir}"
-  go test -modcacherw ./...
+
+  mapfile -t test_dirs < <(
+    find . -type f -name '*.go' \
+      -not -path './assets/skeleton/*' \
+      -printf '%h\n' | sort -u
+  )
+
+  go test -modcacherw "${test_dirs[@]}"
 }
 
 package() {
