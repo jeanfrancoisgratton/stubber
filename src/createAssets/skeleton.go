@@ -1,3 +1,7 @@
+// stubber
+// Écrit par J.F.Gratton (jean-francois@famillegratton.net)
+// execDriver.go, jfgratton : 2023-06-27
+
 package createAssets
 
 import (
@@ -26,27 +30,41 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
-	paths := []string{"ISSUES.md", "go.version", "CHANGELOG.md", "LICENSE", "README.md",
-		"gitignore", "src/build.sh", "src/go.mod.tmpl", "src/main.go", "src/updateBuildDeps.sh", "src/cmd/root.go"}
+
+	paths := []string{
+		"ISSUES.md",
+		"go.version",
+		"CHANGELOG.md",
+		"LICENSE",
+		"README.md",
+		"gitignore",
+		"src/build.sh",
+		"src/go.mod.tmpl",
+		"src/main.go.tmpl",
+		"src/updateBuildDeps.sh",
+		"src/cmd/root.go.tmpl",
+		"src/cmd/completion.go.tmpl",
+	}
 
 	for _, pathloop := range paths {
-		// We have to add a special condition here because source and target filenames differ for some of the files
 		filename := pathloop
 
-		// We'll have to consider using a switch {} block here if it keeps growing...
 		switch {
 		case pathloop == "gitignore":
 			filename = ".gitignore"
-		case pathloop == "src/go.mod.tmpl.tmpl":
-			filename = "src/go.mod"
+
+		case strings.HasSuffix(pathloop, ".tmpl"):
+			filename = strings.TrimSuffix(pathloop, ".tmpl")
 		}
 
 		if err := assets.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
 		}
+
 		if strings.HasSuffix(filename, ".sh") {
-			os.Chmod(filename, fs.FileMode(0755))
+			_ = os.Chmod(filename, fs.FileMode(0755))
 		}
 	}
+
 	return nil
 }
