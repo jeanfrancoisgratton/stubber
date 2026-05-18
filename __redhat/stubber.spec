@@ -65,6 +65,27 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon May 18 2026 Binary package builder <builder@famillegratton.net> 2.01.00-1
+- Fixed tool invocation in command completion as the tool might not be yet in the PATH var
+- Fixed wrong filename
+- chore: update changelog for 2.01.00-0
+- Added install-time command completion support
+- Merge branch 'develop' of ssh://git.famillegratton.net:9722/mainline/stubber into develop
+- removed unnecessary go dependency
+- Assets templates fixes
+- cosmetic output fix
+- Fixed path in DEB build scripts
+- chore: update changelog for 2.00.00-0
+- more build fixes, doc updates
+- fixed rpmbuild in both templated assets and actual specfile
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- replaced sed with awk
+- Fixed badly copied script
+- cleaned the Makefile
+- Completed addition of __redhat and __archlinux to the stub
+- interim commmit
+- interim commit
+
 * Mon May 18 2026 Binary package builder <builder@famillegratton.net> 2.01.00-0
 - Added install-time command completion support
 - Merge branch 'develop' of ssh://git.famillegratton.net:9722/mainline/stubber into develop
