@@ -6,3 +6,4 @@ Description: Tool to create the GO software directory structure
  Create the skeleton of a GO software, with stubs to build RPMs, DEBs, APKs, Archlinux packages
 Section: Development Utilities
 Build-Depends: golang-any
+Depends: bash-completion

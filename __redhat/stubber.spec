@@ -2,7 +2,7 @@
 %define _build_id_links none
 %define _name   stubber
 %define _prefix /opt
-%define _version 2.00.01
+%define _version 2.01.00
 %define _rel 0
 %define _arch x86_64
 %define _binaryname stubber
@@ -14,11 +14,12 @@ Summary:    stubber
 
 Group:      Utils
 License:    GPL2.0
-URL:        https://github.com/jeanfrancoisgratton/stubber
+URL:        https://git.famillegratton.net:3000/mainline/stubber.git
 
 Source0:    %{name}-%{_version}.tar.gz
 #BuildArchitectures: x86_64
 BuildRequires: gcc
+Requires: bash-completion
 
 %description
 Creates a GO software skeleton
@@ -41,12 +42,23 @@ rm -rf %{buildroot}
 install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_bindir}/%{_binaryname}
 
 %post
-chgrp devops %{_bindir}/%{_binaryname} || :
-chmod 0775 %{_bindir}/%{_binaryname} || :
+# Bash completion — always install
+stubber completion bash > %{_datadir}/bash-completion/completions/stubber
+
+# Zsh completion — only if zsh is present
+if command -v zsh > /dev/null 2>&1; then
+    mkdir -p %{_datadir}/zsh/site-functions
+    stubber completion zsh > %{_datadir}/zsh/site-functions/_stubber
+fi
 
 %preun
 
 %postun
+if [ $1 -eq 0 ]; then
+    # $1 == 0 means this is a full uninstall, not an upgrade
+    rm -f %{_datadir}/bash-completion/completions/stubber
+    rm -f %{_datadir}/zsh/site-functions/_stubber
+fi
 
 %files
 %defattr(-,root,root,-)
