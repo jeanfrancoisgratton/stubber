@@ -3,7 +3,7 @@
 %define _name   stubber
 %define _prefix /opt
 %define _version 2.01.00
-%define _rel 0
+%define _rel 1
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -43,12 +43,12 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 %post
 # Bash completion — always install
-stubber completion bash > %{_datadir}/bash-completion/completions/stubber
+/opt/bin/stubber completion bash > %{_datadir}/bash-completion/completions/stubber
 
 # Zsh completion — only if zsh is present
 if command -v zsh > /dev/null 2>&1; then
     mkdir -p %{_datadir}/zsh/site-functions
-    stubber completion zsh > %{_datadir}/zsh/site-functions/_stubber
+    /opt/bin/stubber completion zsh > %{_datadir}/zsh/site-functions/_stubber
 fi
 
 %preun

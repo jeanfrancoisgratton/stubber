@@ -3,10 +3,10 @@
 set -e
 
 # Bash completion — always install
-stubber completion bash > /etc/bash_completion.d/stubber
+/opt/bin/stubber completion bash > /etc/bash_completion.d/stubber
 
 # Zsh completion — only if zsh is present
 if command -v zsh > /dev/null 2>&1; then
     mkdir -p /usr/share/zsh/site-functions
-    stubber completion zsh > /usr/share/zsh/site-functions/_stubber
+    /opt/bin/stubber completion zsh > /usr/share/zsh/site-functions/_stubber
 fi
