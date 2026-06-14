@@ -4,7 +4,7 @@
 ___
 A CLI tool that generates the directory structure, build scripts, and packaging
 metadata for a new Go project, following a personal CI/CD convention (Alpine
-APK, Debian/Ubuntu DEB, and RHEL/Fedora RPM packaging, plus a ready-to-build
+APK, Debian/Ubuntu DEB, Archlinux .pkg.tar.zst and RHEL/Fedora RPM packaging, plus a ready-to-build
 Go skeleton).
 
 Everything is generated from templates embedded in the binary
@@ -39,7 +39,7 @@ substituted at run time from the flags you pass.
 ## How it works
 
 `stubber create` takes a software name and one or more "stub" flags
-(`-a`, `-d`, `-r`, `-k`). Each stub flag tells stubber which set of templated
+(`-a`, `-d`, `-r`, `-A`, `-k`). Each stub flag tells stubber which set of templated
 files to render into the project directory. Other flags (`-V`, `-D`,
 `-M`, `-u`, etc.) supply the values used to fill in the placeholders in those
 templates.
@@ -49,7 +49,7 @@ run `go mod init` for you. See [Caveats](#known-issues--caveats).
 
 ## Installation
 
-Pre-built packages (`.apk`, `.deb`, `.rpm`) are published on the
+Pre-built packages (`.apk`, `.deb`, `.rpm`, `.pkg.tar.zst` ) are published on the
 [Releases](https://github.com/jeanfrancoisgratton/stubber/releases) page.
 
 Otherwise, build it yourself — see [Building from source](#building-from-source).
@@ -58,7 +58,7 @@ Otherwise, build it yourself — see [Building from source](#building-from-sourc
 
 ```sh
 # Full project: Go skeleton + all three packaging stubs
-stubber create -a -d -r -k \
+stubber create -a -d -r -k -A \
   -V 1.0.0 -R 1 \
   -D "My awesome CLI tool" \
   -u "https://git.famillegratton.net:3000/jfgratton/mytool" \
@@ -66,8 +66,7 @@ stubber create -a -d -r -k \
 ```
 
 This creates a `mytool/` directory in the current working directory containing
-a buildable Go skeleton plus `__alpine/`, `__debian/`, and `mytool.spec` /
-`rpmbuild-deps.sh` packaging stubs.
+a buildable Go skeleton plus `__alpine/`, `__debian/`,`__archlinux/`, `__redhat/` packaging stubs.
 
 > **Always review the generated files.** stubber is a *generic* stub
 > generator — it doesn't know anything about your project beyond what you
@@ -108,15 +107,16 @@ These apply to `stubber` itself and are inherited by all subcommands:
 name) and **at least one** of `-a`, `-d`, `-r`, `-k`:
 
 ```sh
-stubber create [-a] [-d] [-r] [-k] [other flags] <SOFTWARENAME>
+stubber create [-a] [-d] [-r] [-k] [-A] [other flags] <SOFTWARENAME>
 ```
 
-| Stub flag | Shorthand | What it generates |
-|-----------|-----------|--------------------|
-| `--alpine`   | `-a` | `__alpine/` — APKBUILD + install/upgrade/deinstall scripts |
-| `--debian`   | `-d` | `__debian/` — control file, build scripts, maintainer scripts |
-| `--redhat`   | `-r` | `<SOFTWARENAME>.spec` and `rpmbuild-deps.sh` at the project root |
-| `--skeleton` | `-k` | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, build scripts, `README.md`, `CHANGELOG.md`, `LICENSE`, etc. |
+| Stub flag     | Shorthand | What it generates                                                                                                            |
+|---------------|-----------|------------------------------------------------------------------------------------------------------------------------------|
+| `--alpine`    | `-a`      | `__alpine/` — APKBUILD + install/upgrade/deinstall scripts                                                                   |
+| `--archlinux` | `-A`      | `__archlinux/` — `PKGBUILD`, `1.install-build-deps.sh`, `2.build-package.sh`, `<SOFTWARENAME>.install`                       |
+| `--debian`    | `-d`      | `__debian/` — control file, build scripts, maintainer scripts                                                                |
+| `--redhat`    | `-r`      | `__redhat/` — `<SOFTWARENAME>.spec`, `Makefile`, updateChangelog.sh, etc                                                     |
+| `--skeleton`  | `-k`      | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, build scripts, `README.md`, `CHANGELOG.md`, `LICENSE`, etc. |
 
 Value flags used to fill in the templates:
 
@@ -159,13 +159,13 @@ Generate everything quietly (e.g. from a script), with a binary name that
 differs from the project name:
 
 ```sh
-stubber -q create -a -d -r -k -b mytoolctl -V 0.1.0 -R 1 mytool
+stubber -q create -a -d -r -k -A -b mytoolctl -V 0.1.0 -R 1 mytool
 ```
 
 ## Generated layout
 
-The exact set of files generated depends on which of `-a` / `-d` / `-r` / `-k`
-you pass. Combined, a full run (`-a -d -r -k`) produces:
+The exact set of files generated depends on which of `-a` / `-d` / `-r` / `-k` / `-A`
+you pass. Combined, a full run (`-a -d -r -k -A`) produces:
 
 ```
 .
