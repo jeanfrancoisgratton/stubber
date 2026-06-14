@@ -3,7 +3,8 @@
 set -e
 
 # Bash completion — always install
-/opt/bin/stubber completion bash > /etc/bash_completion.d/stubber
+mkdir -p /etc/usr/share/bash-completion/completions
+/opt/bin/stubber completion bash > /usr/share/bash-completion/completions/stubber
 
 # Zsh completion — only if zsh is present
 if command -v zsh > /dev/null 2>&1; then

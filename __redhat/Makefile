@@ -28,7 +28,7 @@ rpmcl: tarball changelog
 	find $(RPMS) -name '*.rpm' -exec cp {} $(DEST)/ \;
 
 upload:
-	nxtools upload -r $(NEXUSREPO) $(DEST)/$(NAME)-$(VERSION)-$(RELEASE).x86_64.rpm
+	/opt/bin/nxtools upload -r $(NEXUSREPO) $(DEST)/$(NAME)-$(VERSION)-$(RELEASE).x86_64.rpm
 
 commitcl:
 	git add stubber.spec

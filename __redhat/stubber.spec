@@ -4,8 +4,8 @@
 %define _prefix              /opt
 %define _bash_completionsdir /usr/share/bash-completion/completions
 %define _zsh_completionsdir  /usr/share/zsh/site-functions
-%define _version 2.01.00
-%define _rel 3
+%define _version 2.02.00
+%define _rel 0
 %define _arch x86_64
 %define _binaryname stubber
 
@@ -45,6 +45,7 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 %post
 # Bash completion — always install
+mkdir -p /etc/usr/share/bash-completion/completions
 /opt/bin/stubber completion bash > %{_bash_completionsdir}/stubber
 
 # Zsh completion — only if zsh is present
