@@ -32,7 +32,7 @@ type Entry struct {
 //
 //	apk/APKBUILD
 //	arch/PKGBUILD
-//	skeleton/src/go.mod.tmpl
+//	skeleton/src/go.mod
 //
 // The root "." entry is intentionally skipped.
 func List(displayOutput bool) ([]Entry, *cerr.CustomError) {

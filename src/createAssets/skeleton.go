@@ -10,10 +10,11 @@ import (
 	"os"
 	"strings"
 
-	cerr "github.com/jeanfrancoisgratton/customError/v3"
-	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 	"stubber/assets"
 	"stubber/helpers"
+
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 )
 
 func stubSkeleton(softwarename string) *cerr.CustomError {
@@ -40,10 +41,10 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"gitignore",
 		"src/build.sh",
 		"src/go.mod.tmpl",
-		"src/main.go.tmpl",
+		"src/main.go",
 		"src/updateBuildDeps.sh",
-		"src/cmd/root.go.tmpl",
-		"src/cmd/completion.go.tmpl",
+		"src/cmd/root.go",
+		"src/cmd/completion.go",
 	}
 
 	for _, pathloop := range paths {

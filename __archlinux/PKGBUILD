@@ -2,7 +2,7 @@
 # Packager: Package builder <builder@famillegratton.net>
 
 pkgname=stubber
-pkgver=2.03.00
+pkgver=2.4.0
 pkgrel=1
 pkgdesc="Tool to create the GO software directory structure"
 arch=('x86_64')

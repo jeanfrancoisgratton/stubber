@@ -18,7 +18,7 @@ import "embed"
 //	apk/APKBUILD
 //	deb/control
 //	rpm/specfile
-//	skeleton/src/go.mod.tmpl
+//	skeleton/src/go.mod
 //
 // That preserves the old go-bindata names produced by:
 //
