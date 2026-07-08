@@ -68,6 +68,9 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Wed Jul 08 2026 Binary package builder <builder@famillegratton.net> 2.4.0-0
+- fixed issue where some embedded files were missing; new SemVer-aligned version number
+
 * Sun Jul 05 2026 Binary package builder <builder@famillegratton.net> 2.03.00-0
 - fixed specfile name
 - updated the rpmbuilder section
