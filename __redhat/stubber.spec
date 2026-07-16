@@ -68,6 +68,17 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Thu Jul 16 2026 Binary package builder <builder@famillegratton.net> 2.5.0-1
+- bumped release number
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- variable substitution issue
+- chore: update changelog for 2.5.0-0
+- Fixed rpmbuild scripts, and others
+- builddeps updates
+- Added GO test files
+- completed the refresh command
+- rpmbuild enhancements to guard against pushing an existing tag
+
 * Thu Jul 16 2026 Binary package builder <builder@famillegratton.net> 2.5.0-0
 - Fixed rpmbuild scripts, and others
 - builddeps updates
