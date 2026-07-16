@@ -25,3 +25,28 @@ var Quiet = false
 var ReleaseDate = time.Now().Format("2006.01.02")
 
 //var EnableGithubActions = false
+
+// Stubs records which packaging/skeleton stubs a project owns.
+type Stubs struct {
+	Alpine    bool `json:"alpine"`
+	Debian    bool `json:"debian"`
+	RedHat    bool `json:"redhat"`
+	ArchLinux bool `json:"archlinux"`
+	Skeleton  bool `json:"skeleton"`
+}
+
+// Manifest is the full, lossless value set for a stubbed project.
+type Manifest struct {
+	SoftwareName  string `json:"softwarename"`
+	BinaryName    string `json:"binaryname"`
+	GoVersion     string `json:"goversion"`
+	VersionNumber string `json:"versionnumber"`
+	ReleaseNumber string `json:"releasenumber"`
+	Description   string `json:"description"`
+	Maintainer    string `json:"maintainer"`
+	Packager      string `json:"packager"`
+	Section       string `json:"section"`
+	Dependencies  string `json:"dependencies"`
+	Url           string `json:"url"`
+	Stubs         Stubs  `json:"stubs"`
+}

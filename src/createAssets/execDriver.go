@@ -100,6 +100,37 @@ func CreateStub(softname string) *cerr.CustomError {
 			return errcode
 		}
 	}
+
+	// Record every value so that `refresh` can preserve the flags not passed to it
+	if err := helpers.SaveManifest(helpers.RootDir, manifestFromFlags(softname)); err != nil {
+		os.Chdir(currentdir)
+		return err
+	}
+
 	os.Chdir(currentdir)
 	return nil
+}
+
+// manifestFromFlags snapshots the current flag/global state into a Manifest.
+func manifestFromFlags(softname string) helpers.Manifest {
+	return helpers.Manifest{
+		SoftwareName:  softname,
+		BinaryName:    helpers.BinaryName,
+		GoVersion:     helpers.GoVersion,
+		VersionNumber: helpers.VersionNumber,
+		ReleaseNumber: helpers.ReleaseNumber,
+		Description:   helpers.Description,
+		Maintainer:    helpers.Maintainer,
+		Packager:      helpers.Packager,
+		Section:       helpers.Section,
+		Dependencies:  helpers.Dependencies,
+		Url:           helpers.Url,
+		Stubs: helpers.Stubs{
+			Alpine:    helpers.AlpineStub,
+			Debian:    helpers.DebianStub,
+			RedHat:    helpers.RedHatStub,
+			ArchLinux: helpers.ArchLinuxStub,
+			Skeleton:  helpers.SkeletonStub,
+		},
+	}
 }

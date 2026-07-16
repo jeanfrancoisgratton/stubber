@@ -41,10 +41,10 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"gitignore",
 		"src/build.sh",
 		"src/go.mod.tmpl",
-		"src/main.go",
+		"src/main.go.tmpl",
 		"src/updateBuildDeps.sh",
-		"src/cmd/root.go",
-		"src/cmd/completion.go",
+		"src/cmd/root.go.tmpl",
+		"src/cmd/completion.go.tmpl",
 	}
 
 	for _, pathloop := range paths {
