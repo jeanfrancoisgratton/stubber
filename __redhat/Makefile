@@ -7,7 +7,7 @@ RPMS      := $(HOME)/rpmbuild/RPMS
 DEST      := /data
 REPOROOT  := $(shell git rev-parse --show-toplevel)
 NEXUSREPO := dnfLocal
-TAG       := v$(VERSION)
+TAG       := v{{ PACKAGE VERSION }}
 
 .PHONY: tag release tarball check-tags changelog rpm rpmcl upload commitcl clean
 
@@ -56,8 +56,16 @@ clean:
 	rm -rf $(HOME)/rpmbuild/BUILD/$(NAME)-$(VERSION)
 
 tag:
-	git tag -a v${VERSION} -m 'v${VERSION}'
-	git push origin v${VERSION}
+	@if git rev-parse -q --verify "refs/tags/$(TAG)" >/dev/null 2>&1; then \
+	  echo "NOTE: $(TAG) already exists locally, skipping tag creation (release-only bump, version unchanged)."; \
+	else \
+	  git tag -a $(TAG) -m '$(TAG)'; \
+	fi
+	@if git ls-remote --tags origin "refs/tags/$(TAG)" 2>/dev/null | grep -q .; then \
+	  echo "NOTE: $(TAG) already on origin, skipping push."; \
+	else \
+	  git push origin $(TAG); \
+	fi
 
 release:
 	${MAKE} rpmcl
