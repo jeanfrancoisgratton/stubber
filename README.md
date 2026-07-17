@@ -492,7 +492,7 @@ reads an embedded asset, substitutes placeholders, and writes it into the
 generated project tree.
 
 The required Go version is tracked in `go.version` at the repo root
-(currently 1.26.4).
+(currently 1.26.5).
 
 ## Building packages
 
