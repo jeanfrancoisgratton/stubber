@@ -68,6 +68,10 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Fri Jul 17 2026 Binary package builder <builder@famillegratton.net> 2.5.0-2
+- release bump
+- apkbuild script rename
+
 * Thu Jul 16 2026 Binary package builder <builder@famillegratton.net> 2.5.0-1
 - bumped release number
 - Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
