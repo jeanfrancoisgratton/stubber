@@ -68,6 +68,12 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Fri Jul 17 2026 Binary package builder <builder@famillegratton.net> 2.5.1-1
+- version bump, added the manifest file
+- chore: update changelog for 2.5.0-2
+- release bump
+- apkbuild script rename
+
 * Fri Jul 17 2026 Binary package builder <builder@famillegratton.net> 2.5.0-2
 - release bump
 - apkbuild script rename
