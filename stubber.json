@@ -4,12 +4,12 @@
   "goversion": "1.26.5",
   "versionnumber": "2.5.1",
   "releasenumber": "1",
-  "description": "GO project scaffolding tool"
+  "description": "GO project scaffolding tool",
   "maintainer": "J.F.Gratton <jean-francois@famillegratton.net>",
   "packager": "Package builder <builder@famillegratton.net>",
   "section": "Packaging tool",
   "dependencies": "",
-  "url": "https://git.famillegratton.net:3000/mainline/stubber"
+  "url": "https://git.famillegratton.net:3000/mainline/stubber",
   "stubs": {
     "alpine": true,
     "debian": true,
