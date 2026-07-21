@@ -4,7 +4,7 @@
 %define _prefix              /opt
 %define _bash_completionsdir /usr/share/bash-completion/completions
 %define _zsh_completionsdir  /usr/share/zsh/site-functions
-%define _version 2.5.1
+%define _version 2.6.0
 %define _rel 1
 %define _arch x86_64
 %define _binaryname stubber
