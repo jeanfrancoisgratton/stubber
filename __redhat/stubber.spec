@@ -68,6 +68,12 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Mon Jul 20 2026 Binary package builder <builder@famillegratton.net> 2.6.0-1
+- stub generation now handles the new cicd pipeline in the BUILDERs
+- version bump
+- fixed typos in the manifest
+- renamed apkbuild script
+
 * Fri Jul 17 2026 Binary package builder <builder@famillegratton.net> 2.5.1-1
 - version bump, added the manifest file
 - chore: update changelog for 2.5.0-2
