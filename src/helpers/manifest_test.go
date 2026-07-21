@@ -6,6 +6,7 @@ package helpers
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -48,6 +49,30 @@ func TestSaveAndFindManifest(t *testing.T) {
 	}
 	if !got.Stubs.Debian || !got.Stubs.ArchLinux || got.Stubs.Alpine {
 		t.Errorf("stubs not preserved: %+v", got.Stubs)
+	}
+}
+
+// TestSaveManifestDoesNotHTMLEscape guards the human-readability of the manifest:
+// angle brackets in fields like the maintainer must stay literal so that a
+// `refresh` never rewrites a clean manifest into < / > escapes.
+func TestSaveManifestDoesNotHTMLEscape(t *testing.T) {
+	dir := t.TempDir()
+	m := Manifest{
+		SoftwareName: "myapp",
+		Maintainer:   "J.F.Gratton <jean-francois@example.net>",
+	}
+	if e := SaveManifest(dir, m); e != nil {
+		t.Fatalf("SaveManifest: %+v", e)
+	}
+
+	data, err := os.ReadFile(filepath.Join(dir, "myapp.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	// HTML-escaped output would render the brackets as unicode escapes and so
+	// would NOT contain the literal "<...>" substring.
+	if !strings.Contains(string(data), "<jean-francois@example.net>") {
+		t.Errorf("manifest did not keep literal angle brackets (HTML-escaped?):\n%s", data)
 	}
 }
 

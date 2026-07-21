@@ -26,7 +26,7 @@ func stubDebian(softwarename string) *cerr.CustomError {
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
-	paths := []string{"1.install-build-deps.sh", "2.build_binary.sh", "3.restore_repo.sh", "control", "preinst", "prerm", "postinst", "postrm"}
+	paths := []string{"install-build-deps.sh", "restore_repo.sh", "Makefile", "control", "preinst", "prerm", "postinst", "postrm"}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Debian"))
 	for _, pathloop := range paths {

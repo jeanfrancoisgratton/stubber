@@ -38,12 +38,12 @@ func stubAlpine(softwarename string) *cerr.CustomError {
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Alpine"))
-	paths := []string{"APKBUILD", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
+	paths := []string{"APKBUILD", "Makefile", "post-install", "pre-install", "pre-upgrade", "post-upgrade", "pre-deinstall", "post-deinstall"}
 
 	for _, pathloop := range paths {
 		targetFname := ""
 		// target filename is different when dealing with the install scripts (that is, everything except APKBUILD and the Makefile)
-		if pathloop != "APKBUILD" {
+		if pathloop != "APKBUILD" && pathloop != "Makefile" {
 			targetFname = helpers.BinaryName + "." + pathloop
 		} else {
 			targetFname = pathloop

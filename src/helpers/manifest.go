@@ -5,6 +5,7 @@
 package helpers
 
 import (
+	"bytes"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -75,13 +76,20 @@ func FindManifest(rootdir string) (Manifest, *cerr.CustomError) {
 
 // SaveManifest writes m to the root of rootdir.
 func SaveManifest(rootdir string, m Manifest) *cerr.CustomError {
-	data, err := json.MarshalIndent(m, "", "  ")
-	if err != nil {
+	// Encode with HTML escaping disabled so angle brackets in fields such as the
+	// maintainer ("Name <email>") stay literal instead of turning into < /
+	// >; this keeps the manifest human-readable and lets `refresh` round-trip
+	// it byte-for-byte. Encode already appends a trailing newline.
+	var buf bytes.Buffer
+	enc := json.NewEncoder(&buf)
+	enc.SetEscapeHTML(false)
+	enc.SetIndent("", "  ")
+	if err := enc.Encode(m); err != nil {
 		return &cerr.CustomError{Title: "Unable to encode the manifest", Message: err.Error()}
 	}
 
 	path := filepath.Join(rootdir, ManifestFileName(m.SoftwareName))
-	if err := os.WriteFile(path, append(data, '\n'), 0644); err != nil {
+	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
 		return &cerr.CustomError{Title: "Unable to write the manifest", Message: err.Error()}
 	}
 	return nil

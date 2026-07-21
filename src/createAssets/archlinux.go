@@ -26,7 +26,7 @@ func stubArchLinux(softwarename string) *cerr.CustomError {
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("ArchLinux"))
-	paths := []string{"1.install-build-deps.sh", "2.build-package.sh", "PKGBUILD"}
+	paths := []string{"1.install-build-deps.sh", "2.build-package.sh", "Makefile", "PKGBUILD"}
 
 	for _, path := range paths {
 
