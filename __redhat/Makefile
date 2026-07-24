@@ -48,16 +48,28 @@ upload:
 	/opt/bin/nxtools upload -r $(NEXUSREPO) $(DEST)/$(NAME)-$(VERSION)-$(RELEASE).x86_64.rpm
 
 commitcl:
-	git add ${SPEC}
-	git commit -m "chore: update changelog for $(VERSION)-$(RELEASE)"
+	@git add $(SPEC)
+	@if git diff --cached --quiet -- $(SPEC); then \
+	  echo "No changelog changes staged; nothing to commit."; \
+	else \
+	  git commit -m "chore: update changelog for $(VERSION)-$(RELEASE)"; \
+	fi
 
 clean:
 	rm -f  $(SOURCES)/$(NAME)-$(VERSION).tar.gz
 	rm -rf $(HOME)/rpmbuild/BUILD/$(NAME)-$(VERSION)
 
 tag:
-	git tag -a v${VERSION} -m 'v${VERSION}'
-	git push origin v${VERSION}
+	@if git rev-parse -q --verify "refs/tags/$(TAG)" >/dev/null; then \
+	  echo "Tag $(TAG) already exists locally; not re-creating."; \
+	else \
+	  git tag -a $(TAG) -m '$(TAG)'; \
+	fi
+	@if [ -z "$$(git ls-remote --tags origin "refs/tags/$(TAG)" 2>/dev/null)" ]; then \
+	  git push origin $(TAG); \
+	else \
+	  echo "Tag $(TAG) already on origin; nothing to push."; \
+	fi
 
 release:
 	${MAKE} rpmcl
