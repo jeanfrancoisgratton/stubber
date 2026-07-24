@@ -68,6 +68,9 @@ fi
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Fri Jul 24 2026 Binary package builder <builder@famillegratton.net> 2.6.0-2
+- RPMBUILD: re-added safeguards against broken makes
+
 * Mon Jul 20 2026 Binary package builder <builder@famillegratton.net> 2.6.0-1
 - stub generation now handles the new cicd pipeline in the BUILDERs
 - version bump
