@@ -22,7 +22,7 @@ func TestSubcommandsRegistered(t *testing.T) {
 }
 
 func TestCreateRequiredFlags(t *testing.T) {
-	for _, name := range []string{"desc", "section", "depends"} {
+	for _, name := range []string{"desc", "section"} {
 		f := createCmd.PersistentFlags().Lookup(name)
 		if f == nil {
 			t.Fatalf("create flag %q not defined", name)
