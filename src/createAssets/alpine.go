@@ -48,7 +48,7 @@ func stubAlpine(softwarename string) *cerr.CustomError {
 		} else {
 			targetFname = pathloop
 		}
-		if err := assets.ProcessEmbeddedAsset(filepath.Join("apk", pathloop), filepath.Join("__alpine", targetFname), placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset(filepath.Join("alpine", pathloop), filepath.Join("__alpine", targetFname), placeholders); err != nil {
 			return err
 		}
 		os.Chmod(filepath.Join("__alpine", targetFname), os.FileMode(0755))

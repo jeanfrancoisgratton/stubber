@@ -15,7 +15,7 @@ Release:    %{_rel}
 Summary:    stubber
 
 Group:      Utils
-License:    GPL2.0
+License:    GPL-3.0-or-later
 URL:        https://git.famillegratton.net:3000/mainline/stubber.git
 
 Source0:    %{name}-%{_version}.tar.gz

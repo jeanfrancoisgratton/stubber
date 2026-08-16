@@ -25,13 +25,20 @@ func stubDebian(softwarename string) *cerr.CustomError {
 		"{{ DEPENDENCIES }}":    helpers.Dependencies,
 		"{{ BINARY NAME }}":     helpers.BinaryName,
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
+		"{{ URL }}":             helpers.Url,
+		"{{ COPYRIGHT YEAR }}":  helpers.CopyrightYear(),
 	}
-	paths := []string{"install-build-deps.sh", "restore_repo.sh", "Makefile", "control", "preinst", "prerm", "postinst", "postrm"}
+	paths := []string{"install-build-deps.sh", "restore_repo.sh", "Makefile", "control", "copyright", "preinst", "prerm", "postinst", "postrm"}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Debian"))
 	for _, pathloop := range paths {
-		if err := assets.ProcessEmbeddedAsset(filepath.Join("deb", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
+		if err := assets.ProcessEmbeddedAsset(filepath.Join("debian", pathloop), filepath.Join("__debian", pathloop), placeholders); err != nil {
 			return err
+		}
+		// copyright is documentation, not something dpkg or the build ever
+		// executes; the Makefile installs it 0644 into the package.
+		if pathloop == "copyright" {
+			continue
 		}
 		os.Chmod(filepath.Join("__debian", pathloop), os.FileMode(0755))
 	}

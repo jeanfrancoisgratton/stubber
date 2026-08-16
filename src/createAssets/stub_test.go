@@ -88,6 +88,98 @@ func TestCreateStubWritesFilesAndManifest(t *testing.T) {
 	}
 }
 
+// dontexec.sh manages the _dontexec build-veto marker. It is the one skeleton
+// file that is stubber-owned tooling rather than user content, so it is emitted
+// by create *and* re-emitted by refresh, and it has to land executable -- a
+// non-executable veto helper is useless.
+func TestDontexecIsRenderedExecutableByCreateAndRefresh(t *testing.T) {
+	assertExecutable := func(path string) {
+		t.Helper()
+		fi, err := os.Stat(path)
+		if err != nil {
+			t.Fatalf("expected %s: %v", path, err)
+		}
+		if fi.Mode().Perm()&0111 == 0 {
+			t.Errorf("%s is not executable (mode %v)", path, fi.Mode().Perm())
+		}
+	}
+
+	root := filepath.Join(t.TempDir(), "demo")
+	setBaseline(root)
+	helpers.SkeletonStub = true
+
+	if e := CreateStub("demo"); e != nil {
+		t.Fatalf("CreateStub: %+v", e)
+	}
+	script := filepath.Join(root, "dontexec.sh")
+	assertExecutable(script)
+
+	// It carries no project-specific value, so nothing should have been
+	// substituted into it.
+	if got := readFile(t, script); strings.Contains(got, "{{") {
+		t.Errorf("dontexec.sh contains an unrendered placeholder:\n%s", got)
+	}
+
+	// Refresh is how an already-scaffolded project picks it up: delete it and
+	// confirm a skeleton refresh puts it back, executable.
+	if err := os.Remove(script); err != nil {
+		t.Fatal(err)
+	}
+	setBaseline(root)
+	helpers.SkeletonStub = true
+
+	if e := RefreshStub("demo"); e != nil {
+		t.Fatalf("RefreshStub: %+v", e)
+	}
+	assertExecutable(script)
+}
+
+// The --depends flag is free-form and Debian-shaped, but pacman needs a bash
+// array of individually quoted elements, so stubArchLinux rewrites it.
+func TestPacmanDepends(t *testing.T) {
+	cases := []struct {
+		name, in, want string
+	}{
+		{"empty stays empty", "", ""},
+		{"single", "libc", "'libc'"},
+		{"comma separated", "libc, bash-completion", "'libc' 'bash-completion'"},
+		{"space separated", "libc bash-completion", "'libc' 'bash-completion'"},
+		{"ragged separators", " libc ,,  bash-completion ,", "'libc' 'bash-completion'"},
+		{"version constraint survives", "glibc>=2.38", "'glibc>=2.38'"},
+		// A single quote cannot be escaped inside a bash single-quoted string.
+		{"embedded quote", "we'ird", `'we'\''ird'`},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := pacmanDepends(tc.in); got != tc.want {
+				t.Errorf("pacmanDepends(%q) = %q, want %q", tc.in, got, tc.want)
+			}
+		})
+	}
+}
+
+// The URL and dependency placeholders were both missing from stubArchLinux's
+// replacement map, so PKGBUILD rendered url="{{ URL }}" literally and silently
+// dropped whatever --depends was given.
+func TestArchLinuxRendersUrlAndDepends(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "demo")
+	setBaseline(root)
+	helpers.ArchLinuxStub = true
+
+	if e := CreateStub("demo"); e != nil {
+		t.Fatalf("CreateStub: %+v", e)
+	}
+
+	pkgbuild := filepath.Join(root, "__archlinux", "PKGBUILD")
+	assertContains(t, pkgbuild, `url="https://example.com/repo"`)
+	assertContains(t, pkgbuild, `depends=('libc')`)
+
+	if got := readFile(t, pkgbuild); strings.Contains(got, "{{") {
+		t.Errorf("PKGBUILD contains an unrendered placeholder:\n%s", got)
+	}
+}
+
 func TestRefreshOnlyTouchesRequestedStubs(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "demo")
 	setBaseline(root)

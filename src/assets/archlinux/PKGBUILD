@@ -7,10 +7,10 @@ pkgrel={{ PACKAGE RELEASE }}
 pkgdesc="{{ DESCRIPTION }}"
 arch=('x86_64')
 url="{{ URL }}"
-license=('GPL-2.0-only')
+license=('GPL-3.0-or-later')
 
 makedepends=('go')
-depends=()
+depends=({{ DEPENDENCIES }})
 
 optdepends=()
 

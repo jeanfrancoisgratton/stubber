@@ -29,7 +29,7 @@ placeholders substituted at run time from the flags you pass.
   - [Alpine (`-a`)](#alpine--a)
   - [Debian (`-d`)](#debian--d)
   - [RedHat (`-r`)](#redhat--r)
-  - [ArchLinux (`-A`)](#archlinux--a-1)
+  - [ArchLinux (`-A`)](#archlinux--a)
 - [Template placeholders](#template-placeholders)
 - [Assets management](#assets-management)
 - [Shell completion](#shell-completion)
@@ -131,7 +131,7 @@ stubber create [-A] [-a] [-d] [-r] [-k] -D <desc> -s <section> -e <deps> [other 
 | `--alpine`    | `-a` | `__alpine/` — `APKBUILD` + install/upgrade/deinstall scripts |
 | `--debian`    | `-d` | `__debian/` — control file, build scripts, maintainer scripts |
 | `--redhat`    | `-r` | `__redhat/` — spec file, `Makefile`-driven RPM build, changelog helper |
-| `--skeleton`  | `-k` | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, `cmd/completion.go`, build scripts, `README.md`, `CHANGELOG.md`, `LICENSE`, etc. |
+| `--skeleton`  | `-k` | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, `cmd/completion.go`, build scripts, `README.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `LICENSE`, etc. |
 
 Value flags used to fill in the templates. `-D`, `-s`, and `-e` are
 **mandatory** on `create` (marked ⭑ below) — even the ones with a default must
@@ -145,7 +145,7 @@ be supplied explicitly:
 | `--maintainer` | `-M` | `Jean-Francois Gratton <jean-francois@famillegratton.net>` | Maintainer name/email — `{{ MAINTAINER }}`. **Override this if you're not me.** |
 | `--packager` | `-P` | `APK Builder <builder@famillegratton.net>` | Packager name/email (Alpine) — `{{ PACKAGER }}`. **Override this too.** |
 | `--section` ⭑ | `-s` | `Packaging tool` | **Required.** Debian package section / RPM `Group` — `{{ PACKAGE SECTION }}` / `{{ SECTION }}`. |
-| `--depends` ⭑ | `-e` | *(empty)* | **Required.** Package dependencies, passed straight into the Debian `control` file — `{{ DEPENDENCIES }}`. |
+| `--depends` ⭑ | `-e` | *(empty)* | **Required.** Package dependencies — `{{ DEPENDENCIES }}`. Passed straight into the Debian `control` file, and rewritten into a quoted array for the Arch `PKGBUILD`. |
 | `--url` | `-u` | `https://git.famillegratton.net:3000/ADD_URL_HERE` | Upstream/git repo URL — `{{ URL }}`. **Override this.** |
 
 > These three are required on **`create`** only. `refresh` leaves them optional,
@@ -309,6 +309,7 @@ The exact set of files generated depends on which of `-A` / `-a` / `-d` /
 .
 ├── __alpine/
 │   ├── APKBUILD
+│   ├── Makefile
 │   ├── <binary>.post-install
 │   ├── <binary>.pre-install
 │   ├── <binary>.pre-upgrade
@@ -318,12 +319,14 @@ The exact set of files generated depends on which of `-A` / `-a` / `-d` /
 ├── __archlinux/
 │   ├── 1.install-build-deps.sh
 │   ├── 2.build-package.sh
+│   ├── Makefile
 │   └── PKGBUILD
 ├── __debian/
-│   ├── 1.install-build-deps.sh
-│   ├── 2.build_binary.sh
-│   ├── 3.restore_repo.sh
+│   ├── Makefile
 │   ├── control
+│   ├── copyright
+│   ├── install-build-deps.sh
+│   ├── restore_repo.sh
 │   ├── preinst
 │   ├── postinst
 │   ├── prerm
@@ -331,15 +334,17 @@ The exact set of files generated depends on which of `-A` / `-a` / `-d` /
 ├── __redhat/
 │   ├── <SOFTWARENAME>.spec
 │   ├── Makefile
-│   ├── PACKAGE_RPM.md
 │   ├── rpmbuild-deps.sh
 │   └── updateChangelog.sh
 ├── .gitignore
+├── dontexec.sh
 ├── <SOFTWARENAME>.json
 ├── CHANGELOG.md
 ├── ISSUES.md
 ├── LICENSE
 ├── README.md
+├── ROADMAP.md
+├── TODO.md
 ├── go.version
 └── src
     ├── build.sh
@@ -356,20 +361,33 @@ The exact set of files generated depends on which of `-A` / `-a` / `-d` /
 A minimal but buildable Go project: `src/main.go`, `src/cmd/root.go` (a Cobra
 root command), `src/cmd/completion.go` (bash/zsh completion subcommand),
 `src/go.mod`, plus `build.sh` / `updateBuildDeps.sh` helper scripts and the
-usual `README.md` / `CHANGELOG.md` / `ISSUES.md` / `LICENSE` / `.gitignore` /
-`go.version` files at the project root.
+usual `README.md` / `CHANGELOG.md` / `ISSUES.md` / `ROADMAP.md` / `TODO.md` /
+`LICENSE` / `.gitignore` / `go.version` files at the project root, plus
+`dontexec.sh` (see [Building packages](#building-packages)).
 
 ### Alpine (`-a`)
 
-`__alpine/APKBUILD` plus one maintainer script per package lifecycle hook
-(`post-install`, `pre-install`, `pre-upgrade`, `post-upgrade`, `pre-deinstall`,
-`post-deinstall`), each named `<binaryname>.<hook>` and made executable.
+`__alpine/APKBUILD` and `__alpine/Makefile` (`build` / `release` / `clean` /
+`info`, reading package metadata straight from `APKBUILD`), plus one maintainer
+script per package lifecycle hook (`post-install`, `pre-install`,
+`pre-upgrade`, `post-upgrade`, `pre-deinstall`, `post-deinstall`), each named
+`<binaryname>.<hook>` and made executable.
 
 ### Debian (`-d`)
 
-`__debian/control` plus build helper scripts (`1.install-build-deps.sh`,
-`2.build_binary.sh`, `3.restore_repo.sh`) and maintainer scripts (`preinst`,
-`postinst`, `prerm`, `postrm`), all made executable.
+`__debian/control` and `__debian/Makefile` (`build` / `upload` / `release` /
+`clean` / `info`, reading package metadata straight from `control`), plus
+`copyright`, `install-build-deps.sh`, `restore_repo.sh`, and maintainer scripts
+(`preinst`, `postinst`, `prerm`, `postrm`).
+
+`copyright` is a machine-readable DEP-5 file. Debian policy puts it in the
+package at `/usr/share/doc/<package>/copyright` rather than in `DEBIAN/`, so the
+`Makefile` installs it there, mode 0644 — everything else in `__debian/` is made
+executable.
+
+The `Makefile` folds together what the old numbered helper scripts did: it
+copies — never moves — the `DEBIAN` control files into a throwaway staging
+tree, so there is nothing to `git restore` afterwards.
 
 ### RedHat (`-r`)
 
@@ -379,21 +397,41 @@ driven by a `Makefile` instead of `tito`:
 | File | Purpose |
 |------|---------|
 | `<SOFTWARENAME>.spec` | The RPM spec file |
-| `Makefile` | Drives the build (`tarball`, `rpm`, `rpmcl`, `upload`, `commitcl`, `clean` targets) |
-| `rpmbuild-deps.sh` | Installs `BuildRequires` from the spec, plus the Go toolchain |
+| `Makefile` | Drives the build (`tarball`, `rpm`, `rpmcl`, `upload`, `commitcl`, `tag`, `release`, `clean` targets) |
+| `rpmbuild-deps.sh` | Installs `BuildRequires` from the spec (via `dnf builddep`), plus the Go toolchain |
 | `updateChangelog.sh` | Appends a `%changelog` entry from `git log` since the last tag |
-| `PACKAGE_RPM.md` | Short walkthrough of the build workflow |
+
+`make release` is the intended entry point; it runs `rpmcl`, `commitcl`,
+`upload` and `tag` in order. Two things about it are worth knowing:
+
+- `commitcl` pushes the regenerated `%changelog` to `CL_BRANCH` (`develop` by
+  default), **not** to the branch that was built. The builder checks out
+  `origin/main`, so committing there would re-fire the CI hook and trigger a
+  redundant rebuild of every distribution on each release. Override with
+  `make commitcl CL_BRANCH=main` if you need to.
+- `TAG` is `v$(VERSION)` with `~` rewritten to `-`, because RPM uses `~` as its
+  pre-release separator but git forbids it in a ref name. `check-tags`
+  validates the result with `git check-ref-format` before anything is built.
 
 Typical workflow (from `__redhat/`):
+
+```sh
+make release    # the whole thing: rpmcl + commitcl + upload + tag
+```
+
+or, step by step:
 
 ```sh
 make rpm        # build the RPM (tarball + rpmbuild -bb)
 # or:
 make rpmcl      # same, plus updates the spec's %changelog
 make upload     # optional: push to a Nexus Repository Manager via nxtools
-make commitcl   # commit the updated %changelog
-git push
+make commitcl   # push the updated %changelog to CL_BRANCH
+make tag        # create and push v<version>
 ```
+
+There is no `git push` step: `commitcl` pushes its own commit, and nothing in
+the flow commits to the branch being built.
 
 ### ArchLinux (`-A`)
 
@@ -402,6 +440,7 @@ New in stubber v2.00.00. Generates `__archlinux/`:
 | File | Purpose |
 |------|---------|
 | `PKGBUILD` | Standard Arch package build recipe (`makepkg`) |
+| `Makefile` | `build` / `release` / `clean` / `info`, reading package metadata straight from `PKGBUILD` |
 | `1.install-build-deps.sh` | Installs `base-devel` via `pacman` |
 | `2.build-package.sh` | Runs `makepkg --force --syncdeps --noconfirm` and cleans up `src/`/`pkg/` |
 
@@ -412,9 +451,9 @@ Typical workflow (from `__archlinux/`):
 ./2.build-package.sh        # builds the package via makepkg, output to /data
 ```
 
-> See [Known issues / caveats](#known-issues--caveats) — the generated
-> `PKGBUILD` currently leaves `{{ URL }}` unsubstituted, and its `license=`
-> field doesn't match this project's actual license.
+`{{ DEPENDENCIES }}` is rewritten on the way in: `-e "libc, bash-completion"`
+is Debian-shaped, and pacman wants each element quoted separately, so the
+generated `PKGBUILD` gets `depends=('libc' 'bash-completion')`.
 
 ## Template placeholders
 
@@ -432,11 +471,12 @@ stubber substitutes, and which flag/value feeds each one:
 | `{{ MAINTAINER }}` | `-M` / `--maintainer` | alpine, debian |
 | `{{ PACKAGER }}` | `-P` / `--packager` | alpine only |
 | `{{ SECTION }}` / `{{ PACKAGE SECTION }}` | `-s` / `--section` | redhat (`Group`), debian (`Section`), skeleton |
-| `{{ DEPENDENCIES }}` | `-e` / `--depends` | debian only |
-| `{{ URL }}` | `-u` / `--url` | alpine, redhat — **not currently wired up for archlinux** (see caveats) |
+| `{{ DEPENDENCIES }}` | `-e` / `--depends` | debian (comma-separated), archlinux (rewritten into a quoted `depends=()` array) |
+| `{{ URL }}` | `-u` / `--url` | alpine, redhat, archlinux, debian (`copyright`) |
 | `{{ GO VERSION }}` | `-g` / `--gover` | alpine, debian, redhat, skeleton |
 | `{{ GO MAJOR MINOR }}` | Derived from `{{ GO VERSION }}` (e.g. `1.26.4` → `1.26`) | skeleton (`go.mod`) |
 | `{{ ARCHITECTURE }}` | Hardcoded `amd64` (Debian); Alpine maps `amd64` → `x86_64` internally; Arch/RPM hardcode `x86_64` in their templates | debian |
+| `{{ COPYRIGHT YEAR }}` | Always the current year, generated automatically — no flag feeds it, and it is not stored in the manifest | debian (`copyright`) |
 | `{{ RELEASE DATE }}` | Today's date (`YYYY.MM.DD`), generated automatically | alpine, debian, redhat, skeleton |
 
 ## Assets management
@@ -484,8 +524,8 @@ cd stubber/src
 ```
 
 `build.sh` just runs `go build` — there's no separate asset-bundle
-regeneration step. Templates under `src/assets/` (organized into `apk/`,
-`arch/`, `deb/`, `rpm/`, and `skeleton/`) are embedded directly via
+regeneration step. Templates under `src/assets/` (organized into `alpine/`,
+`archlinux/`, `debian/`, `redhat/`, and `skeleton/`) are embedded directly via
 `//go:embed` in `src/assets/assets.go`, so editing a template and rebuilding
 is enough. `src/assets/template_handler.go` (`assets.ProcessEmbeddedAsset`)
 reads an embedded asset, substitutes placeholders, and writes it into the
@@ -498,9 +538,21 @@ The required Go version is tracked in `go.version` at the repo root
 
 The `__alpine/`, `__archlinux/`, `__debian/`, and `__redhat/` directories at
 the repo root are stubber's *own* packaging stubs (generated by stubber, for
-itself — dogfooding). The RPM workflow is documented in
-[`__redhat/PACKAGE_RPM.md`](__redhat/PACKAGE_RPM.md); the Alpine/Arch/Debian
-stubs assume the author's home-lab build containers, which aren't published.
+itself — dogfooding). The RPM workflow is described in the "RedHat (`-r`)"
+section above; the Alpine/Arch/Debian stubs assume the author's home-lab build
+containers, which aren't published.
+
+`dontexec.sh`, at the repo root, creates or removes the `_dontexec` marker that
+tells the build containers to skip a directory:
+
+```sh
+./dontexec.sh __redhat      # skip the RPM build
+./dontexec.sh -r __redhat   # build it again
+./dontexec.sh -g            # skip every build in this repo
+```
+
+Don't add `_dontexec` to `.gitignore`: the marker is read from the builder's own
+checkout, so an ignored one never reaches it and the veto silently does nothing.
 
 If you'd rather not build from source, grab a pre-built package from the
 [Releases](https://github.com/jeanfrancoisgratton/stubber/releases) page.
@@ -512,14 +564,12 @@ If you'd rather not build from source, grab a pre-built package from the
 - After running `stubber create -k`, `go.mod` / `go.sum` in the generated
   skeleton may need a `go mod init` / `go mod tidy` pass before `src/build.sh`
   will succeed.
-- **ArchLinux (`-A`)**: the generated `PKGBUILD` leaves `{{ URL }}`
-  unsubstituted (the placeholder isn't currently in `stubArchLinux`'s
-  replacement map), so `url="{{ URL }}"` will appear literally in the output
-  — edit it by hand for now.
-- **ArchLinux (`-A`) / RedHat (`-r`)**: the generated `PKGBUILD` declares
-  `license=('GPL-2.0-only')` and the `.spec` declares `License: GPL2.0`,
-  which doesn't match this project's actual GPL-3.0 license. Double-check the
-  license metadata in generated packaging files before publishing.
+- The packaging templates declare `GPL-3.0-or-later`, matching the `LICENSE`
+  the skeleton ships (the full GPLv3 text, whose boilerplate grants "version 3
+  ... or (at your option) any later version"). If your project uses a different
+  license, change it in the generated `PKGBUILD` / `APKBUILD` / `.spec` /
+  `__debian/copyright` **and** replace `LICENSE` — stubber does not derive
+  those fields from anything, and nothing cross-checks them.
 - Mainly tested on x86_64/amd64. Lightly tested on Apple Silicon (arm64);
   generated files may need extra tweaking on other architectures.
 - The `-g`/`--gover` flag's built-in `-h` description is misleading (it says
@@ -530,8 +580,13 @@ If you'd rather not build from source, grab a pre-built package from the
   `dpkg-buildpackage`, `rpmbuild`, `makepkg`) are unforgiving of malformed
   metadata.
 
-See [ISSUES.md](ISSUES.md) for the current open-issue tracker.
+See [ISSUES.md](docs/ISSUES.md) for the current open-issue tracker.
 
 ## License
 
-[GPL-3.0](LICENSE)
+[GPL-3.0-or-later](LICENSE) — the full GPLv3 text, whose boilerplate grants
+"version 3 of the License, or (at your option) any later version".
+
+`LICENSE` sits at the repo root, matching where stubber puts it in the projects
+it scaffolds. `CHANGELOG.md` and `ISSUES.md` still live under `docs/`, which
+scaffolded projects get at their root instead.

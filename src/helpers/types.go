@@ -24,6 +24,16 @@ var Url = ""
 var Quiet = false
 var ReleaseDate = time.Now().Format("2006.01.02")
 
+// CopyrightYear is the year stamped into debian/copyright's Copyright line.
+// It is the year alone: ReleaseDate is too precise to read as a copyright
+// assertion.
+//
+// Deliberately a function rather than one of the flag-backed vars above: it is
+// always the current year. There is no flag to override it and it is not
+// recorded in the manifest, so a refresh years later re-stamps the year it runs
+// in instead of replaying a stale one.
+func CopyrightYear() string { return time.Now().Format("2006") }
+
 //var EnableGithubActions = false
 
 // Stubs records which packaging/skeleton stubs a project owns.

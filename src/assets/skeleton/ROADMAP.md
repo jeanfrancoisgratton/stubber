@@ -3,7 +3,7 @@
 ## Current version
 ```bash
 # {{ BINARY NAME }} -v
-{{ BINARY NAME }} version {{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }} ({{ RELEASE DATE }}
+{{ BINARY NAME }} version {{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }} ({{ RELEASE DATE }})
 ```
 
 | Task           | Slated for | Actual release | Comments |

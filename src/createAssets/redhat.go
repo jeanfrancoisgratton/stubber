@@ -26,7 +26,7 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
 	}
 
-	paths := []string{"specfile", "rpmbuild-deps.sh", "Makefile", "updateChangelog.sh", "PACKAGE_RPM.md"}
+	paths := []string{"specfile", "rpmbuild-deps.sh", "Makefile", "updateChangelog.sh"}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("RedHat"))
 	for _, pathloop := range paths {
@@ -34,7 +34,7 @@ func stubRedHat(softwarename string) *cerr.CustomError {
 		if pathloop == "specfile" {
 			filename = softwarename + ".spec"
 		}
-		if err = assets.ProcessEmbeddedAsset(filepath.Join("rpm", pathloop), filepath.Join("__redhat", filename), placeholders); err != nil {
+		if err = assets.ProcessEmbeddedAsset(filepath.Join("redhat", pathloop), filepath.Join("__redhat", filename), placeholders); err != nil {
 			return err
 		}
 	}

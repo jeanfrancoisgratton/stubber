@@ -83,14 +83,26 @@ func RefreshStub(softname string) *cerr.CustomError {
 	return nil
 }
 
-// refreshSkeleton only re-renders go.version. Every other skeleton file is
-// either user-authored source (src/...) or user-edited content (README,
+// refreshSkeleton re-renders go.version and dontexec.sh. Every other skeleton
+// file is either user-authored source (src/...) or user-edited content (README,
 // CHANGELOG, ...) and must never be overwritten by a refresh.
+//
+// dontexec.sh qualifies because it is stubber-owned tooling, not content: it
+// carries no project-specific value and nobody edits it by hand, so refreshing
+// is how already-scaffolded projects pick it up.
 func refreshSkeleton() *cerr.CustomError {
 	placeholders := map[string]string{
 		"{{ GO VERSION }}": helpers.GoVersion,
 	}
 
 	fmt.Printf("Stub: %s (metadata only)\n", hftx.Yellow("Skeleton"))
-	return assets.ProcessEmbeddedAsset("skeleton/go.version", "go.version", placeholders)
+	if e := assets.ProcessEmbeddedAsset("skeleton/go.version", "go.version", placeholders); e != nil {
+		return e
+	}
+	if e := assets.ProcessEmbeddedAsset("skeleton/dontexec.sh", "dontexec.sh", nil); e != nil {
+		return e
+	}
+	_ = os.Chmod("dontexec.sh", os.FileMode(0755))
+
+	return nil
 }

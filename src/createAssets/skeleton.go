@@ -34,11 +34,14 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 
 	paths := []string{
 		"ISSUES.md",
+		"ROADMAP.md",
+		"TODO.md",
 		"go.version",
 		"CHANGELOG.md",
 		"LICENSE",
 		"README.md",
 		"gitignore",
+		"dontexec.sh",
 		"src/build.sh",
 		"src/go.mod.tmpl",
 		"src/main.go.tmpl",

@@ -15,7 +15,7 @@ Release:    %{_rel}
 Summary:    {{ DESCRIPTION }}
 
 Group:      {{ SECTION }}
-License:    GPL2.0
+License:    GPL-3.0-or-later
 URL:        {{ URL }}
 
 Source0:    %{name}-%{_version}.tar.gz

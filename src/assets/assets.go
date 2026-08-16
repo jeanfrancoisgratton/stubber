@@ -15,15 +15,16 @@ import "embed"
 //
 // Asset names are relative to this directory, for example:
 //
-//	apk/APKBUILD
-//	deb/control
-//	rpm/specfile
+//	alpine/APKBUILD
+//	debian/control
+//	redhat/specfile
 //	skeleton/src/go.mod
 //
-// That preserves the old go-bindata names produced by:
-//
-//	go-bindata -prefix ../assets ../assets/...
+// Each packaging directory is named after the distribution family it targets,
+// matching both the __* directory it is rendered into and the stub function
+// that renders it (alpine -> __alpine -> stubAlpine, and so on). The older
+// packaging-format names (apk, deb, arch, rpm) were renamed for that symmetry.
 //
 
-//go:embed all:apk all:arch all:deb all:rpm all:skeleton
+//go:embed all:alpine all:archlinux all:debian all:redhat all:skeleton
 var FS embed.FS

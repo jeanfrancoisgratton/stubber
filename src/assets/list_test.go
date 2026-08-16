@@ -9,10 +9,10 @@ func TestEmbeddedAssetsPresent(t *testing.T) {
 	// A representative file from every embedded stub set, including the renamed
 	// skeleton templates (which must still be embedded via the all: prefix).
 	for _, p := range []string{
-		"apk/APKBUILD",
-		"arch/PKGBUILD",
-		"deb/control",
-		"rpm/specfile",
+		"alpine/APKBUILD",
+		"archlinux/PKGBUILD",
+		"debian/control",
+		"redhat/specfile",
 		"skeleton/go.version",
 		"skeleton/src/main.go.tmpl",
 		"skeleton/src/cmd/root.go.tmpl",
