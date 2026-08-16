@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: stubber
-Source: https://git.famillegratton.net:3000/mainline/stubber.git
+Source: https://git.famillegratton.net:3000/mainline/stubber
 
 Files: *
 Copyright: 2026 J.F.Gratton <jean-francois@famillegratton.net>

@@ -19,7 +19,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "2.7.0 (2026.08.16), Go version : v" + strings.TrimPrefix(runtime.Version(), "go"),
+	Version: "2.7.1 (2026.08.16), Go version : v" + strings.TrimPrefix(runtime.Version(), "go"),
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -176,7 +176,7 @@ func init() {
 	// These must be supplied explicitly on `create` (they seed the manifest)
 	_ = createCmd.MarkPersistentFlagRequired("desc")
 	_ = createCmd.MarkPersistentFlagRequired("section")
-	_ = createCmd.MarkPersistentFlagRequired("depends")
+	//_ = createCmd.MarkPersistentFlagRequired("depends")
 
 	// refresh reuses the same value flags as create (minus -u); unpassed flags keep their stored value
 	refreshCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
