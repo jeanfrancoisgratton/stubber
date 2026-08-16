@@ -54,3 +54,7 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Sun Aug 16 2026 Binary package builder <builder@famillegratton.net> 2.7.1-1
+- removed mandatory -e flag
+- chore: update changelog for 2.7.0-1
+
