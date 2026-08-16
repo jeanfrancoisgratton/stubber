@@ -13,5 +13,6 @@
 - [ ] __debian/ multiple issues: typo in control, missing fields, file needlessly updated (2.*, etc)
 - [ ] dtools.spec is being borked
 - [ ] rpmbuild-deps.sh is being ignored when upgrading GO version. Mode reverted to 0644 
+- [ ] RPM : port the 2026-08-16 release-flow changes into `src/assets/rpm/` (changelog commit goes to develop, `~` in tag names) — see [PENDING-rpm-release-flow.md](PENDING-rpm-release-flow.md)
 
 <br><br><br>
