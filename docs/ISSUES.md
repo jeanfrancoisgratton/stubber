@@ -12,7 +12,9 @@
 - [ ] __alpine/APKBUILD: arch: reverted to amd64 instead of X86_64
 - [ ] __debian/ multiple issues: typo in control, missing fields, file needlessly updated (2.*, etc)
 - [ ] dtools.spec is being borked
-- [ ] rpmbuild-deps.sh is being ignored when upgrading GO version. Mode reverted to 0644 
+- [ ] rpmbuild-deps.sh is being ignored when upgrading GO version. Mode reverted to 0644
+  - [x] GO version half fixed in `__redhat/` (read `../go.version`, not `go.version` — the script runs from `__redhat/`)
+  - [ ] still to do: same fix in `src/assets/rpm/rpmbuild-deps.sh`, and the 0644 mode on the generated asset
 - [ ] RPM : port the 2026-08-16 release-flow changes into `src/assets/rpm/` (changelog commit goes to develop, `~` in tag names) — see [PENDING-rpm-release-flow.md](PENDING-rpm-release-flow.md)
 
 <br><br><br>
