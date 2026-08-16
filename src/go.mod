@@ -1,6 +1,6 @@
 module stubber
 
-go 1.26.5
+go 1.26.6
 
 require (
 	github.com/jeanfrancoisgratton/customError/v3 v3.0.0
