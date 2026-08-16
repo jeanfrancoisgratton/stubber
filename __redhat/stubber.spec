@@ -51,6 +51,18 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 %attr(0775,root,root) %{_bindir}/%{_binaryname}
 
 %changelog
+* Sun Aug 16 2026 Binary package builder <builder@famillegratton.net> 2.7.0-1
+- GO version bump
+- removed group management and shell completion from the tool itself
+- ASSETGEN DEB: removed group management commands, ASSETGEN RPM: removed shell completion scripts
+- resynched asset generation with current-days tools where it was manually managed
+- assets: resynch __* tooling with vmman4
+- RPM: record changelog on develop; make tag names ~-safe
+- chore: update changelog for 2.6.0-3
+- git tag logic was not idempotent break-proof
+- chore: update changelog for 2.6.0-2
+- RPMBUILD: re-added safeguards against broken makes
+
 * Fri Jul 24 2026 Binary package builder <builder@famillegratton.net> 2.6.0-3
 - git tag logic was not idempotent break-proof
 - chore: update changelog for 2.6.0-2
