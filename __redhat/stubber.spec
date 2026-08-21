@@ -54,6 +54,12 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Fri Aug 21 2026 Binary package builder <builder@famillegratton.net> 2.7.2-1
+- bugfix(ARCHBUILDER): added safeguard when cleaning up environment
+- Merge branch 'main' into develop
+- ARCHBUILD: build failures because go test was still expecting the -e flag to be mandatory
+- chore: update changelog for 2.7.1-1
+
 * Sun Aug 16 2026 Binary package builder <builder@famillegratton.net> 2.7.1-1
 - removed mandatory -e flag
 - chore: update changelog for 2.7.0-1
