@@ -54,6 +54,11 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Wed Aug 26 2026 Binary package builder <builder@famillegratton.net> 2.8.0-1
+- version bump
+- Added a new asset, __windows/
+- chore: update changelog for 2.7.2-1
+
 * Fri Aug 21 2026 Binary package builder <builder@famillegratton.net> 2.7.2-1
 - bugfix(ARCHBUILDER): added safeguard when cleaning up environment
 - Merge branch 'main' into develop
