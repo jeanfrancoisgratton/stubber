@@ -4,8 +4,8 @@
 ___
 A CLI tool that generates the directory structure, build scripts, and packaging
 metadata for a new Go project, following a personal CI/CD convention: Alpine
-(APK), Debian/Ubuntu (DEB), RHEL/Fedora (RPM), and Arch Linux (PKGBUILD)
-packaging stubs, plus a ready-to-build Go skeleton.
+(APK), Debian/Ubuntu (DEB), RHEL/Fedora (RPM), Arch Linux (PKGBUILD), and
+Windows (.msi) packaging stubs, plus a ready-to-build Go skeleton.
 
 Everything is generated from templates embedded in the binary
 (`src/assets/`, embedded via `go:embed` in `src/assets/assets.go`), with
@@ -30,6 +30,7 @@ placeholders substituted at run time from the flags you pass.
   - [Debian (`-d`)](#debian--d)
   - [RedHat (`-r`)](#redhat--r)
   - [ArchLinux (`-A`)](#archlinux--a)
+  - [Windows (`-w`)](#windows--w)
 - [Template placeholders](#template-placeholders)
 - [Assets management](#assets-management)
 - [Shell completion](#shell-completion)
@@ -43,7 +44,7 @@ placeholders substituted at run time from the flags you pass.
 ## How it works
 
 `stubber create` takes a software name and one or more "stub" flags
-(`-A`, `-a`, `-d`, `-r`, `-k`). Each stub flag tells stubber which set of
+(`-A`, `-a`, `-d`, `-r`, `-w`, `-k`). Each stub flag tells stubber which set of
 templated files to render into the project directory. Other flags (`-V`,
 `-D`, `-M`, `-u`, etc.) supply the values used to fill in the placeholders in
 those templates.
@@ -68,8 +69,8 @@ Otherwise, build it yourself — see [Building from source](#building-from-sourc
 ## Quick start
 
 ```sh
-# Full project: Go skeleton + all four packaging stubs
-stubber create -A -a -d -r -k \
+# Full project: Go skeleton + all five packaging stubs
+stubber create -A -a -d -r -w -k \
   -V 1.0.0 -R 1 \
   -D "My awesome CLI tool" \
   -u "https://git.famillegratton.net:3000/jfgratton/mytool" \
@@ -77,8 +78,8 @@ stubber create -A -a -d -r -k \
 ```
 
 This creates a `mytool/` directory in the current working directory containing
-a buildable Go skeleton plus `__archlinux/`, `__alpine/`, `__debian/`, and
-`__redhat/` packaging stubs.
+a buildable Go skeleton plus `__archlinux/`, `__alpine/`, `__debian/`,
+`__redhat/`, and `__windows/` packaging stubs.
 
 > **Always review the generated files.** stubber is a *generic* stub
 > generator — it doesn't know anything about your project beyond what you
@@ -118,11 +119,11 @@ These apply to `stubber` itself and are inherited by all subcommands:
 ### `create` flags
 
 `stubber create` requires **exactly one** positional argument (the software
-name), **at least one** of `-A`, `-a`, `-d`, `-r`, `-k`, and the three
+name), **at least one** of `-A`, `-a`, `-d`, `-r`, `-w`, `-k`, and the three
 mandatory value flags `-D`, `-s`, `-e`:
 
 ```sh
-stubber create [-A] [-a] [-d] [-r] [-k] -D <desc> -s <section> -e <deps> [other flags] <SOFTWARENAME>
+stubber create [-A] [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -e <deps> [other flags] <SOFTWARENAME>
 ```
 
 | Stub flag | Shorthand | What it generates |
@@ -131,6 +132,7 @@ stubber create [-A] [-a] [-d] [-r] [-k] -D <desc> -s <section> -e <deps> [other 
 | `--alpine`    | `-a` | `__alpine/` — `APKBUILD` + install/upgrade/deinstall scripts |
 | `--debian`    | `-d` | `__debian/` — control file, build scripts, maintainer scripts |
 | `--redhat`    | `-r` | `__redhat/` — spec file, `Makefile`-driven RPM build, changelog helper |
+| `--windows`   | `-w` | `__windows/` — WiX `.wxs` source + `Makefile`-driven `.msi` build (Windows) |
 | `--skeleton`  | `-k` | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, `cmd/completion.go`, build scripts, `README.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `LICENSE`, etc. |
 
 Value flags used to fill in the templates. `-D`, `-s`, and `-e` are
@@ -178,6 +180,7 @@ Which stubs get refreshed is driven entirely by the stub flags you pass:
 | `--alpine`    | `-a` | Re-render `__alpine/` (created if missing) |
 | `--debian`    | `-d` | Re-render `__debian/` (created if missing) |
 | `--redhat`    | `-r` | Re-render `__redhat/` (created if missing) |
+| `--windows`   | `-w` | Re-render `__windows/Makefile`; create `__windows/<name>.wxs` if missing, **never** overwrite an existing one (see below) |
 | `--skeleton`  | `-k` | Re-render **`go.version` only** (see below) |
 
 - **Pass at least one stub flag.** If you pass none, `refresh` does nothing and
@@ -188,6 +191,13 @@ Which stubs get refreshed is driven entirely by the stub flags you pass:
   **never** overwrite your real source (`src/main.go`, `src/cmd/root.go`, …) or
   your edited docs (`README.md`, `CHANGELOG.md`, …), even though `create -k`
   generates those files.
+- **`-w` is deliberately conservative too, for a different reason**: the `.wxs`
+  carries an `UpgradeCode` and a Component `Guid` that must stay the same for
+  the life of the project (Windows uses them to recognize a new release as an
+  *upgrade* of the old one, not a separate install) — see
+  [Windows (`-w`)](#windows--w). So `refresh -w` only ever re-renders the
+  `Makefile`; it creates the `.wxs` the first time and leaves it alone on
+  every refresh after that.
 
 The value flags (`-g`, `-V`, `-R`, `-D`, `-M`, `-P`, `-s`, `-e`, and `-b`) work
 exactly as in `create`, but here **omitting a flag means "keep the stored
@@ -227,11 +237,17 @@ Generate an Arch Linux `PKGBUILD` stub (`__archlinux/`):
 stubber create -A -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -e "" mytool
 ```
 
+Generate a Windows `.msi` stub (`__windows/`):
+
+```sh
+stubber create -w -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -e "" mytool
+```
+
 Generate everything quietly (e.g. from a script), with a binary name that
 differs from the project name:
 
 ```sh
-stubber -q create -A -a -d -r -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -e "" mytool
+stubber -q create -A -a -d -r -w -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -e "" mytool
 ```
 
 Bump the version and Go toolchain of an existing project, refreshing every
@@ -239,7 +255,7 @@ packaging stub it already has (run from inside the project root, no name needed)
 
 ```sh
 cd mytool
-stubber refresh -A -a -d -r -V 1.1.0 -R 1 -g 1.27.0
+stubber refresh -A -a -d -r -w -V 1.1.0 -R 1 -g 1.27.0
 ```
 
 Change just the Debian dependencies, leaving everything else as-is (pointing
@@ -281,6 +297,7 @@ owns:
     "debian": true,
     "redhat": true,
     "archlinux": true,
+    "windows": true,
     "skeleton": true
   }
 }
@@ -303,7 +320,8 @@ JSON above is the full shape) or re-run `create`.
 ## Generated layout
 
 The exact set of files generated depends on which of `-A` / `-a` / `-d` /
-`-r` / `-k` you pass. Combined, a full run (`-A -a -d -r -k`) produces:
+`-r` / `-w` / `-k` you pass. Combined, a full run (`-A -a -d -r -w -k`)
+produces:
 
 ```
 .
@@ -336,6 +354,9 @@ The exact set of files generated depends on which of `-A` / `-a` / `-d` /
 │   ├── Makefile
 │   ├── rpmbuild-deps.sh
 │   └── updateChangelog.sh
+├── __windows/
+│   ├── <SOFTWARENAME>.wxs
+│   └── Makefile
 ├── .gitignore
 ├── dontexec.sh
 ├── <SOFTWARENAME>.json
@@ -455,6 +476,52 @@ Typical workflow (from `__archlinux/`):
 is Debian-shaped, and pacman wants each element quoted separately, so the
 generated `PKGBUILD` gets `depends=('libc' 'bash-completion')`.
 
+### Windows (`-w`)
+
+Generates `__windows/`:
+
+| File | Purpose |
+|------|---------|
+| `<SOFTWARENAME>.wxs` | WiX source for the `.msi`, built with `wixl` (from the `msitools` package — a from-scratch, C, Linux-native reimplementation of the WiX toolchain; no Windows, .NET, or mono involved) |
+| `Makefile` | `build` / `upload` / `release` / `clean` / `info`, reading package metadata straight from `<SOFTWARENAME>.json` via `jq` |
+
+Windows has no distro package manager, so there is no control/spec/PKGBUILD/
+APKBUILD equivalent to read metadata from. Instead the `Makefile` reads
+`NAME`/`VERSION`/`BINARY`/`DESCRIPTION` straight out of the project's own
+`<SOFTWARENAME>.json` manifest at build time, via `jq`. Practically everything
+in the generated `Makefile` is fleet-generic and identical across projects;
+the manifest filename is the only thing that varies.
+
+`make build` cross-compiles with `GOOS=windows GOARCH=amd64 CGO_ENABLED=0`
+and then runs `wixl` to package the `.exe` into a real `.msi`. This is meant
+to run inside the `winbuilder` builder container (see the `docker_artifacts`
+repo's `CLAUDE.md`, "Builders: winbuilder") — `wixl`, `jq`, and the Go
+toolchain all need to be present, and the container also knows how to
+bootstrap a `mingw-w64` cgo cross-toolchain on demand if a project's
+`Makefile` ever needs `CGO_ENABLED=1`. `make release` uploads the `.msi` with
+`nxtools` to `winLocal`, a raw Nexus repository.
+
+**The `.wxs` carries two permanent identifiers that stubber generates once and
+never touches again**: `UpgradeCode` (this project's Windows Installer
+identity — every release shares it) and the main `Component`'s `Guid` (tied to
+the installed path and key file). Windows uses these to recognize a newer
+`.msi` as an *upgrade* of an older one rather than a separate, side-by-side
+install; regenerating either would silently break that. `stubber create -w`
+generates both as fresh random UUIDs; `stubber refresh -w` re-renders the
+`Makefile` every time but **only creates the `.wxs` if it is missing** — an
+existing one is left completely untouched, byte-for-byte, no matter what other
+flags you pass. This is the same "create once, never clobber" idea behind
+`refresh -k` only touching `go.version`, applied to the one place in the whole
+tool where a template's content is actually load-bearing *state*, not just
+rendered text.
+
+Typical workflow (from `__windows/`):
+
+```sh
+make build     # cross-compile + package the .msi
+make release   # build, then upload to winLocal via nxtools, then clean
+```
+
 ## Template placeholders
 
 If you customize the templates under `src/assets/` (see
@@ -463,11 +530,11 @@ stubber substitutes, and which flag/value feeds each one:
 
 | Placeholder | Source | Used by |
 |-------------|--------|---------|
-| `{{ SOFTWARE NAME }}` | The `<SOFTWARENAME>` positional argument | all stubs |
+| `{{ SOFTWARE NAME }}` | The `<SOFTWARENAME>` positional argument | all stubs (windows also uses it for the `.wxs`/manifest filenames, not just file content) |
 | `{{ BINARY NAME }}` | `-b` / `--binaryname` (defaults to software name) | alpine, redhat, archlinux, skeleton |
-| `{{ PACKAGE VERSION }}` | `-V` / `--packagever` | all stubs |
-| `{{ PACKAGE RELEASE }}` | `-R` / `--packagerel` | all stubs |
-| `{{ DESCRIPTION }}` | `-D` / `--desc` | all stubs |
+| `{{ PACKAGE VERSION }}` | `-V` / `--packagever` | alpine, debian, redhat, archlinux, skeleton |
+| `{{ PACKAGE RELEASE }}` | `-R` / `--packagerel` | alpine, debian, redhat, archlinux, skeleton |
+| `{{ DESCRIPTION }}` | `-D` / `--desc` | alpine, debian, redhat, archlinux, skeleton |
 | `{{ MAINTAINER }}` | `-M` / `--maintainer` | alpine, debian |
 | `{{ PACKAGER }}` | `-P` / `--packager` | alpine only |
 | `{{ SECTION }}` / `{{ PACKAGE SECTION }}` | `-s` / `--section` | redhat (`Group`), debian (`Section`), skeleton |
@@ -478,6 +545,8 @@ stubber substitutes, and which flag/value feeds each one:
 | `{{ ARCHITECTURE }}` | Hardcoded `amd64` (Debian); Alpine maps `amd64` → `x86_64` internally; Arch/RPM hardcode `x86_64` in their templates | debian |
 | `{{ COPYRIGHT YEAR }}` | Always the current year, generated automatically — no flag feeds it, and it is not stored in the manifest | debian (`copyright`) |
 | `{{ RELEASE DATE }}` | Today's date (`YYYY.MM.DD`), generated automatically | alpine, debian, redhat, skeleton |
+| `{{ UPGRADE CODE }}` | A freshly generated random UUID — no flag feeds it, and it is not stored in the manifest (the `.wxs` itself is the record) | windows only, and only when the `.wxs` doesn't already exist |
+| `{{ COMPONENT GUID }}` | Same as `{{ UPGRADE CODE }}`: freshly generated, only when the `.wxs` doesn't already exist | windows only |
 
 ## Assets management
 
@@ -572,6 +641,12 @@ If you'd rather not build from source, grab a pre-built package from the
   those fields from anything, and nothing cross-checks them.
 - Mainly tested on x86_64/amd64. Lightly tested on Apple Silicon (arm64);
   generated files may need extra tweaking on other architectures.
+- The `__windows/` stub is untested against a real `-r`/`--redhat`-style
+  build container as of this writing — only against `wixl` directly (which
+  confirmed it produces a structurally valid `.msi`). It needs `jq`, `wixl`
+  (the `msitools` package), and a Go toolchain cross-compiling to
+  `GOOS=windows`, which the `docker_artifacts` fleet's `winbuilder` container
+  provides.
 - The `-g`/`--gover` flag's built-in `-h` description is misleading (it says
   "Where to put the skeleton dir") — it actually sets the Go version used in
   generated files.
