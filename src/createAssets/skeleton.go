@@ -50,6 +50,15 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"src/cmd/completion.go.tmpl",
 	}
 
+	// CHANGELOG/ISSUES/ROADMAP/TODO live under docs/, not the project root --
+	// stubber's own layout (see docs/, images/) is the template for this.
+	docs := map[string]bool{
+		"ISSUES.md":    true,
+		"ROADMAP.md":   true,
+		"TODO.md":      true,
+		"CHANGELOG.md": true,
+	}
+
 	for _, pathloop := range paths {
 		filename := pathloop
 
@@ -61,6 +70,10 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 			filename = strings.TrimSuffix(pathloop, ".tmpl")
 		}
 
+		if docs[filename] {
+			filename = "docs/" + filename
+		}
+
 		if err := assets.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
 		}
@@ -68,6 +81,12 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		if strings.HasSuffix(filename, ".sh") {
 			_ = os.Chmod(filename, fs.FileMode(0755))
 		}
+	}
+
+	// images/ has no stub content of its own, so ProcessEmbeddedAsset never
+	// creates it; carry it into every new project regardless.
+	if err := os.MkdirAll("images", fs.FileMode(0755)); err != nil {
+		return &cerr.CustomError{Title: "Unable to create the images directory", Message: err.Error()}
 	}
 
 	return nil

@@ -135,6 +135,8 @@ func manifestFromFlags(softname string) helpers.Manifest {
 		Section:       helpers.Section,
 		Dependencies:  helpers.Dependencies,
 		Url:           helpers.Url,
+		Manufacturer:  helpers.Manufacturer,
+		Target:        helpers.Target,
 		Stubs: helpers.Stubs{
 			Alpine:    helpers.AlpineStub,
 			Debian:    helpers.DebianStub,

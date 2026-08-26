@@ -25,22 +25,34 @@
 # string values, so passing $(DESCRIPTION) unescaped here is correct --
 # XML-escaping only matters for text written directly into the .wxs source,
 # not for -D values.
+#
+# Windows Installer has no dpkg/rpm/apk-style release field: ProductVersion is
+# the only thing its upgrade logic (the MajorUpgrade rules in the .wxs)
+# compares to decide whether a new .msi replaces an already-installed one. A
+# packaging-only change -- RELEASE bumped, code untouched -- still has to move
+# that number, or a rebuilt .msi is either a silent no-op ("already
+# installed") or, worse, a stray side-by-side install, since wixl mints a
+# fresh ProductCode every build. MSI also only parses/compares ProductVersion's
+# first three numeric fields, so RELEASE below replaces VERSION's own patch
+# digit rather than riding along as an ignored fourth field.
 
 SHELL       := /bin/bash
 .SHELLFLAGS := -o pipefail -c
 
 MANIFEST     := ../{{ SOFTWARE NAME }}.json
-MANUFACTURER := famillegratton.net
 
-NAME        := $(shell jq -r '.softwarename'  $(MANIFEST))
-VERSION     := $(shell jq -r '.versionnumber' $(MANIFEST))
-BINARY      := $(shell jq -r '.binaryname'    $(MANIFEST))
-DESCRIPTION := $(shell jq -r '.description'   $(MANIFEST))
+NAME         := $(shell jq -r '.softwarename'  $(MANIFEST))
+VERSION      := $(shell jq -r '.versionnumber' $(MANIFEST))
+RELEASE      := $(shell jq -r '.releasenumber' $(MANIFEST))
+BINARY       := $(shell jq -r '.binaryname'    $(MANIFEST))
+DESCRIPTION  := $(shell jq -r '.description'   $(MANIFEST))
+MANUFACTURER := $(shell jq -r '.manufacturer'  $(MANIFEST))
+MSIVERSION   := $(shell echo $(VERSION) | cut -d. -f1,2).$(RELEASE)
 
 NEXUSREPO := winLocal
 SRCDIR    := ../src
 ARCH      := amd64
-STAGING   := $(NAME)-$(VERSION)_windows_$(ARCH)
+STAGING   := $(NAME)-$(VERSION)-$(RELEASE)_windows_$(ARCH)
 MSI       := $(CURDIR)/$(STAGING).msi
 
 .PHONY: build upload release clean info
@@ -50,7 +62,7 @@ build:
 	install -d "$(STAGING)"
 	cd $(SRCDIR) && CGO_ENABLED=0 GOOS=windows GOARCH=$(ARCH) go build -trimpath \
 	  -ldflags="-s -w -buildid=" -o "$(CURDIR)/$(STAGING)/$(BINARY).exe" .
-	wixl -D ProductName=$(NAME) -D ProductVersion=$(VERSION) \
+	wixl -D ProductName=$(NAME) -D ProductVersion=$(MSIVERSION) \
 	  -D Manufacturer=$(MANUFACTURER) -D "Description=$(DESCRIPTION)" \
 	  -D Staging=$(STAGING) -D BinaryName=$(BINARY) \
 	  -o "$(MSI)" {{ SOFTWARE NAME }}.wxs
@@ -69,6 +81,8 @@ clean:
 info:
 	@echo "NAME        = $(NAME)"
 	@echo "VERSION     = $(VERSION)"
+	@echo "RELEASE     = $(RELEASE)"
+	@echo "MSIVERSION  = $(MSIVERSION)"
 	@echo "BINARY      = $(BINARY)"
 	@echo "DESCRIPTION = $(DESCRIPTION)"
 	@echo "ARCH        = $(ARCH)"

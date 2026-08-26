@@ -12,16 +12,24 @@ import (
 	"stubber/createAssets"
 	"stubber/helpers"
 
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "stubber",
-	Short:   "Creates your GOLANG software directory structure",
-	Version: "2.8.0 (2026.08.25), Go version : v" + strings.TrimPrefix(runtime.Version(), "go"),
+	Use:   "stubber",
+	Short: "Creates your GOLANG software directory structure",
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
+}
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Shows the software version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(hftx.White("stubber 2.8.1 (2026.08.26), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
+	},
 }
 
 var createCmd = &cobra.Command{
@@ -112,6 +120,9 @@ Guid are never disturbed by a refresh.`,
 		if cmd.Flags().Changed("depends") {
 			m.Dependencies = helpers.Dependencies
 		}
+		if cmd.Flags().Changed("manufacturer") {
+			m.Manufacturer = helpers.Manufacturer
+		}
 
 		// Push the merged values back into the globals used by the renderers
 		helpers.RootDir = root
@@ -125,6 +136,8 @@ Guid are never disturbed by a refresh.`,
 		helpers.Section = m.Section
 		helpers.Dependencies = m.Dependencies
 		helpers.Url = m.Url
+		helpers.Manufacturer = m.Manufacturer
+		helpers.Target = m.Target
 
 		// A refreshed stub type now exists; never clear the ones we did not touch
 		m.Stubs.Alpine = m.Stubs.Alpine || helpers.AlpineStub
@@ -156,7 +169,7 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	rootCmd.AddCommand(completionCmd, createCmd, refreshCmd, assetsCmd)
+	rootCmd.AddCommand(completionCmd, createCmd, refreshCmd, assetsCmd, versionCmd)
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
@@ -176,13 +189,17 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "https://git.famillegratton.net:3000/ADD_URL_HERE", "Git repo URL.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", "famillegratton.net", "Windows .msi Manufacturer/Publisher field.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Target, "target", "t", "", "Windows install directory (e.g. \"c:/utils\" installs to c:\\utils\\<softwarename>); default is Program Files. Baked into the .wxs once at create time, like the UpgradeCode/Component Guid.")
 
 	// These must be supplied explicitly on `create` (they seed the manifest)
 	_ = createCmd.MarkPersistentFlagRequired("desc")
 	_ = createCmd.MarkPersistentFlagRequired("section")
 	//_ = createCmd.MarkPersistentFlagRequired("depends")
 
-	// refresh reuses the same value flags as create (minus -u); unpassed flags keep their stored value
+	// refresh reuses the same value flags as create (minus -u and -t; -t is
+	// create-only since it is baked into the .wxs once and never re-rendered,
+	// same as UpgradeCode/Component Guid); unpassed flags keep their stored value
 	refreshCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
@@ -196,4 +213,5 @@ func init() {
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", "famillegratton.net", "Windows .msi Manufacturer/Publisher field.")
 }

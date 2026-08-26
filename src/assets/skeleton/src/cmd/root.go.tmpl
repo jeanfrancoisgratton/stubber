@@ -5,18 +5,28 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/cobra"
 	"os"
 	"runtime"
+	"strings"
+
+	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
+	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:     "{{ SOFTWARE NAME }}",
-	Short:   "Add a short description here",
-	Version: "{{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }} ({{ RELEASE DATE }}), Go version = " + runtime.Version(),
+	Use:   "{{ SOFTWARE NAME }}",
+	Short: "Add a short description here",
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you to package your software with minimal effort once built`,
+}
+
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Shows the software version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println(hftx.White("{{ SOFTWARE NAME }} {{ PACKAGE VERSION }}-{{ PACKAGE RELEASE }} ({{ RELEASE DATE }}), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
+	},
 }
 
 func Execute() {
@@ -29,4 +39,6 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+
+	rootCmd.AddCommand(versionCmd)
 }

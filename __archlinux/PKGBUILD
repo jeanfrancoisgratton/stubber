@@ -2,7 +2,7 @@
 # Packager: Package builder <builder@famillegratton.net>
 
 pkgname=stubber
-pkgver=2.8.0
+pkgver=2.8.1
 pkgrel=1
 pkgdesc="GO project scaffolding tool"
 arch=('x86_64')

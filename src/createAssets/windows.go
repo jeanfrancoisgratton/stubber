@@ -14,6 +14,7 @@ import (
 	cerr "github.com/jeanfrancoisgratton/customError/v3"
 	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 	"stubber/assets"
+	"stubber/helpers"
 )
 
 // newGUID returns a random RFC 4122 version 4 UUID, formatted the way WiX
@@ -74,13 +75,33 @@ func stubWindows(softwarename string) *cerr.CustomError {
 	}
 
 	wxsPlaceholders := map[string]string{
-		"{{ SOFTWARE NAME }}":  softwarename,
-		"{{ UPGRADE CODE }}":   upgradeCode,
-		"{{ COMPONENT GUID }}": componentGUID,
+		"{{ SOFTWARE NAME }}":        softwarename,
+		"{{ UPGRADE CODE }}":         upgradeCode,
+		"{{ COMPONENT GUID }}":       componentGUID,
+		"{{ INSTALL DIR PROPERTY }}": installDirProperty(softwarename, helpers.Target),
 	}
 	return assets.ProcessEmbeddedAsset(
 		filepath.Join("windows", "product.wxs"),
 		wxsPath,
 		wxsPlaceholders,
 	)
+}
+
+// installDirProperty returns the WiX <Property> line that pins INSTALLDIR to
+// an absolute path, or an empty string when target is unset (leaving the
+// Program Files default computed from the Directory table untouched). This is
+// written directly into the .wxs source (unlike Manufacturer/Description,
+// which flow through wixl's -D at build time), so target's path segments are
+// XML-escaped here.
+func installDirProperty(softwarename, target string) string {
+	if target == "" {
+		return ""
+	}
+	path := strings.TrimRight(strings.ReplaceAll(target, "/", `\`), `\`) + `\` + softwarename
+	return fmt.Sprintf("    <Property Id='INSTALLDIR' Value='%s' />", escapeXMLAttr(path))
+}
+
+func escapeXMLAttr(s string) string {
+	r := strings.NewReplacer("&", "&amp;", "<", "&lt;", ">", "&gt;", "'", "&apos;", `"`, "&quot;")
+	return r.Replace(s)
 }

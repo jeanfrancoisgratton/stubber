@@ -2,7 +2,7 @@
   "softwarename": "stubber",
   "binaryname": "stubber",
   "goversion": "1.27.0",
-  "versionnumber": "2.8.0",
+  "versionnumber": "2.8.1",
   "releasenumber": "1",
   "description": "GO project scaffolding tool",
   "maintainer": "J.F.Gratton <jean-francois@famillegratton.net>",
@@ -10,6 +10,7 @@
   "section": "Packaging tool",
   "dependencies": "",
   "url": "https://git.famillegratton.net:3000/mainline/stubber",
+  "manufacturer": "famillegratton.net",
   "stubs": {
     "alpine": true,
     "debian": true,

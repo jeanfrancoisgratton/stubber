@@ -36,6 +36,11 @@
          beside it, and installing an older one is refused outright. -->
     <MajorUpgrade DowngradeErrorMessage='A newer version of $(var.ProductName) is already installed.' />
 
+    <!-- Only present when `stubber create -w -t <dir>` was used: seeding the
+         INSTALLDIR property here overrides the ProgramFilesFolder\$(var.ProductName)
+         default that CostFinalize would otherwise compute from the Directory
+         table below, without needing to touch that table at all. -->
+{{ INSTALL DIR PROPERTY }}
     <Media Id='1' Cabinet='product.cab' EmbedCab='yes' />
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
