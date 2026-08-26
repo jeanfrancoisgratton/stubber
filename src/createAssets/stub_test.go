@@ -32,6 +32,7 @@ func setBaseline(root string) {
 	helpers.DebianStub = false
 	helpers.RedHatStub = false
 	helpers.ArchLinuxStub = false
+	helpers.WindowsStub = false
 	helpers.SkeletonStub = false
 }
 
@@ -208,6 +209,146 @@ func TestRefreshOnlyTouchesRequestedStubs(t *testing.T) {
 	// ArchLinux was not requested, so it must be byte-for-byte unchanged.
 	if archAfter := readFile(t, filepath.Join(root, "__archlinux", "PKGBUILD")); archAfter != archBefore {
 		t.Errorf("__archlinux/PKGBUILD changed despite not being refreshed")
+	}
+}
+
+// isUUID reports whether s looks like a properly formatted, non-zero UUID
+// (8-4-4-4-12 hex, uppercase, as newGUID produces). It doesn't validate the
+// version/variant bits -- just enough to catch an empty or malformed value.
+func isUUID(s string) bool {
+	if len(s) != 36 {
+		return false
+	}
+	for i, c := range s {
+		switch i {
+		case 8, 13, 18, 23:
+			if c != '-' {
+				return false
+			}
+		default:
+			if !strings.ContainsRune("0123456789ABCDEF", c) {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+// The .wxs carries an UpgradeCode and a Component Guid that must survive for
+// the life of the project (see the comment at the top of the rendered
+// file): MSI uses them to recognize a new build as an upgrade of the old
+// one, so regenerating either on every render would silently break that.
+// This is why stubWindows only creates the .wxs when it is missing.
+func TestWindowsCreateRendersValidGUIDs(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "demo")
+	setBaseline(root)
+	helpers.WindowsStub = true
+
+	if e := CreateStub("demo"); e != nil {
+		t.Fatalf("CreateStub: %+v", e)
+	}
+
+	makefile := filepath.Join(root, "__windows", "Makefile")
+	wxs := filepath.Join(root, "__windows", "demo.wxs")
+
+	if got := readFile(t, makefile); strings.Contains(got, "{{") {
+		t.Errorf("Makefile contains an unrendered placeholder:\n%s", got)
+	}
+	assertContains(t, makefile, "MANIFEST     := ../demo.json")
+
+	content := readFile(t, wxs)
+	if strings.Contains(content, "{{") {
+		t.Errorf("%s contains an unrendered placeholder:\n%s", wxs, content)
+	}
+
+	upgradeCode := extractAttr(t, content, "UpgradeCode='")
+	componentGUID := extractAttr(t, content, "Guid='")
+	if !isUUID(upgradeCode) {
+		t.Errorf("UpgradeCode %q does not look like a UUID", upgradeCode)
+	}
+	if !isUUID(componentGUID) {
+		t.Errorf("Component Guid %q does not look like a UUID", componentGUID)
+	}
+	if upgradeCode == componentGUID {
+		t.Errorf("UpgradeCode and Component Guid must not be the same value, got %q for both", upgradeCode)
+	}
+}
+
+// extractAttr returns the value of the first XML attribute in content whose
+// text (including the opening quote) matches prefix, e.g. "UpgradeCode='".
+func extractAttr(t *testing.T, content, prefix string) string {
+	t.Helper()
+	i := strings.Index(content, prefix)
+	if i < 0 {
+		t.Fatalf("attribute %q not found in:\n%s", prefix, content)
+	}
+	rest := content[i+len(prefix):]
+	j := strings.IndexByte(rest, '\'')
+	if j < 0 {
+		t.Fatalf("attribute %q has no closing quote in:\n%s", prefix, content)
+	}
+	return rest[:j]
+}
+
+// The single most important guarantee stubWindows makes: refreshing an
+// existing project must never disturb the .wxs's UpgradeCode/Component Guid,
+// even though everything about a normal refresh is "regenerate the file".
+func TestWindowsRefreshPreservesExistingWxs(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "demo")
+	setBaseline(root)
+	helpers.WindowsStub = true
+
+	if e := CreateStub("demo"); e != nil {
+		t.Fatalf("CreateStub: %+v", e)
+	}
+
+	wxs := filepath.Join(root, "__windows", "demo.wxs")
+	before := readFile(t, wxs)
+
+	// Refresh with different values entirely; none of them appear in the
+	// .wxs (they're all consumed by the Makefile via jq at build time), so
+	// the only way this could change is if the .wxs were re-rendered with
+	// fresh GUIDs -- exactly what must not happen.
+	setBaseline(root)
+	helpers.WindowsStub = true
+	helpers.VersionNumber = "9.9.9"
+	helpers.Description = "a completely different description"
+
+	if e := RefreshStub("demo"); e != nil {
+		t.Fatalf("RefreshStub: %+v", e)
+	}
+
+	if after := readFile(t, wxs); after != before {
+		t.Errorf("%s changed across refresh; UpgradeCode/Component Guid must be stable:\nbefore:\n%s\nafter:\n%s", wxs, before, after)
+	}
+}
+
+// refresh -w on a project that never had windows enabled must still create
+// the stub the first time -- "created if missing" is the same contract every
+// other distro's refresh already has.
+func TestWindowsRefreshCreatesStubWhenMissing(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "demo")
+	setBaseline(root)
+	helpers.SkeletonStub = true // give CreateStub something to do besides the manifest
+
+	if e := CreateStub("demo"); e != nil {
+		t.Fatalf("CreateStub: %+v", e)
+	}
+
+	wxs := filepath.Join(root, "__windows", "demo.wxs")
+	if _, err := os.Stat(wxs); err == nil {
+		t.Fatalf("%s should not exist yet", wxs)
+	}
+
+	setBaseline(root)
+	helpers.WindowsStub = true
+
+	if e := RefreshStub("demo"); e != nil {
+		t.Fatalf("RefreshStub: %+v", e)
+	}
+
+	if _, err := os.Stat(wxs); err != nil {
+		t.Errorf("expected %s to be created by refresh: %v", wxs, err)
 	}
 }
 

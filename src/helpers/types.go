@@ -9,7 +9,7 @@ import "time"
 
 // Command-line flags
 var RootDir string
-var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub bool
+var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub, WindowsStub bool
 var GoVersion = "1.26.6"
 var Arch string
 var VersionNumber string
@@ -42,6 +42,7 @@ type Stubs struct {
 	Debian    bool `json:"debian"`
 	RedHat    bool `json:"redhat"`
 	ArchLinux bool `json:"archlinux"`
+	Windows   bool `json:"windows"`
 	Skeleton  bool `json:"skeleton"`
 }
 

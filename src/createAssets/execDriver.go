@@ -88,6 +88,16 @@ func CreateStub(softname string) *cerr.CustomError {
 		}
 	}
 
+	// Windows ( -w )
+	if helpers.WindowsStub {
+		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__windows"), os.FileMode(0755)); err == nil {
+			if err := stubWindows(softname); err != nil {
+				os.Chdir(currentdir)
+				return err
+			}
+		}
+	}
+
 	// Skeleton ( -
 	if helpers.SkeletonStub {
 		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "src", "cmd"), os.FileMode(0755)); err != nil {
@@ -130,6 +140,7 @@ func manifestFromFlags(softname string) helpers.Manifest {
 			Debian:    helpers.DebianStub,
 			RedHat:    helpers.RedHatStub,
 			ArchLinux: helpers.ArchLinuxStub,
+			Windows:   helpers.WindowsStub,
 			Skeleton:  helpers.SkeletonStub,
 		},
 	}

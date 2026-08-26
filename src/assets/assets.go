@@ -18,13 +18,16 @@ import "embed"
 //	alpine/APKBUILD
 //	debian/control
 //	redhat/specfile
+//	windows/product.wxs
 //	skeleton/src/go.mod
 //
 // Each packaging directory is named after the distribution family it targets,
 // matching both the __* directory it is rendered into and the stub function
 // that renders it (alpine -> __alpine -> stubAlpine, and so on). The older
 // packaging-format names (apk, deb, arch, rpm) were renamed for that symmetry.
+// windows has no native package format at all, so there is no equivalent
+// renaming history -- it targets a .msi from day one.
 //
 
-//go:embed all:alpine all:archlinux all:debian all:redhat all:skeleton
+//go:embed all:alpine all:archlinux all:debian all:redhat all:skeleton all:windows
 var FS embed.FS

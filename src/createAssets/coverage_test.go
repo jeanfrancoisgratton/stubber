@@ -102,6 +102,16 @@ func TestEveryEmbeddedPackagingAssetIsRendered(t *testing.T) {
 				return base
 			},
 		},
+		{
+			name: "windows", assetDir: "windows", outDir: "__windows",
+			enable: func() { helpers.WindowsStub = true },
+			rendered: func(binary, software, base string) string {
+				if base == "product.wxs" {
+					return software + ".wxs"
+				}
+				return base
+			},
+		},
 	}
 
 	for _, tc := range cases {

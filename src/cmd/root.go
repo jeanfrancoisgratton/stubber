@@ -19,7 +19,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:     "stubber",
 	Short:   "Creates your GOLANG software directory structure",
-	Version: "2.7.2 (2026.08.21), Go version : v" + strings.TrimPrefix(runtime.Version(), "go"),
+	Version: "2.8.0 (2026.08.25), Go version : v" + strings.TrimPrefix(runtime.Version(), "go"),
 	Long: `This tools allows you to create a software directory structure.
 This follows my template and allows you with minimal effort to package your software once built`,
 }
@@ -29,12 +29,12 @@ var createCmd = &cobra.Command{
 	Short:   "Creates the directory structure (skeleton) for the new software",
 	Example: "software_name",
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
-			fmt.Println("You need to enable at least one of the following: -A (archlinux), -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
+		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
+			fmt.Println("You need to enable at least one of the following: -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
 			os.Exit(1)
 		}
 		if len(args) != 1 {
-			fmt.Println("Usage: stubber create [-A|-a|-d|-r|-k] $SOFTWARENAME")
+			fmt.Println("Usage: stubber create [-A|-a|-d|-r|-w|-k] $SOFTWARENAME")
 			os.Exit(2)
 		}
 		if err := createAssets.CreateStub(args[0]); err != nil {
@@ -56,12 +56,14 @@ Run this from the project root, i.e. the directory that holds the
 positional argument is needed. Any flag you pass overrides its stored value,
 while every flag you omit is preserved as-is.
 
-Only the packaging stubs you explicitly request (-A -a -d -r -k) are refreshed;
+Only the packaging stubs you explicitly request (-A -a -d -r -w -k) are refreshed;
 passing none refreshes nothing. -k (skeleton) refreshes go.version only, so your
-source code and documentation are never overwritten.`,
+source code and documentation are never overwritten. -w (windows) refreshes the
+Makefile but never re-renders an existing .wxs, so its UpgradeCode/Component
+Guid are never disturbed by a refresh.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.SkeletonStub {
-			fmt.Println("Nothing to refresh: pass at least one of -A (archlinux), -a (alpine), -d (debian), -r (redhat) or -k (skeleton)")
+		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
+			fmt.Println("Nothing to refresh: pass at least one of -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
 			os.Exit(0)
 		}
 
@@ -129,6 +131,7 @@ source code and documentation are never overwritten.`,
 		m.Stubs.Debian = m.Stubs.Debian || helpers.DebianStub
 		m.Stubs.RedHat = m.Stubs.RedHat || helpers.RedHatStub
 		m.Stubs.ArchLinux = m.Stubs.ArchLinux || helpers.ArchLinuxStub
+		m.Stubs.Windows = m.Stubs.Windows || helpers.WindowsStub
 		m.Stubs.Skeleton = m.Stubs.Skeleton || helpers.SkeletonStub
 
 		if err := createAssets.RefreshStub(m.SoftwareName); err != nil {
@@ -166,6 +169,7 @@ func init() {
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
+	createCmd.PersistentFlags().BoolVarP(&helpers.WindowsStub, "windows", "w", false, "Create a Windows packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
@@ -186,6 +190,7 @@ func init() {
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Refresh the Alpine packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Refresh the Debian packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Refresh the RedHat packaging stub.")
+	refreshCmd.PersistentFlags().BoolVarP(&helpers.WindowsStub, "windows", "w", false, "Refresh the Windows packaging stub (Makefile only; the .wxs is created if missing, never overwritten).")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Refresh the skeleton stub (go.version only).")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
