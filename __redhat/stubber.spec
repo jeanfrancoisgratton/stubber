@@ -54,6 +54,10 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Sun Aug 30 2026 Binary package builder <builder@famillegratton.net> 2.8.2-1
+- feat(WINBUILDER): $targetdir now defaults to c:utils
+- chore: update changelog for 2.8.1-1
+
 * Wed Aug 26 2026 Binary package builder <builder@famillegratton.net> 2.8.1-1
 - feat(WINBUILDER): new target directory flag to override INSTALLDIR
 - prevent all builds but windows
