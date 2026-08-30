@@ -22,7 +22,6 @@ var Section = ""
 var Dependencies = ""
 var Url = ""
 var Manufacturer = "famillegratton.net"
-var Target = ""
 var Quiet = false
 var ReleaseDate = time.Now().Format("2006.01.02")
 
@@ -62,6 +61,5 @@ type Manifest struct {
 	Dependencies  string `json:"dependencies"`
 	Url           string `json:"url"`
 	Manufacturer  string `json:"manufacturer"`
-	Target        string `json:"target,omitempty"`
 	Stubs         Stubs  `json:"stubs"`
 }

@@ -2,7 +2,7 @@
   "softwarename": "stubber",
   "binaryname": "stubber",
   "goversion": "1.27.0",
-  "versionnumber": "2.8.1",
+  "versionnumber": "2.8.2",
   "releasenumber": "1",
   "description": "GO project scaffolding tool",
   "maintainer": "J.F.Gratton <jean-francois@famillegratton.net>",

@@ -28,7 +28,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Shows the software version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(hftx.White("stubber 2.8.1 (2026.08.26), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
+		fmt.Println(hftx.White("stubber 2.8.2 (2026.08.30), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
 	},
 }
 
@@ -137,7 +137,6 @@ Guid are never disturbed by a refresh.`,
 		helpers.Dependencies = m.Dependencies
 		helpers.Url = m.Url
 		helpers.Manufacturer = m.Manufacturer
-		helpers.Target = m.Target
 
 		// A refreshed stub type now exists; never clear the ones we did not touch
 		m.Stubs.Alpine = m.Stubs.Alpine || helpers.AlpineStub
@@ -190,7 +189,6 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "https://git.famillegratton.net:3000/ADD_URL_HERE", "Git repo URL.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", "famillegratton.net", "Windows .msi Manufacturer/Publisher field.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Target, "target", "t", "", "Windows install directory (e.g. \"c:/utils\" installs to c:\\utils\\<softwarename>); default is Program Files. Baked into the .wxs once at create time, like the UpgradeCode/Component Guid.")
 
 	// These must be supplied explicitly on `create` (they seed the manifest)
 	_ = createCmd.MarkPersistentFlagRequired("desc")

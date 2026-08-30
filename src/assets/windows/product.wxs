@@ -4,7 +4,9 @@
   msitools' `wixl` (Alpine's Windows Installer file toolchain, no
   Windows/.NET/mono needed). Values wrapped in $(var.X) are filled in by the
   Makefile's `wixl -D X=value` flags, sourced from
-  ../{{ SOFTWARE NAME }}.json the same way the rest of this Makefile is.
+  ../{{ SOFTWARE NAME }}.json the same way the rest of this Makefile is,
+  except InstallDir, which comes straight from the Makefile's own
+  INSTALLDIR variable: edit that to change where this installs.
 
   UpgradeCode and the Component's Guid below are the two identifiers MSI uses
   to recognize "this is the same product/component across versions", so do
@@ -36,21 +38,22 @@
          beside it, and installing an older one is refused outright. -->
     <MajorUpgrade DowngradeErrorMessage='A newer version of $(var.ProductName) is already installed.' />
 
-    <!-- Only present when `stubber create -w -t <dir>` was used: seeding the
-         INSTALLDIR property here overrides the ProgramFilesFolder\$(var.ProductName)
-         default that CostFinalize would otherwise compute from the Directory
-         table below, without needing to touch that table at all. -->
-{{ INSTALL DIR PROPERTY }}
+    <!-- Seeds INSTALLDIR with an absolute path (Makefile's INSTALLDIR,
+         default C:\utils) instead of the usual ProgramFilesFolder\ProductName
+         default CostFinalize would otherwise compute from the Directory
+         table below; and since the Directory table has no
+         ProgramFilesFolder ancestor at all, no per-product subdirectory
+         either: every stubbed tool installs flat into the same directory. -->
+    <Property Id='INSTALLDIR' Value='$(var.InstallDir)' />
+
     <Media Id='1' Cabinet='product.cab' EmbedCab='yes' />
 
     <Directory Id='TARGETDIR' Name='SourceDir'>
-      <Directory Id='ProgramFilesFolder'>
-        <Directory Id='INSTALLDIR' Name='$(var.ProductName)'>
-          <Component Id='MainExecutable' Guid='{{ COMPONENT GUID }}'>
-            <File Id='MainEXE' Name='$(var.BinaryName).exe'
-              Source='$(var.Staging)/$(var.BinaryName).exe' KeyPath='yes' />
-          </Component>
-        </Directory>
+      <Directory Id='INSTALLDIR' Name='INSTALLDIR'>
+        <Component Id='MainExecutable' Guid='{{ COMPONENT GUID }}'>
+          <File Id='MainEXE' Name='$(var.BinaryName).exe'
+            Source='$(var.Staging)/$(var.BinaryName).exe' KeyPath='yes' />
+        </Component>
       </Directory>
     </Directory>
 
