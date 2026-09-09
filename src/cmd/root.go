@@ -28,7 +28,7 @@ var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Shows the software version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(hftx.White("stubber 2.8.2 (2026.08.30), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
+		fmt.Println(hftx.White("stubber 2.8.3 (2026.09.09), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
 	},
 }
 
@@ -172,7 +172,7 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
 	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.27.0", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.27.1", "Where to put the skeleton dir.")
 
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
