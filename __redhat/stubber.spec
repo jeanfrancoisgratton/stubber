@@ -54,6 +54,14 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Wed Sep 09 2026 Binary package builder <builder@famillegratton.net> 2.8.3-1
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- chore: minor update to dontexec, GO version bump
+- chore: update changelog for 2.8.2-2
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- bug(WINBUILDER): Fixed missing backslash in targetdir
+- chore: update changelog for 2.8.2-1
+
 * Sun Aug 30 2026 Binary package builder <builder@famillegratton.net> 2.8.2-2
 - Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
 - bug(WINBUILDER): Fixed missing backslash in targetdir
