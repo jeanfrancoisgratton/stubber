@@ -54,6 +54,11 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Sun Aug 30 2026 Binary package builder <builder@famillegratton.net> 2.8.2-2
+- Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
+- bug(WINBUILDER): Fixed missing backslash in targetdir
+- chore: update changelog for 2.8.2-1
+
 * Sun Aug 30 2026 Binary package builder <builder@famillegratton.net> 2.8.2-1
 - feat(WINBUILDER): $targetdir now defaults to c:utils
 - chore: update changelog for 2.8.1-1
