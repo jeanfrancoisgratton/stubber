@@ -20,13 +20,13 @@ func TestSaveAndFindManifest(t *testing.T) {
 	dir := t.TempDir()
 
 	want := Manifest{
-		SoftwareName:  "myapp",
-		BinaryName:    "myapp",
-		VersionNumber: "1.2.3",
-		ReleaseNumber: "4",
-		Section:       "utils",
-		Dependencies:  "libc",
-		Stubs:         Stubs{Debian: true, ArchLinux: true},
+		SoftwareName:         "myapp",
+		BinaryName:           "myapp",
+		VersionNumber:        "1.2.3",
+		DefaultReleaseNumber: "4",
+		Section:              "utils",
+		Dependencies:         "libc",
+		Stubs:                Stubs{Debian: true, ArchLinux: true},
 	}
 
 	if e := SaveManifest(dir, want); e != nil {
@@ -43,7 +43,7 @@ func TestSaveAndFindManifest(t *testing.T) {
 		t.Fatalf("FindManifest: %+v", e)
 	}
 	if got.SoftwareName != want.SoftwareName || got.VersionNumber != want.VersionNumber ||
-		got.ReleaseNumber != want.ReleaseNumber || got.Section != want.Section ||
+		got.DefaultReleaseNumber != want.DefaultReleaseNumber || got.Section != want.Section ||
 		got.Dependencies != want.Dependencies {
 		t.Errorf("round-trip mismatch:\n got  %+v\n want %+v", got, want)
 	}

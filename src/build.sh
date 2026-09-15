@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 
+set -eu
 
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 BRANCH=$(echo "$BRANCH" | tr '/' '_')
@@ -27,5 +28,12 @@ else
 fi
 
 
+go vet ./...
+go test ./...
+
+VERSION=$(sed -n 's/.*"versionnumber": *"\([^"]*\)".*/\1/p' ../stubber.json)
+MODPATH=$(go list -m)
+BUILDDATE=$(date -u +%Y-%m-%d)
+
 echo "Building ${OUTPUT}/${FULLNAME}"
-go build -o ${OUTPUT}/${FULLNAME} .
+go build -ldflags="-X ${MODPATH}/cmd.buildVersion=${VERSION} -X ${MODPATH}/cmd.buildDate=${BUILDDATE}" -o ${OUTPUT}/${FULLNAME} .

@@ -25,8 +25,14 @@ build() {
 
 	go env | egrep 'GOFLAGS|CGO_ENABLED|GOOS|GOARCH' || true
 
+	go vet ./...
+	go test ./...
+
+	MODPATH=$(go list -m)
+	BUILDDATE=$(date -u +%Y-%m-%d)
+
 	# Static, non-PIE, internal linker
-	go build -trimpath -ldflags="-s -w -buildid= -linkmode=internal" -o "$binaryname" .
+	go build -trimpath -ldflags="-s -w -buildid= -linkmode=internal -X ${MODPATH}/cmd.buildVersion=$pkgver -X ${MODPATH}/cmd.buildDate=$BUILDDATE" -o "$binaryname" .
 }
 
 package() {

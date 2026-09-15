@@ -42,6 +42,7 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"README.md",
 		"gitignore",
 		"dontexec.sh",
+		"version-bump.sh",
 		"src/build.sh",
 		"src/go.mod.tmpl",
 		"src/main.go.tmpl",

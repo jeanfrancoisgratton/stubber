@@ -285,7 +285,7 @@ owns:
   "binaryname": "mytool",
   "goversion": "1.26.4",
   "versionnumber": "1.0.0",
-  "releasenumber": "1",
+  "defaultreleasenumber": "1",
   "description": "My awesome CLI tool",
   "maintainer": "Your Name <you@example.com>",
   "packager": "APK Builder <builder@famillegratton.net>",

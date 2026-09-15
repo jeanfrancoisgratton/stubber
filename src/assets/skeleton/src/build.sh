@@ -70,4 +70,11 @@ else
   BUILD_OUTPATH="$OUTPATH"
 fi
 
-CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" -o "$BUILD_OUTPATH"   .
+go vet ./...
+go test ./...
+
+VERSION=$(sed -n 's/.*"versionnumber": *"\([^"]*\)".*/\1/p' "../{{ SOFTWARE NAME }}.json")
+MODPATH=$(go list -m)
+BUILDDATE=$(date -u +%Y-%m-%d)
+
+CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid= -X ${MODPATH}/cmd.buildVersion=${VERSION} -X ${MODPATH}/cmd.buildDate=${BUILDDATE}" -o "$BUILD_OUTPATH"   .

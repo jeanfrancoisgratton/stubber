@@ -24,11 +24,18 @@ var rootCmd = &cobra.Command{
 This follows my template and allows you with minimal effort to package your software once built`,
 }
 
+// buildVersion and buildDate are injected at link time via
+// `-ldflags "-X stubber/cmd.buildVersion=... -X stubber/cmd.buildDate=..."`
+// by every build path (see version-bump.sh and each __*/{Makefile,APKBUILD,
+// PKGBUILD,spec}); a plain `go build` leaves them at these fallbacks.
+var buildVersion = "dev"
+var buildDate = "unknown"
+
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Shows the software version",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println(hftx.White("stubber 2.8.3 (2026.09.09), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
+		fmt.Println(hftx.White("stubber " + buildVersion + " (" + buildDate + "), Go version = v" + strings.TrimPrefix(runtime.Version(), "go")))
 	},
 }
 
@@ -103,7 +110,7 @@ Guid are never disturbed by a refresh.`,
 			m.VersionNumber = helpers.VersionNumber
 		}
 		if cmd.Flags().Changed("packagerel") {
-			m.ReleaseNumber = helpers.ReleaseNumber
+			m.DefaultReleaseNumber = helpers.ReleaseNumber
 		}
 		if cmd.Flags().Changed("desc") {
 			m.Description = helpers.Description
@@ -129,7 +136,7 @@ Guid are never disturbed by a refresh.`,
 		helpers.BinaryName = m.BinaryName
 		helpers.GoVersion = m.GoVersion
 		helpers.VersionNumber = m.VersionNumber
-		helpers.ReleaseNumber = m.ReleaseNumber
+		helpers.ReleaseNumber = m.DefaultReleaseNumber
 		helpers.Description = m.Description
 		helpers.Maintainer = m.Maintainer
 		helpers.Packager = m.Packager

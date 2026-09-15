@@ -36,7 +36,9 @@ build:
 	# copyright is documentation, not a control file: policy puts it at
 	# /usr/share/doc/<package>/copyright, and it must be 0644 there.
 	install -m 0644 copyright "$(STAGING)/usr/share/doc/$(NAME)/copyright"
-	cd $(SRCDIR) && CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid=" \
+	cd $(SRCDIR) && go vet ./... && go test ./...
+	cd $(SRCDIR) && MODPATH=$$(go list -m) && BUILDVER=$$(echo $(VERSION) | sed 's/-[^-]*$$//') && \
+	  CGO_ENABLED=0 go build -trimpath -ldflags="-s -w -buildid= -X $${MODPATH}/cmd.buildVersion=$${BUILDVER} -X $${MODPATH}/cmd.buildDate=$$(date -u +%Y-%m-%d)" \
 	  -o "$(CURDIR)/$(STAGING)/opt/bin/$(BINARY)" .
 	sudo chown -R 0:0 "$(STAGING)/opt/bin/$(BINARY)"
 	dpkg-deb -b "$(STAGING)" "$(DEB)"

@@ -53,13 +53,17 @@ type Manifest struct {
 	BinaryName    string `json:"binaryname"`
 	GoVersion     string `json:"goversion"`
 	VersionNumber string `json:"versionnumber"`
-	ReleaseNumber string `json:"releasenumber"`
-	Description   string `json:"description"`
-	Maintainer    string `json:"maintainer"`
-	Packager      string `json:"packager"`
-	Section       string `json:"section"`
-	Dependencies  string `json:"dependencies"`
-	Url           string `json:"url"`
-	Manufacturer  string `json:"manufacturer"`
-	Stubs         Stubs  `json:"stubs"`
+	// DefaultReleaseNumber is the release value every distro's own counter is
+	// reset to on a version bump (see version-bump.sh) -- it is not one
+	// synchronized counter shared across distros, which each keep their own
+	// independent pkgrel/Release/-N field once scaffolded.
+	DefaultReleaseNumber string `json:"defaultreleasenumber"`
+	Description          string `json:"description"`
+	Maintainer           string `json:"maintainer"`
+	Packager             string `json:"packager"`
+	Section              string `json:"section"`
+	Dependencies         string `json:"dependencies"`
+	Url                  string `json:"url"`
+	Manufacturer         string `json:"manufacturer"`
+	Stubs                Stubs  `json:"stubs"`
 }
