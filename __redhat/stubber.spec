@@ -58,6 +58,11 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Tue Sep 15 2026 Binary package builder <builder@famillegratton.net> 2.9.0-1
+- chore: version bump
+- Added tests to build stages, and a new way to handle version numbering in projects
+- chore: update changelog for 2.8.3-1
+
 * Wed Sep 09 2026 Binary package builder <builder@famillegratton.net> 2.8.3-1
 - Merge remote-tracking branch 'refs/remotes/origin/develop' into develop
 - chore: minor update to dontexec, GO version bump
