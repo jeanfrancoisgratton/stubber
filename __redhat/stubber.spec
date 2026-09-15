@@ -58,6 +58,10 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Tue Sep 15 2026 Binary package builder <builder@famillegratton.net> 2.9.1-1
+- enhancement: added GOARCH to version string
+- chore: doc update
+
 * Tue Sep 15 2026 Binary package builder <builder@famillegratton.net> 2.9.0-1
 - chore: version bump
 - Added tests to build stages, and a new way to handle version numbering in projects
