@@ -1,5 +1,5 @@
 Package: stubber
-Version: 2.9.1-2
+Version: 2.10.0-1
 Architecture: amd64
 Maintainer: J.F.Gratton <jean-francois@famillegratton.net>
 Description: GO project scaffolding tool

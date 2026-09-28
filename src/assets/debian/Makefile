@@ -22,7 +22,7 @@ VERSION   := $(shell awk -F': +' '/^Version:/{print $$2}'      $(CONTROL))
 ARCH      := $(shell awk -F': +' '/^Architecture:/{print $$2}' $(CONTROL))
 BINARY    := $(NAME)
 
-NEXUSREPO := aptLocal
+NEXUSREPO := debian
 SRCDIR    := ../src
 STAGING   := $(NAME)-$(VERSION)_$(ARCH)
 DEB       := $(CURDIR)/$(STAGING).deb
