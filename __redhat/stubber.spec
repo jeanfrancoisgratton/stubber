@@ -58,6 +58,15 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Sun Sep 27 2026 Binary package builder <builder@famillegratton.net> 2.10.0-1
+- enhancement: changed all destination nexus repos
+- chore: update changelog for 2.9.1-2
+- cosmetic changes on the version string
+- Merge branch 'main' into develop
+- chore: update changelog for 2.9.1-1
+- windows: builds are disabled for now
+- chore: update changelog for 2.9.0-1
+
 * Tue Sep 15 2026 Binary package builder <builder@famillegratton.net> 2.9.1-2
 - cosmetic changes on the version string
 - Merge branch 'main' into develop
