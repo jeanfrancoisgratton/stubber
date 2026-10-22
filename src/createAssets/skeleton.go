@@ -19,25 +19,27 @@ import (
 
 func stubSkeleton(softwarename string) *cerr.CustomError {
 	placeholders := map[string]string{
-		"{{ SOFTWARE NAME }}":   softwarename,
-		"{{ PACKAGE VERSION }}": helpers.VersionNumber,
-		"{{ PACKAGE RELEASE }}": helpers.ReleaseNumber,
-		"{{ GO VERSION }}":      helpers.GoVersion,
-		"{{ GO MAJOR MINOR }}":  helpers.ExtractMajorMinorVersionString(helpers.GoVersion),
-		"{{ BINARY NAME }}":     helpers.BinaryName,
-		"{{ SECTION }}":         helpers.Section,
-		"{{ DESCRIPTION }}":     helpers.Description,
-		"{{ RELEASE DATE }}":    helpers.ReleaseDate,
+		"{{ SOFTWARE NAME }}":    softwarename,
+		"{{ PACKAGE VERSION }}":  helpers.VersionNumber,
+		"{{ PACKAGE RELEASE }}":  helpers.ReleaseNumber,
+		"{{ GO VERSION }}":       helpers.GoVersion,
+		"{{ GO MAJOR MINOR }}":   helpers.ExtractMajorMinorVersionString(helpers.GoVersion),
+		"{{ BINARY NAME }}":      helpers.BinaryName,
+		"{{ SECTION }}":          helpers.Section,
+		"{{ DESCRIPTION }}":      helpers.Description,
+		"{{ RELEASE DATE }}":     helpers.ReleaseDate,
+		"{{ RELEASE DATE ISO }}": helpers.ReleaseDateISO,
 	}
 
 	fmt.Printf("Stub: %s\n", hftx.Yellow("Skeleton"))
 
 	paths := []string{
-		"ISSUES.md",
-		"ROADMAP.md",
-		"TODO.md",
+		"docs/ISSUES.md",
+		"docs/ROADMAP.md",
+		"docs/TODO.md",
+		"docs/CHANGELOG.md",
+		"images/.gitkeep",
 		"go.version",
-		"CHANGELOG.md",
 		"LICENSE",
 		"README.md",
 		"gitignore",
@@ -51,15 +53,8 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		"src/cmd/completion.go.tmpl",
 	}
 
-	// CHANGELOG/ISSUES/ROADMAP/TODO live under docs/, not the project root --
-	// stubber's own layout (see docs/, images/) is the template for this.
-	docs := map[string]bool{
-		"ISSUES.md":    true,
-		"ROADMAP.md":   true,
-		"TODO.md":      true,
-		"CHANGELOG.md": true,
-	}
-
+	// The skeleton assets mirror stubber's own layout (docs/, images/), so each
+	// asset path is also its output path, bar the renames below.
 	for _, pathloop := range paths {
 		filename := pathloop
 
@@ -71,10 +66,6 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 			filename = strings.TrimSuffix(pathloop, ".tmpl")
 		}
 
-		if docs[filename] {
-			filename = "docs/" + filename
-		}
-
 		if err := assets.ProcessEmbeddedAsset("skeleton/"+pathloop, filename, placeholders); err != nil {
 			return err
 		}
@@ -82,12 +73,6 @@ func stubSkeleton(softwarename string) *cerr.CustomError {
 		if strings.HasSuffix(filename, ".sh") {
 			_ = os.Chmod(filename, fs.FileMode(0755))
 		}
-	}
-
-	// images/ has no stub content of its own, so ProcessEmbeddedAsset never
-	// creates it; carry it into every new project regardless.
-	if err := os.MkdirAll("images", fs.FileMode(0755)); err != nil {
-		return &cerr.CustomError{Title: "Unable to create the images directory", Message: err.Error()}
 	}
 
 	return nil

@@ -36,18 +36,13 @@ func TestEveryEmbeddedSkeletonAssetIsRendered(t *testing.T) {
 		}
 
 		// Paths are relative to skeleton/, and stubSkeleton renames as it goes:
-		// gitignore -> .gitignore, *.tmpl loses the suffix, and
-		// ISSUES/ROADMAP/TODO/CHANGELOG.md move under docs/.
+		// gitignore -> .gitignore and *.tmpl loses the suffix.
 		rel := strings.TrimPrefix(path, "skeleton/")
 		switch {
 		case rel == "gitignore":
 			rel = ".gitignore"
 		case strings.HasSuffix(rel, ".tmpl"):
 			rel = strings.TrimSuffix(rel, ".tmpl")
-		}
-		switch rel {
-		case "ISSUES.md", "ROADMAP.md", "TODO.md", "CHANGELOG.md":
-			rel = "docs/" + rel
 		}
 
 		if _, err := os.Stat(filepath.Join(root, rel)); err != nil {

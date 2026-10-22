@@ -27,13 +27,16 @@ else
     FULLNAME="$BINARY-$BRANCH"
 fi
 
-
+echo
 go vet ./...
+echo
 go test ./...
 
 VERSION=$(sed -n 's/.*"versionnumber": *"\([^"]*\)".*/\1/p' ../stubber.json)
 MODPATH=$(go list -m)
 BUILDDATE=$(date -u +%Y-%m-%d)
 
+echo
 echo "Building ${OUTPUT}/${FULLNAME}"
+echo
 go build -ldflags="-X ${MODPATH}/cmd.buildVersion=${VERSION} -X ${MODPATH}/cmd.buildDate=${BUILDDATE}" -o ${OUTPUT}/${FULLNAME} .

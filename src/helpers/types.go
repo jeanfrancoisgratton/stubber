@@ -25,6 +25,10 @@ var Manufacturer = "famillegratton.net"
 var Quiet = false
 var ReleaseDate = time.Now().Format("2006.01.02")
 
+// ReleaseDateISO is ReleaseDate in the ISO 8601 form Keep a Changelog requires,
+// used by the skeleton's docs/CHANGELOG.md.
+var ReleaseDateISO = time.Now().Format("2006-01-02")
+
 // CopyrightYear is the year stamped into debian/copyright's Copyright line.
 // It is the year alone: ReleaseDate is too precise to read as a copyright
 // assertion.
