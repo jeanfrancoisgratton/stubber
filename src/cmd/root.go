@@ -8,10 +8,12 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"stubber/git"
 
 	"stubber/createAssets"
 	"stubber/helpers"
 
+	cerr "github.com/jeanfrancoisgratton/customError/v3"
 	hftx "github.com/jeanfrancoisgratton/helperFunctions/v5/terminalfx"
 	"github.com/spf13/cobra"
 )
@@ -19,9 +21,15 @@ import (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "stubber",
-	Short: "Creates your GOLANG software directory structure",
-	Long: `This tools allows you to create a software directory structure.
-This follows my template and allows you with minimal effort to package your software once built`,
+	Short: "Creates your Go software directory structure",
+	Long: `stubber creates the directory structure of a new Go software: a buildable skeleton, and
+packaging stubs for Alpine, Debian, RedHat, Arch Linux and Windows.
+
+It can also create the software's git repository on its forge (Forgejo, GitHub or Bitbucket)
+and push the scaffolded code to it; see "stubber create --help" and "stubber conn --help".`,
+	Example: `  stubber create -k -d -r -D "My tool" -s utils -u https://git.example.net:3000/me/mytool mytool
+  stubber refresh -d -V 1.1.0 -p ./mytool
+  stubber conn add myforge`,
 }
 
 // buildVersion and buildDate are injected at link time via
@@ -32,30 +40,70 @@ var buildVersion = "dev"
 var buildDate = "unknown"
 
 var versionCmd = &cobra.Command{
-	Use:   "version",
-	Short: "Shows the software version",
+	Use:     "version",
+	Short:   "Shows the software version",
+	Example: "  stubber version",
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println(hftx.White("stubber v" + buildVersion + " (" + buildDate + "), Go version = v" + strings.TrimPrefix(runtime.Version(), "go") + " (" + runtime.GOARCH + ")"))
 	},
 }
 
 var createCmd = &cobra.Command{
-	Use:     "create",
-	Short:   "Creates the directory structure (skeleton) for the new software",
-	Example: "software_name",
+	Use:   "create [flags] SOFTWARENAME",
+	Short: "Creates the directory structure (skeleton and packaging stubs) for a new software",
+	Long: `Creates the directory structure for SOFTWARENAME, in ./SOFTWARENAME (or in the directory given by -p).
+
+At least one stub flag is needed: -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows)
+or -k (skeleton). -D, -s and -u are mandatory. Every value used is recorded in SOFTWARENAME.json,
+at the project root, so that "stubber refresh" can preserve it later.
+
+With -G, stubber also creates the git repository given by -u (https://SERVER[:PORT]/OWNER/REPO) on its
+forge, then commits the scaffolded code and pushes it on the develop branch. The repository is always
+created private; changing its visibility is left to you. The credentials are those of the connection
+whose server hosts the URL (see "stubber conn --help"); when several connections point to that server,
+choose one with -c CONNECTION.`,
+	Example: `  # Go skeleton only
+  stubber create -k -D "My awesome CLI tool" -s utils -u https://git.example.net:3000/me/mytool mytool
+
+  # Skeleton and every packaging stub, in a custom directory
+  stubber create -A -a -d -r -w -k -V 1.0.0 -R 1 -D "My tool" -s utils -e "ca-certificates" \
+    -u https://git.example.net:3000/me/mytool -p ~/dev/mytool mytool
+
+  # Same, and create the (private) repository on GitHub, then push the code on develop
+  stubber create -k -d -r -D "My tool" -s utils -u https://github.com/me/mytool -G mytool
+
+  # Create the repository in the "myorg" organization, with the "work" connection
+  stubber create -k -D "My tool" -s utils -u https://git.example.net:3000/myorg/mytool -G -c work mytool`,
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
 			fmt.Println("You need to enable at least one of the following: -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
 			os.Exit(1)
 		}
-		if len(args) != 1 {
-			fmt.Println("Usage: stubber create [-A|-a|-d|-r|-w|-k] $SOFTWARENAME")
-			os.Exit(2)
+		if cmd.Flags().Changed("connection") && !helpers.CreateGitRepo {
+			fmt.Println("-c (--connection) is only used with -G (--git)")
+			os.Exit(1)
+		}
+		// With -G, everything that can be checked without side effects is checked before scaffolding anything
+		var repoPlan *git.RepoPlan
+		if helpers.CreateGitRepo {
+			var e *cerr.CustomError
+			if repoPlan, e = git.PrepareRepo(args[0]); e != nil {
+				fmt.Println(e)
+				fmt.Println("Nothing was created")
+				os.Exit(1)
+			}
 		}
 		if err := createAssets.CreateStub(args[0]); err != nil {
-
 			fmt.Println(err)
 			os.Exit(1)
+		}
+		if repoPlan != nil {
+			if e := repoPlan.Create(); e != nil {
+				fmt.Println(e)
+				os.Exit(1)
+			}
 		}
 	},
 }
@@ -75,7 +123,17 @@ Only the packaging stubs you explicitly request (-A -a -d -r -w -k) are refreshe
 passing none refreshes nothing. -k (skeleton) refreshes go.version only, so your
 source code and documentation are never overwritten. -w (windows) refreshes the
 Makefile but never re-renders an existing .wxs, so its UpgradeCode/Component
-Guid are never disturbed by a refresh.`,
+Guid are never disturbed by a refresh.
+
+-u (the URL) cannot be changed by refresh; edit SOFTWARENAME.json if needed.`,
+	Example: `  # From the project root: bump the version and refresh the Debian and RedHat stubs
+  stubber refresh -d -r -V 1.1.0 -R 1
+
+  # Change the Debian dependencies only, pointing -p at the project root
+  stubber refresh -d -e "docker.io, ca-certificates" -p ./mytool
+
+  # Move to a new Go release, without touching any source or packaging file
+  stubber refresh -k -g 1.27.3`,
 	Run: func(cmd *cobra.Command, args []string) {
 		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
 			fmt.Println("Nothing to refresh: pass at least one of -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
@@ -175,36 +233,41 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
-	rootCmd.AddCommand(completionCmd, createCmd, refreshCmd, assetsCmd, versionCmd)
+	rootCmd.SilenceUsage = true
+
+	rootCmd.AddCommand(completionCmd, createCmd, refreshCmd, assetsCmd, versionCmd, conn_cfgCmd)
 	rootCmd.PersistentFlags().BoolVarP(&helpers.Quiet, "quiet", "q", false, "Silence non-essential output.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name.")
-	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", "1.27.1", "Where to put the skeleton dir.")
+	rootCmd.PersistentFlags().StringVarP(&helpers.RootDir, "projectrootdir", "p", ".", "Project root directory (create: ./SOFTWARENAME if left to \".\"; refresh: the current directory).")
+	rootCmd.PersistentFlags().StringVarP(&helpers.BinaryName, "binaryname", "b", "", "Output binary name (default: the software name).")
+	rootCmd.PersistentFlags().StringVarP(&helpers.GoVersion, "gover", "g", helpers.GoVersion, "Go version to build against.")
 
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description (mandatory).")
 	createCmd.PersistentFlags().BoolVarP(&helpers.ArchLinuxStub, "archlinux", "A", false, "Create an Archlinux packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.WindowsStub, "windows", "w", false, "Create a Windows packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Create the skeleton stub in the project root directory.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "https://git.famillegratton.net:3000/ADD_URL_HERE", "Git repo URL.")
-	createCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", "famillegratton.net", "Windows .msi Manufacturer/Publisher field.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", helpers.Maintainer, "Software maintainer (\"Name <email>\").")
+	createCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", helpers.Packager, "Software packager (\"Name <email>\").")
+	createCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section / RPM group (mandatory).")
+	createCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies, comma-separated.")
+	createCmd.PersistentFlags().StringVarP(&helpers.Url, "url", "u", "", "Git repository URL, https://SERVER[:PORT]/OWNER/REPO (mandatory).")
+	createCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", helpers.Manufacturer, "Windows .msi Manufacturer/Publisher field.")
+	createCmd.Flags().BoolVarP(&helpers.CreateGitRepo, "git", "G", false, "Create the --url repository (private) on its forge, then push the scaffolded code on the develop branch.")
+	createCmd.Flags().StringVarP(&helpers.ConnectionName, "connection", "c", "", "Connection to use with -G (needed only when several connections point to the --url server).")
 
+	_ = createCmd.MarkPersistentFlagRequired("url")
 	// These must be supplied explicitly on `create` (they seed the manifest)
 	_ = createCmd.MarkPersistentFlagRequired("desc")
 	_ = createCmd.MarkPersistentFlagRequired("section")
 	//_ = createCmd.MarkPersistentFlagRequired("depends")
 
-	// refresh reuses the same value flags as create (minus -u and -t; -t is
-	// create-only since it is baked into the .wxs once and never re-rendered,
-	// same as UpgradeCode/Component Guid); unpassed flags keep their stored value
+	// refresh reuses the same value flags as create (minus -u and -G, which are create-only); unpassed flags keep their stored value
+	// Both commands bind the same variables, and cobra writes a flag's default in its variable at registration: the defaults
+	// below must stay the same as create's, otherwise create would end up with refresh's
 	refreshCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
@@ -214,9 +277,9 @@ func init() {
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Refresh the RedHat packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.WindowsStub, "windows", "w", false, "Refresh the Windows packaging stub (Makefile only; the .wxs is created if missing, never overwritten).")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.SkeletonStub, "skeleton", "k", false, "Refresh the skeleton stub (go.version only).")
-	refreshCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", "", "Software maintainer.")
-	refreshCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", "", "Software packager.")
-	refreshCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section.")
-	refreshCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies.")
-	refreshCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", "famillegratton.net", "Windows .msi Manufacturer/Publisher field.")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Maintainer, "maintainer", "M", helpers.Maintainer, "Software maintainer (\"Name <email>\").")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Packager, "packager", "P", helpers.Packager, "Software packager (\"Name <email>\").")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Section, "section", "s", "Packaging tool", "Debian package section / RPM group.")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Dependencies, "depends", "e", "", "Package dependencies, comma-separated.")
+	refreshCmd.PersistentFlags().StringVarP(&helpers.Manufacturer, "manufacturer", "m", helpers.Manufacturer, "Windows .msi Manufacturer/Publisher field.")
 }

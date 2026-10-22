@@ -46,6 +46,7 @@ func Execute() {
 func init() {
 	rootCmd.DisableAutoGenTag = true
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
+    rootCmd.SilenceUsage = true
 
 	rootCmd.AddCommand(versionCmd)
 }

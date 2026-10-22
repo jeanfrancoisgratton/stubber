@@ -7,6 +7,9 @@ metadata for a new Go project, following a personal CI/CD convention: Alpine
 (APK), Debian/Ubuntu (DEB), RHEL/Fedora (RPM), Arch Linux (PKGBUILD), and
 Windows (.msi) packaging stubs, plus a ready-to-build Go skeleton.
 
+Optionally, stubber also creates the project's git repository on its forge
+(Forgejo, GitHub or Bitbucket Cloud) and pushes the scaffolded code to it.
+
 Everything is generated from templates embedded in the binary
 (`src/assets/`, embedded via `go:embed` in `src/assets/assets.go`), with
 placeholders substituted at run time from the flags you pass.
@@ -23,6 +26,9 @@ placeholders substituted at run time from the flags you pass.
   - [`create` flags](#create-flags)
   - [`refresh` flags](#refresh-flags)
   - [Examples](#examples)
+- [Git repository creation (`-G`)](#git-repository-creation--g)
+  - [Connections (`stubber conn`)](#connections-stubber-conn)
+  - [Recovering from a failed `-G`](#recovering-from-a-failed--g)
 - [The project manifest (`<softwarename>.json`)](#the-project-manifest-softwarenamejson)
 - [Generated layout](#generated-layout)
   - [Skeleton (`-k`)](#skeleton--k)
@@ -56,8 +62,11 @@ refresh` reads that manifest so it can re-render selected stubs while
 **preserving the values you don't override** — you only pass the flags you want
 to change.
 
-stubber only creates files — it does **not** initialize a git repository or
-run `go mod init` for you. See [Caveats](#known-issues--caveats).
+With `-G`/`--git`, `create` then creates the repository named by `-u` on its
+forge, as a **private** repository, and pushes the scaffolded code to its
+`develop` branch — see [Git repository creation](#git-repository-creation--g).
+Without `-G`, stubber only creates files. It never runs `go mod init` for you.
+See [Caveats](#known-issues--caveats).
 
 ## Installation
 
@@ -73,6 +82,7 @@ Otherwise, build it yourself — see [Building from source](#building-from-sourc
 stubber create -A -a -d -r -w -k \
   -V 1.0.0 -R 1 \
   -D "My awesome CLI tool" \
+  -s utils \
   -u "https://git.famillegratton.net:3000/jfgratton/mytool" \
   mytool
 ```
@@ -80,6 +90,16 @@ stubber create -A -a -d -r -w -k \
 This creates a `mytool/` directory in the current working directory containing
 a buildable Go skeleton plus `__archlinux/`, `__alpine/`, `__debian/`,
 `__redhat/`, and `__windows/` packaging stubs.
+
+Add `-G` to also create the (private) `jfgratton/mytool` repository on that
+forge and push everything to its `develop` branch; this needs a
+[connection](#connections-stubber-conn) to the server first:
+
+```sh
+stubber conn add famillegratton       # once: server type, URL, credentials
+stubber create -k -d -r -D "My awesome CLI tool" -s utils \
+  -u "https://git.famillegratton.net:3000/jfgratton/mytool" -G mytool
+```
 
 > **Always review the generated files.** stubber is a *generic* stub
 > generator — it doesn't know anything about your project beyond what you
@@ -97,11 +117,13 @@ Available commands:
 |--------------|-------------------------------------------------------------|
 | `create`     | Generates the directory structure (skeleton/stubs) for a new software project |
 | `refresh`    | Re-renders selected stubs of an existing project, preserving unset values (reads/updates `<softwarename>.json`) |
+| `conn`       | Manages the forge connections used by `create -G` (`list`, `info`, `add`, `edit`, `rm`) |
 | `assets`     | Manage/inspect the templates embedded in the binary (e.g. `assets list`) |
 | `completion` | Generates shell completion scripts (bash, zsh)             |
+| `version`    | Prints stubber's own version and the Go toolchain version it was built with |
 
-Run `stubber -h`, `stubber create -h`, or `stubber completion -h` for the
-built-in help at any time.
+Run `stubber -h`, or `stubber <command> -h` (e.g. `stubber create -h`), for the
+built-in help and examples at any time.
 
 ### Global flags
 
@@ -110,20 +132,22 @@ These apply to `stubber` itself and are inherited by all subcommands:
 | Flag | Shorthand | Default | Description |
 |------|-----------|---------|-------------|
 | `--quiet` | `-q` | `false` | Silence non-essential output. |
-| `--projectrootdir` | `-p` | `.` | Directory in which to create the project. If left at the default, stubber creates and uses `./<SOFTWARENAME>`. If set to an existing path, stubber generates files directly into it. |
+| `--projectrootdir` | `-p` | `.` | `create`: directory in which to create the project. If left at the default, stubber creates and uses `./<SOFTWARENAME>`; otherwise it generates files directly into the given path (created if missing). `refresh`: the project root holding the manifest (the current directory by default). |
 | `--binaryname` | `-b` | *(same as `<SOFTWARENAME>`)* | Name of the compiled binary. Used to name Alpine packaging scripts (`<binaryname>.post-install`, etc.) and as the `{{ BINARY NAME }}` placeholder. |
-| `--gover` | `-g` | `1.26.4` | Go version to embed in generated files (`go.mod`, `go.version`, packaging scripts). *Despite the built-in help text, this sets the Go version — not an output path.* |
-| `--version` | | | Print stubber's own version and the Go toolchain version it was built with. |
+| `--gover` | `-g` | `1.27.3` | Go version to embed in generated files (`go.mod`, `go.version`, packaging scripts). |
 | `--help` | `-h` | | Show help for any command. |
+
+stubber's own version is shown by the `stubber version` command (there is no
+`--version` flag).
 
 ### `create` flags
 
 `stubber create` requires **exactly one** positional argument (the software
 name), **at least one** of `-A`, `-a`, `-d`, `-r`, `-w`, `-k`, and the three
-mandatory value flags `-D`, `-s`, `-e`:
+mandatory value flags `-D`, `-s`, `-u`:
 
 ```sh
-stubber create [-A] [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -e <deps> [other flags] <SOFTWARENAME>
+stubber create [-A] [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -u <url> [-G] [other flags] <SOFTWARENAME>
 ```
 
 | Stub flag | Shorthand | What it generates |
@@ -135,7 +159,7 @@ stubber create [-A] [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -e <deps> [o
 | `--windows`   | `-w` | `__windows/` — WiX `.wxs` source + `Makefile`-driven `.msi` build (Windows) |
 | `--skeleton`  | `-k` | Go project skeleton: `src/`, `go.mod`, `main.go`, `cmd/root.go`, `cmd/completion.go`, build scripts, `README.md`, `CHANGELOG.md`, `ROADMAP.md`, `TODO.md`, `LICENSE`, etc. |
 
-Value flags used to fill in the templates. `-D`, `-s`, and `-e` are
+Value flags used to fill in the templates. `-D`, `-s`, and `-u` are
 **mandatory** on `create` (marked ⭑ below) — even the ones with a default must
 be supplied explicitly:
 
@@ -147,11 +171,20 @@ be supplied explicitly:
 | `--maintainer` | `-M` | `Jean-Francois Gratton <jean-francois@famillegratton.net>` | Maintainer name/email — `{{ MAINTAINER }}`. **Override this if you're not me.** |
 | `--packager` | `-P` | `APK Builder <builder@famillegratton.net>` | Packager name/email (Alpine) — `{{ PACKAGER }}`. **Override this too.** |
 | `--section` ⭑ | `-s` | `Packaging tool` | **Required.** Debian package section / RPM `Group` — `{{ PACKAGE SECTION }}` / `{{ SECTION }}`. |
-| `--depends` ⭑ | `-e` | *(empty)* | **Required.** Package dependencies — `{{ DEPENDENCIES }}`. Passed straight into the Debian `control` file, and rewritten into a quoted array for the Arch `PKGBUILD`. |
-| `--url` | `-u` | `https://git.famillegratton.net:3000/ADD_URL_HERE` | Upstream/git repo URL — `{{ URL }}`. **Override this.** |
+| `--depends` | `-e` | *(empty)* | Package dependencies, comma-separated — `{{ DEPENDENCIES }}`. Passed straight into the Debian `control` file, and rewritten into a quoted array for the Arch `PKGBUILD`. |
+| `--url` ⭑ | `-u` | *(empty)* | **Required.** Git repository URL, `https://SERVER[:PORT]/OWNER/REPO` — `{{ URL }}`. With `-G`, also the repository to create. |
+| `--manufacturer` | `-m` | `famillegratton.net` | Windows `.msi` Manufacturer/Publisher field. |
 
-> These three are required on **`create`** only. `refresh` leaves them optional,
-> since it preserves whatever the manifest already holds.
+> These three are required on **`create`** only. `refresh` leaves `-D` and `-s`
+> optional, since it preserves whatever the manifest already holds (and `-u` is
+> not a `refresh` flag at all).
+
+Git flags, `create` only:
+
+| Flag | Shorthand | Default | Description |
+|------|-----------|---------|-------------|
+| `--git` | `-G` | `false` | Once the files are generated, create the `-u` repository (private) on its forge, then commit and push the scaffolded code on `develop`. See [Git repository creation](#git-repository-creation--g). |
+| `--connection` | `-c` | *(inferred from `-u`)* | Connection to use with `-G`; mandatory only when several connections point to the `-u` server. See [Connections](#connections-stubber-conn). |
 
 ### `refresh` flags
 
@@ -162,7 +195,7 @@ at `create` time, applies only the flags you actually pass on the command line
 writes the updated manifest back.
 
 ```sh
-stubber refresh [-A] [-a] [-d] [-r] [-k] [value flags]
+stubber refresh [-A] [-a] [-d] [-r] [-w] [-k] [value flags]
 ```
 
 `refresh` takes **no positional argument**. Run it **from the project root** —
@@ -199,19 +232,26 @@ Which stubs get refreshed is driven entirely by the stub flags you pass:
   `Makefile`; it creates the `.wxs` the first time and leaves it alone on
   every refresh after that.
 
-The value flags (`-g`, `-V`, `-R`, `-D`, `-M`, `-P`, `-s`, `-e`, and `-b`) work
+The value flags (`-g`, `-V`, `-R`, `-D`, `-M`, `-P`, `-s`, `-e`, `-m`, and `-b`) work
 exactly as in `create`, but here **omitting a flag means "keep the stored
-value"** rather than "use the default". Note that `-u`/`--url` is *not* a
-`refresh` flag — the URL is preserved from the manifest but can't be changed via
+value"** rather than "use the default". Note that `-u`/`--url` and `-G`/`--git`
+are *not* `refresh` flags — the URL is preserved from the manifest but can't be changed via
 `refresh` (edit `<softwarename>.json` or the generated files directly if you need to).
 
 ### Examples
 
-Generate just a Go skeleton, targeting Go 1.26.4, in a custom directory
-(`-D`/`-s`/`-e` are required on every `create`, even skeleton-only):
+Generate just a Go skeleton, targeting Go 1.27.3, in a custom directory
+(`-D`/`-s`/`-u` are required on every `create`, even skeleton-only):
 
 ```sh
-stubber create -k -g 1.26.4 -D "My awesome CLI tool" -s "utils" -e "" -p ./projects/mytool mytool
+stubber create -k -g 1.27.3 -D "My awesome CLI tool" -s "utils" -u "https://git.example.com/me/mytool" -p ./projects/mytool mytool
+```
+
+Same, but also create the private `me/mytool` repository on GitHub and push
+the skeleton to its `develop` branch:
+
+```sh
+stubber create -k -D "My awesome CLI tool" -s "utils" -u "https://github.com/me/mytool" -G mytool
 ```
 
 Add Debian packaging to an existing project, with dependencies:
@@ -222,32 +262,33 @@ stubber create -d \
   -s "admin" \
   -e "docker.io" \
   -M "Your Name <you@example.com>" \
+  -u "https://git.example.com/me/dvol" \
   dvol
 ```
 
 Generate RPM packaging only (`__redhat/`), with version/release set explicitly:
 
 ```sh
-stubber create -r -V 2.3.0 -R 1 -D "My project" -s "utils" -e "" -u "https://git.example.com/me/myproj" myproj
+stubber create -r -V 2.3.0 -R 1 -D "My project" -s "utils" -u "https://git.example.com/me/myproj" myproj
 ```
 
 Generate an Arch Linux `PKGBUILD` stub (`__archlinux/`):
 
 ```sh
-stubber create -A -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -e "" mytool
+stubber create -A -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
 ```
 
 Generate a Windows `.msi` stub (`__windows/`):
 
 ```sh
-stubber create -w -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -e "" mytool
+stubber create -w -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
 ```
 
 Generate everything quietly (e.g. from a script), with a binary name that
 differs from the project name:
 
 ```sh
-stubber -q create -A -a -d -r -w -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -e "" mytool
+stubber -q create -A -a -d -r -w -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
 ```
 
 Bump the version and Go toolchain of an existing project, refreshing every
@@ -255,7 +296,7 @@ packaging stub it already has (run from inside the project root, no name needed)
 
 ```sh
 cd mytool
-stubber refresh -A -a -d -r -w -V 1.1.0 -R 1 -g 1.27.0
+stubber refresh -A -a -d -r -w -V 1.1.0 -R 1 -g 1.27.3
 ```
 
 Change just the Debian dependencies, leaving everything else as-is (pointing
@@ -269,8 +310,147 @@ Re-point only `go.version` at a new Go release, without touching any packaging
 or source files:
 
 ```sh
-stubber refresh -k -g 1.27.0 -p ./mytool
+stubber refresh -k -g 1.27.3 -p ./mytool
 ```
+
+## Git repository creation (`-G`)
+
+`stubber create -G` goes one step further than generating files:
+
+1. The `-u` URL (`https://SERVER[:PORT]/OWNER/REPO`) names the repository: its
+   server, its owner and its name. A trailing `.git` is accepted. The owner is
+   the segment just before the repository name, and need not be you: a user, an
+   organisation (Forgejo, GitHub) or a workspace (Bitbucket). Your account needs
+   the right to create repositories there.
+2. stubber picks the [connection](#connections-stubber-conn) whose server hosts
+   that URL (or the one given with `-c`); the connection's type decides the
+   backend (Forgejo, GitHub or Bitbucket Cloud), and its credentials are used
+   throughout.
+3. The repository is created **private**, with `-D` as its description. Making
+   it public is left to you: by default, the most restrictive setting wins.
+4. It is created **empty**: the scaffold already carries its own `README.md`
+   and `.gitignore`, and a forge-side initial commit would only conflict with it.
+5. The project directory is then initialized locally (`git init` on `develop`),
+   everything is committed (*Initial commit: project scaffolded by stubber*),
+   `origin` is set to the new repository, and `develop` is pushed. `develop`
+   becomes the repository's default branch.
+
+Before **anything** is written — locally or on the forge — stubber checks
+everything it can without side effects:
+
+- the URL matches a connection (and `-c` is given if several do);
+- the connection is valid, and the forge accepts its credentials;
+- the repository does not already exist on the forge;
+- `git` is installed, has an identity (`user.name`/`user.email`) to commit
+  with, and the project directory is not already a git repository.
+
+A failure there stops stubber with *Nothing was created*: fix the cause, and
+run the same command again. Only two things can still fail once the project is
+scaffolded: the repository creation itself (ex: your account may not create
+repositories in that organisation), and the push (ex: a network failure). In
+both cases, see [Recovering from a failed `-G`](#recovering-from-a-failed--g).
+
+The push credentials are passed to git through its environment: they never
+appear on the command line, and are never written into `.git/config`.
+
+### Connections (`stubber conn`)
+
+Connections are kept in `$HOME/.config/JFG/stubber/connections.json` (secrets
+encrypted). Each holds a server type (`forgejo`, `github`, `bitbucket`), the
+server URL, and either an API token or a username/password pair (the token
+wins when both are set; GitHub requires a token).
+
+| Command | Description |
+|---------|-------------|
+| `stubber conn list` (`ls`) | Lists every connection, flagging invalid ones |
+| `stubber conn info CONNECTION [CONNECTION...]` | Shows the details of the given connections (secrets are never shown) |
+| `stubber conn add CONNECTION` | Adds a connection; you are prompted for its values |
+| `stubber conn edit CONNECTION` | Edits a connection in place (ENTER keeps a value, `-` clears a secret) |
+| `stubber conn rm CONNECTION` | Removes a connection |
+
+There is **no default connection**: the one used is derived from `-u`, and
+`-c CONNECTION` (`--connection`) is only needed to choose among several.
+The server URL you give a connection is the forge's root, as it appears in
+your repository URLs:
+
+| Forge | Connection URL | Matching `-u` |
+|-------|----------------|---------------|
+| Forgejo | `https://git.example.net:3000` | `https://git.example.net:3000/me/mytool` |
+| Forgejo, sub-path install | `https://example.com/forgejo` | `https://example.com/forgejo/me/mytool` |
+| GitHub | `https://github.com` (or `https://api.github.com`) | `https://github.com/me/mytool` |
+| Bitbucket Cloud | `https://bitbucket.org` (or `https://api.bitbucket.org/2.0`) | `https://bitbucket.org/myworkspace/mytool` |
+
+API suffixes (`/api/v1`, `/api/v3`, `/2.0`) and default ports are ignored when
+matching. The forge type is the matching connection's, never guessed from the
+hostname, so GitHub Enterprise servers and Bitbucket proxies work as well.
+
+- **One** connection points to the `-u` server: it is used; `-c` is optional
+  (if given, it must name that connection).
+- **Several** connections point to it (two GitHub accounts, say): `-c` is
+  mandatory, and stubber lists the candidates if you forget it.
+- **None**: stubber stops, and tells you to add one with `stubber conn add`.
+
+`-c` works as in `gitclt`: it names a connection, whose token takes precedence
+over its username/password. A `-c` connection that points to another server
+than `-u`'s is refused, which also catches a typo in either. Using `-c`
+without `-G` is an error.
+
+Real-world examples (one connection per server, so no `-c`):
+
+```sh
+# Forgejo, in the "mainline" organisation
+stubber create -k -D "Go project scaffolder" -s utils -u https://git.famillegratton.net:3000/mainline/stubber.git -G stubber
+# GitHub and Bitbucket, under the personal account / workspace
+stubber create -k -D "Go project scaffolder" -s utils -u https://github.com/jeanfrancoisgratton/stubber.git -G stubber
+stubber create -k -D "Go project scaffolder" -s utils -u https://bitbucket.org/jeanfrancoisgratton/stubber.git -G stubber
+```
+
+With two GitHub connections (`gh-personal`, `gh-work`):
+
+```sh
+stubber create -k -D "My tool" -s utils -u https://github.com/someorg/mytool -G -c gh-work mytool
+```
+
+### Recovering from a failed `-G`
+
+If repository creation or the push fails *after* the project was scaffolded,
+the error says which, and where the project is. The simplest way out, when you
+haven't touched the generated files yet: delete the project directory (and the
+repository, if it was created and is still empty), fix the cause, and run the
+same `stubber create` again.
+
+Otherwise, finish by hand.
+
+**1. The repository was not created.** Create it as an **empty, private**
+repository — no README, `.gitignore` or license, the scaffold has its own:
+
+- from the forge's web UI, or
+- with `gitclt`, which uses the
+  same connections (leave `--initialize` off):
+
+  ```sh
+  gitclt repo create -c CONNECTION -o OWNER --public=false --description "My tool" REPO
+  ```
+
+  On GitHub and Bitbucket, add `--defaultbranch ""`: neither accepts a default
+  branch on an empty repository; pushing `develop` first makes it the default
+  anyway.
+
+**2. Commit and push.** From the project root, run whichever of these steps
+weren't done yet (`git status` and `git remote -v` tell you where you are):
+
+```sh
+cd mytool
+git init --initial-branch=develop       # or, if .git already exists: git switch -c develop
+git add --all
+git commit -m "Initial commit: project scaffolded by stubber"
+git remote add origin https://git.example.net:3000/myorg/mytool.git   # or: git remote set-url origin ...
+git push -u origin develop
+```
+
+This push authenticates with your own git setup (credential helper, or a
+prompt): stubber never stores the connection's credentials in the project.
+Finally, check in the forge's settings that `develop` is the default branch.
 
 ## The project manifest (`<softwarename>.json`)
 
@@ -283,7 +463,7 @@ owns:
 {
   "softwarename": "mytool",
   "binaryname": "mytool",
-  "goversion": "1.26.4",
+  "goversion": "1.27.3",
   "versionnumber": "1.0.0",
   "defaultreleasenumber": "1",
   "description": "My awesome CLI tool",
@@ -601,7 +781,7 @@ reads an embedded asset, substitutes placeholders, and writes it into the
 generated project tree.
 
 The required Go version is tracked in `go.version` at the repo root
-(currently 1.26.5).
+(currently 1.27.3).
 
 ## Building packages
 
@@ -628,8 +808,9 @@ If you'd rather not build from source, grab a pre-built package from the
 
 ## Known issues / caveats
 
-- stubber creates a directory structure, but does **not** initialize a git
-  repository (or any other VCS) for you.
+- Without `-G`, stubber creates a directory structure only; it does **not**
+  initialize a git repository for you. With `-G`, the repository is always
+  created private, and on the `develop` branch.
 - After running `stubber create -k`, `go.mod` / `go.sum` in the generated
   skeleton may need a `go mod init` / `go mod tidy` pass before `src/build.sh`
   will succeed.
@@ -647,9 +828,6 @@ If you'd rather not build from source, grab a pre-built package from the
   (the `msitools` package), and a Go toolchain cross-compiling to
   `GOOS=windows`, which the `docker_artifacts` fleet's `winbuilder` container
   provides.
-- The `-g`/`--gover` flag's built-in `-h` description is misleading (it says
-  "Where to put the skeleton dir") — it actually sets the Go version used in
-  generated files.
 - **Always review the generated files.** This is a generic stub generator; it
   doesn't validate the values you pass, and downstream packaging tools (`apk`,
   `dpkg-buildpackage`, `rpmbuild`, `makepkg`) are unforgiving of malformed

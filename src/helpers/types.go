@@ -10,20 +10,24 @@ import "time"
 // Command-line flags
 var RootDir string
 var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub, WindowsStub bool
-var GoVersion = "1.26.6"
+var GoVersion = "1.27.3"
 var Arch string
 var VersionNumber string
 var ReleaseNumber string
 var BinaryName = ""
 var Description = ""
 var Maintainer = "Jean-Francois Gratton <jean-francois@famillegratton.net>"
-var Packager = "APK Builder <builder@famillegratton.net>"
+var Packager = "Package Builder <builder@famillegratton.net>"
 var Section = ""
 var Dependencies = ""
 var Url = ""
 var Manufacturer = "famillegratton.net"
 var Quiet = false
 var ReleaseDate = time.Now().Format("2006.01.02")
+var CreateGitRepo = false
+
+// The connection to use with -G, from -c/--connection; empty means the one whose server hosts --url
+var ConnectionName = ""
 
 // ReleaseDateISO is ReleaseDate in the ISO 8601 form Keep a Changelog requires,
 // used by the skeleton's docs/CHANGELOG.md.

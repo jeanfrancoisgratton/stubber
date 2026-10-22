@@ -1,4 +1,4 @@
-// dvol
+// stubber
 // Written by J.F. Gratton <jean-francois@famillegratton.net>
 // Original timestamp: 2025/09/15 08:35
 // Original filename: src/cmd/completion.go
@@ -14,8 +14,8 @@ import (
 
 var completionCmd = &cobra.Command{
 	Use:   "completion",
-	Short: "Generate shell completion scripts",
-	Long: `Generate completion scripts for your shell.
+	Short: "Generates shell completion scripts",
+	Long: `Generates completion scripts for your shell.
 
 Bash:
   $ source <(stubber completion bash)
@@ -29,11 +29,14 @@ Zsh:
   # Or, for current session:
   $ source <(stubber completion zsh)
 `,
+	Example: "  source <(stubber completion bash)\n  source <(stubber completion zsh)",
 }
 
 var completionBashCmd = &cobra.Command{
-	Use:   "bash",
-	Short: "Generate a Bash completion script",
+	Use:     "bash",
+	Short:   "Generates a Bash completion script",
+	Example: "  source <(stubber completion bash)",
+	Args:    cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// V2 is recommended; writes to stdout
 		return rootCmd.GenBashCompletionV2(os.Stdout, true)
@@ -41,8 +44,10 @@ var completionBashCmd = &cobra.Command{
 }
 
 var completionZshCmd = &cobra.Command{
-	Use:   "zsh",
-	Short: "Generate a Zsh completion script",
+	Use:     "zsh",
+	Short:   "Generates a Zsh completion script",
+	Example: "  stubber completion zsh > ~/.zsh/stubber",
+	Args:    cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// Ensure the script is zsh-compatible
 		return rootCmd.GenZshCompletion(os.Stdout)

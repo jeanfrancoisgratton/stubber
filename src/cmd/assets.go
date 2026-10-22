@@ -13,14 +13,17 @@ import (
 )
 
 var assetsCmd = &cobra.Command{
-	Use:   "assets",
-	Short: "Assets management subcommand",
+	Use:     "assets",
+	Short:   "Embedded assets (templates) commands",
+	Example: "  stubber assets list",
 }
 
 var assetsListCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"ls"},
-	Short:   "List all the embedded assets",
+	Short:   "Lists all the embedded assets",
+	Example: "  stubber assets list",
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		if _, e := assets.List(true); e != nil {
 			fmt.Println(e.Error())

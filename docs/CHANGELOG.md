@@ -8,8 +8,19 @@ since 2.4.0. Version headings are plain text (no compare links), as entries may 
 written before anything is published.
 
 ## Unreleased
+n/a
 
-Stubber3 will integrate git repo creation at project scaffolding time. This is being developed in a branch outside normal bug fixes
+## 3.0.0 - 2026-10-22
+
+### Added
+- Added git repository creation support (`-G` | `--git`) flags so now you create the scaffolding and have it commited/pushed to git
+
+  (have a look at the [README.md](../README.md) file for more information
+
+### Changed
+
+- Documentation, dependencies update
+
 
 ## 2.11.0 - 2026-10-22
 
