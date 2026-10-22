@@ -58,6 +58,12 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Thu Oct 22 2026 Binary package builder <builder@famillegratton.net> 3.0.0-1
+- feature: git repo creation support
+- prepping code for stubber3
+- enhancement: file location refactoring
+- chore: update changelog for 2.10.0-1
+
 * Sun Sep 27 2026 Binary package builder <builder@famillegratton.net> 2.10.0-1
 - enhancement: changed all destination nexus repos
 - chore: update changelog for 2.9.1-2
