@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# nxtools — bump the software version everywhere it needs to be typed by
+# stubber — bump the software version everywhere it needs to be typed by
 # hand, and reset every distro's independent release counter to 1.
 #
 # Version and release are different things (see docs/CHANGELOG.md history /
@@ -19,13 +19,13 @@ set -eu
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-TARGETS="nxtools.json __alpine/APKBUILD __archlinux/PKGBUILD __debian/control __redhat/nxtools.spec"
+TARGETS="stubber.json __alpine/APKBUILD __archlinux/PKGBUILD __debian/control __redhat/stubber.spec"
 
 print_usage() {
   cat <<EOF
 Usage: $0 <new-version>   (e.g. $0 1.3.2)
 
-Bumps the software version in nxtools.json and every __*/ packaging file,
+Bumps the software version in stubber.json and every __*/ packaging file,
 and resets each distro's independent release counter to 1. The version
 must start with a digit and contain only [A-Za-z0-9._~-] (no "v" prefix,
 no flags).
@@ -104,13 +104,13 @@ verify() {
   grep -qF -- "$2" "$1" || die "expected to find '$2' in $1 after patching — its format may have changed; check 'git diff' before re-running."
 }
 
-echo "Bumping nxtools to version $NEWVERSION (release reset to 1 on every distro)"
+echo "Bumping stubber to version $NEWVERSION (release reset to 1 on every distro)"
 
-patch nxtools.json \
+patch stubber.json \
   "s/\"versionnumber\": *\"[^\"]*\"/\"versionnumber\": \"$NEWVERSION\"/
    s/\"defaultreleasenumber\": *\"[^\"]*\"/\"defaultreleasenumber\": \"1\"/"
-verify nxtools.json "\"versionnumber\": \"$NEWVERSION\""
-verify nxtools.json "\"defaultreleasenumber\": \"1\""
+verify stubber.json "\"versionnumber\": \"$NEWVERSION\""
+verify stubber.json "\"defaultreleasenumber\": \"1\""
 
 patch __alpine/APKBUILD \
   "s/^pkgver=.*/pkgver=$NEWVERSION/
@@ -124,11 +124,11 @@ patch __archlinux/PKGBUILD \
 verify __archlinux/PKGBUILD "pkgver=$NEWVERSION"
 verify __archlinux/PKGBUILD "pkgrel=1"
 
-patch __redhat/nxtools.spec \
+patch __redhat/stubber.spec \
   "s/^%define _version .*/%define _version $NEWVERSION/
    s/^%define _rel .*/%define _rel 1/"
-verify __redhat/nxtools.spec "%define _version $NEWVERSION"
-verify __redhat/nxtools.spec "%define _rel 1"
+verify __redhat/stubber.spec "%define _version $NEWVERSION"
+verify __redhat/stubber.spec "%define _rel 1"
 
 patch __debian/control \
   "s/^Version: .*/Version: $NEWVERSION-1/"
@@ -136,10 +136,10 @@ verify __debian/control "Version: $NEWVERSION-1"
 
 echo
 echo "Changed:"
-grep -H '"versionnumber"\|"defaultreleasenumber"' nxtools.json
+grep -H '"versionnumber"\|"defaultreleasenumber"' stubber.json
 grep -H '^pkgver=\|^pkgrel=' __alpine/APKBUILD
 grep -H '^pkgver=\|^pkgrel=' __archlinux/PKGBUILD
 grep -H '^Version:' __debian/control
-grep -H '^%define _version\|^%define _rel' __redhat/nxtools.spec
+grep -H '^%define _version\|^%define _rel' __redhat/stubber.spec
 echo
 echo "Nothing else to edit by hand — src/cmd/root.go picks this up via -ldflags at build time."
