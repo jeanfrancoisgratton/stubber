@@ -10,6 +10,13 @@ written before anything is published.
 ## Unreleased
 n/a
 
+## 3.1.0 - 2026-10-30
+
+### Changed
+- gitoperationslib API synced to 1.0.0 as that package is now prod-ready (no functional changes in stubber)
+- build dependencies update
+- `build.sh` and `version-bump.sh` updates in both stubber and the assets generator
+
 ## 3.0.0 - 2026-10-22
 
 ### Added
