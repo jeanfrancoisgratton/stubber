@@ -58,6 +58,12 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Fri Oct 30 2026 Binary package builder <builder@famillegratton.net> 3.1.0-1
+- housekeeping: version bump
+- Merge branch 'feature/v3' into develop
+- enhancement: helper scripts updates, builddeps update
+- chore: update changelog for 3.0.0-1
+
 * Thu Oct 22 2026 Binary package builder <builder@famillegratton.net> 3.0.0-1
 - feature: git repo creation support
 - prepping code for stubber3
