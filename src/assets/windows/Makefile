@@ -7,8 +7,8 @@
 #   make clean     -> remove the staging tree and the built .msi
 #   make info      -> print the values extracted from {{ SOFTWARE NAME }}.json
 #
-# Windows has no distro package manager, so there's no APKBUILD/control/spec/
-# PKGBUILD equivalent here. Metadata (name / version / binary / description)
+# Windows has no distro package manager, so there's no APKBUILD/control/spec
+# equivalent here. Metadata (name / version / binary / description)
 # is read straight from ../{{ SOFTWARE NAME }}.json instead -- the manifest
 # stubber itself writes at `create` time -- so this stays a single source of
 # truth, same principle as every other __*/Makefile this tool generates.

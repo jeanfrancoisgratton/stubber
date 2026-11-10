@@ -19,7 +19,7 @@ set -eu
 SCRIPT_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-TARGETS="stubber.json __alpine/APKBUILD __archlinux/PKGBUILD __debian/control __redhat/stubber.spec"
+TARGETS="stubber.json __alpine/APKBUILD __debian/control __redhat/stubber.spec"
 
 print_usage() {
   cat <<EOF
@@ -118,12 +118,6 @@ patch __alpine/APKBUILD \
 verify __alpine/APKBUILD "pkgver=$NEWVERSION"
 verify __alpine/APKBUILD "pkgrel=1"
 
-patch __archlinux/PKGBUILD \
-  "s/^pkgver=.*/pkgver=$NEWVERSION/
-   s/^pkgrel=.*/pkgrel=1/"
-verify __archlinux/PKGBUILD "pkgver=$NEWVERSION"
-verify __archlinux/PKGBUILD "pkgrel=1"
-
 patch __redhat/stubber.spec \
   "s/^%define _version .*/%define _version $NEWVERSION/
    s/^%define _rel .*/%define _rel 1/"
@@ -138,7 +132,6 @@ echo
 echo "Changed:"
 grep -H '"versionnumber"\|"defaultreleasenumber"' stubber.json
 grep -H '^pkgver=\|^pkgrel=' __alpine/APKBUILD
-grep -H '^pkgver=\|^pkgrel=' __archlinux/PKGBUILD
 grep -H '^Version:' __debian/control
 grep -H '^%define _version\|^%define _rel' __redhat/stubber.spec
 echo

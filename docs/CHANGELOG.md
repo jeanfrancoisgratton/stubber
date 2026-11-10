@@ -8,7 +8,11 @@ since 2.4.0. Version headings are plain text (no compare links), as entries may 
 written before anything is published.
 
 ## Unreleased
-n/a
+
+### Removed
+- Arch Linux support: the `-A` | `--archlinux` flag of `create` and `refresh`, the `__archlinux/` stub and its
+  assets, and its handling in `version-bump.sh` (both stubber's and the generated one). The manifest keeps its
+  `"archlinux"` key for backwards compatibility, always written `false`
 
 ## 3.1.0 - 2026-10-30
 

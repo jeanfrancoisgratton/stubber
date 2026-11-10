@@ -26,7 +26,7 @@ func TestSaveAndFindManifest(t *testing.T) {
 		DefaultReleaseNumber: "4",
 		Section:              "utils",
 		Dependencies:         "libc",
-		Stubs:                Stubs{Debian: true, ArchLinux: true},
+		Stubs:                Stubs{Debian: true, RedHat: true},
 	}
 
 	if e := SaveManifest(dir, want); e != nil {
@@ -47,7 +47,7 @@ func TestSaveAndFindManifest(t *testing.T) {
 		got.Dependencies != want.Dependencies {
 		t.Errorf("round-trip mismatch:\n got  %+v\n want %+v", got, want)
 	}
-	if !got.Stubs.Debian || !got.Stubs.ArchLinux || got.Stubs.Alpine {
+	if !got.Stubs.Debian || !got.Stubs.RedHat || got.Stubs.Alpine {
 		t.Errorf("stubs not preserved: %+v", got.Stubs)
 	}
 }

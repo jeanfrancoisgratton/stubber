@@ -31,7 +31,6 @@ func setBaseline(root string) {
 	helpers.AlpineStub = false
 	helpers.DebianStub = false
 	helpers.RedHatStub = false
-	helpers.ArchLinuxStub = false
 	helpers.WindowsStub = false
 	helpers.SkeletonStub = false
 }
@@ -56,7 +55,6 @@ func TestCreateStubWritesFilesAndManifest(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "demo")
 	setBaseline(root)
 	helpers.DebianStub = true
-	helpers.ArchLinuxStub = true
 	helpers.SkeletonStub = true
 
 	if e := CreateStub("demo"); e != nil {
@@ -66,7 +64,6 @@ func TestCreateStubWritesFilesAndManifest(t *testing.T) {
 	// Rendered packaging files carry the values we supplied.
 	assertContains(t, filepath.Join(root, "__debian", "control"), "Version: 1.0.0-1")
 	assertContains(t, filepath.Join(root, "__debian", "control"), "Depends: libc")
-	assertContains(t, filepath.Join(root, "__archlinux", "PKGBUILD"), "pkgver=1.0.0")
 
 	// Skeleton go.version holds the Go version, and templates are stripped of .tmpl.
 	if got := strings.TrimSpace(readFile(t, filepath.Join(root, "go.version"))); got != "1.30.0" {
@@ -84,9 +81,13 @@ func TestCreateStubWritesFilesAndManifest(t *testing.T) {
 	if m.SoftwareName != "demo" || m.BinaryName != "demo" || m.VersionNumber != "1.0.0" {
 		t.Errorf("manifest values wrong: %+v", m)
 	}
-	if !m.Stubs.Debian || !m.Stubs.ArchLinux || !m.Stubs.Skeleton || m.Stubs.Alpine || m.Stubs.RedHat {
+	if !m.Stubs.Debian || !m.Stubs.Skeleton || m.Stubs.Alpine || m.Stubs.RedHat || m.Stubs.ArchLinux {
 		t.Errorf("manifest stubs wrong: %+v", m.Stubs)
 	}
+
+	// Arch Linux is no longer supported, but the manifest keeps its key, always
+	// false, for backwards compatibility.
+	assertContains(t, filepath.Join(root, "demo.json"), `"archlinux": false`)
 }
 
 // dontexec.sh manages the _dontexec build-veto marker. It is the one skeleton
@@ -135,62 +136,16 @@ func TestDontexecIsRenderedExecutableByCreateAndRefresh(t *testing.T) {
 	assertExecutable(script)
 }
 
-// The --depends flag is free-form and Debian-shaped, but pacman needs a bash
-// array of individually quoted elements, so stubArchLinux rewrites it.
-func TestPacmanDepends(t *testing.T) {
-	cases := []struct {
-		name, in, want string
-	}{
-		{"empty stays empty", "", ""},
-		{"single", "libc", "'libc'"},
-		{"comma separated", "libc, bash-completion", "'libc' 'bash-completion'"},
-		{"space separated", "libc bash-completion", "'libc' 'bash-completion'"},
-		{"ragged separators", " libc ,,  bash-completion ,", "'libc' 'bash-completion'"},
-		{"version constraint survives", "glibc>=2.38", "'glibc>=2.38'"},
-		// A single quote cannot be escaped inside a bash single-quoted string.
-		{"embedded quote", "we'ird", `'we'\''ird'`},
-	}
-
-	for _, tc := range cases {
-		t.Run(tc.name, func(t *testing.T) {
-			if got := pacmanDepends(tc.in); got != tc.want {
-				t.Errorf("pacmanDepends(%q) = %q, want %q", tc.in, got, tc.want)
-			}
-		})
-	}
-}
-
-// The URL and dependency placeholders were both missing from stubArchLinux's
-// replacement map, so PKGBUILD rendered url="{{ URL }}" literally and silently
-// dropped whatever --depends was given.
-func TestArchLinuxRendersUrlAndDepends(t *testing.T) {
-	root := filepath.Join(t.TempDir(), "demo")
-	setBaseline(root)
-	helpers.ArchLinuxStub = true
-
-	if e := CreateStub("demo"); e != nil {
-		t.Fatalf("CreateStub: %+v", e)
-	}
-
-	pkgbuild := filepath.Join(root, "__archlinux", "PKGBUILD")
-	assertContains(t, pkgbuild, `url="https://example.com/repo"`)
-	assertContains(t, pkgbuild, `depends=('libc')`)
-
-	if got := readFile(t, pkgbuild); strings.Contains(got, "{{") {
-		t.Errorf("PKGBUILD contains an unrendered placeholder:\n%s", got)
-	}
-}
-
 func TestRefreshOnlyTouchesRequestedStubs(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "demo")
 	setBaseline(root)
 	helpers.DebianStub = true
-	helpers.ArchLinuxStub = true
+	helpers.RedHatStub = true
 
 	if e := CreateStub("demo"); e != nil {
 		t.Fatalf("CreateStub: %+v", e)
 	}
-	archBefore := readFile(t, filepath.Join(root, "__archlinux", "PKGBUILD"))
+	redhatBefore := readFile(t, filepath.Join(root, "__redhat", "demo.spec"))
 
 	// Refresh only Debian, bumping the version. (In the CLI the merge of stored +
 	// changed values happens in the command; here we drive the merged globals.)
@@ -206,9 +161,9 @@ func TestRefreshOnlyTouchesRequestedStubs(t *testing.T) {
 	assertContains(t, filepath.Join(root, "__debian", "control"), "Version: 2.0.0-1")
 	assertContains(t, filepath.Join(root, "__debian", "control"), "Depends: libc")
 
-	// ArchLinux was not requested, so it must be byte-for-byte unchanged.
-	if archAfter := readFile(t, filepath.Join(root, "__archlinux", "PKGBUILD")); archAfter != archBefore {
-		t.Errorf("__archlinux/PKGBUILD changed despite not being refreshed")
+	// RedHat was not requested, so it must be byte-for-byte unchanged.
+	if redhatAfter := readFile(t, filepath.Join(root, "__redhat", "demo.spec")); redhatAfter != redhatBefore {
+		t.Errorf("__redhat/demo.spec changed despite not being refreshed")
 	}
 }
 

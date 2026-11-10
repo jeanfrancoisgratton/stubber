@@ -9,7 +9,7 @@ import "time"
 
 // Command-line flags
 var RootDir string
-var AlpineStub, DebianStub, RedHatStub, SkeletonStub, ArchLinuxStub, WindowsStub bool
+var AlpineStub, DebianStub, RedHatStub, SkeletonStub, WindowsStub bool
 var GoVersion = "1.27.3"
 var Arch string
 var VersionNumber string
@@ -46,6 +46,9 @@ func CopyrightYear() string { return time.Now().Format("2006") }
 //var EnableGithubActions = false
 
 // Stubs records which packaging/skeleton stubs a project owns.
+//
+// ArchLinux is no longer supported: it is kept, always written false, for
+// backwards compatibility with already-scaffolded projects' manifests.
 type Stubs struct {
 	Alpine    bool `json:"alpine"`
 	Debian    bool `json:"debian"`
