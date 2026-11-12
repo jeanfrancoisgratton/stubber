@@ -45,6 +45,13 @@ jobs:
           case "${PKG_TOOLNAME}" in
             ""|*[!A-Za-z0-9._-]*) echo "Refusing to build: invalid TOOLNAME '${PKG_TOOLNAME}'" >&2; exit 1 ;;
           esac
+          # The daemon first: a socket this account cannot use would otherwise
+          # read as "container missing" below.
+          if ! out=$(dtools --runtime docker system info 2>&1); then
+            echo "ERROR: cannot use the docker daemon as $(id -un) (groups: $(id -Gn)):" >&2
+            printf '%s\n' "${out}" | tail -n 3 >&2
+            exit 1
+          fi
           running=$(dtools --runtime docker -q inspect "${BUILDER_CONTAINER}" 2>/dev/null \
                     | jq -r '.State.Running // empty' 2>/dev/null || true)
           running="${running:-missing}"

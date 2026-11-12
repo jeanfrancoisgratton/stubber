@@ -31,7 +31,7 @@ type Entry struct {
 // Paths are relative to the embedded filesystem root, for example:
 //
 //	alpine/APKBUILD
-//	archlinux/PKGBUILD
+//	debian/control
 //	skeleton/src/go.mod
 //
 // The root "." entry is intentionally skipped.

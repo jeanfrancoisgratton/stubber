@@ -10,7 +10,6 @@ func TestEmbeddedAssetsPresent(t *testing.T) {
 	// skeleton templates (which must still be embedded via the all: prefix).
 	for _, p := range []string{
 		"alpine/APKBUILD",
-		"archlinux/PKGBUILD",
 		"debian/control",
 		"redhat/specfile",
 		"skeleton/go.version",

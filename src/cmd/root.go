@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 	Use:   "stubber",
 	Short: "Creates your Go software directory structure",
 	Long: `stubber creates the directory structure of a new Go software: a buildable skeleton, and
-packaging stubs for Alpine, Debian, RedHat, Arch Linux and Windows.
+packaging stubs for Alpine, Debian, RedHat and Windows.
 
 It can also create the software's git repository on its forge (Forgejo, GitHub or Bitbucket)
 and push the scaffolded code to it; see "stubber create --help" and "stubber conn --help".`,
@@ -35,7 +35,7 @@ and push the scaffolded code to it; see "stubber create --help" and "stubber con
 // buildVersion and buildDate are injected at link time via
 // `-ldflags "-X stubber/cmd.buildVersion=... -X stubber/cmd.buildDate=..."`
 // by every build path (see version-bump.sh and each __*/{Makefile,APKBUILD,
-// PKGBUILD,spec}); a plain `go build` leaves them at these fallbacks.
+// spec}); a plain `go build` leaves them at these fallbacks.
 var buildVersion = "dev"
 var buildDate = "unknown"
 
@@ -54,9 +54,9 @@ var createCmd = &cobra.Command{
 	Short: "Creates the directory structure (skeleton and packaging stubs) for a new software",
 	Long: `Creates the directory structure for SOFTWARENAME, in ./SOFTWARENAME (or in the directory given by -p).
 
-At least one stub flag is needed: -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows)
-or -k (skeleton). -D, -s and -u are mandatory. Every value used is recorded in SOFTWARENAME.json,
-at the project root, so that "stubber refresh" can preserve it later.
+At least one stub flag is needed: -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton).
+-D, -s and -u are mandatory. Every value used is recorded in SOFTWARENAME.json, at the project root,
+so that "stubber refresh" can preserve it later.
 
 With -G, stubber also creates the git repository given by -u (https://SERVER[:PORT]/OWNER/REPO) on its
 forge, then commits the scaffolded code and pushes it on the develop branch. The repository is always
@@ -67,7 +67,7 @@ choose one with -c CONNECTION.`,
   stubber create -k -D "My awesome CLI tool" -s utils -u https://git.example.net:3000/me/mytool mytool
 
   # Skeleton and every packaging stub, in a custom directory
-  stubber create -A -a -d -r -w -k -V 1.0.0 -R 1 -D "My tool" -s utils -e "ca-certificates" \
+  stubber create -a -d -r -w -k -V 1.0.0 -R 1 -D "My tool" -s utils -e "ca-certificates" \
     -u https://git.example.net:3000/me/mytool -p ~/dev/mytool mytool
 
   # Same, and create the (private) repository on GitHub, then push the code on develop
@@ -77,8 +77,8 @@ choose one with -c CONNECTION.`,
   stubber create -k -D "My tool" -s utils -u https://git.example.net:3000/myorg/mytool -G -c work mytool`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
-			fmt.Println("You need to enable at least one of the following: -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
+		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
+			fmt.Println("You need to enable at least one of the following: -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
 			os.Exit(1)
 		}
 		if cmd.Flags().Changed("connection") && !helpers.CreateGitRepo {
@@ -119,7 +119,7 @@ Run this from the project root, i.e. the directory that holds the
 positional argument is needed. Any flag you pass overrides its stored value,
 while every flag you omit is preserved as-is.
 
-Only the packaging stubs you explicitly request (-A -a -d -r -w -k) are refreshed;
+Only the packaging stubs you explicitly request (-a -d -r -w -k) are refreshed;
 passing none refreshes nothing. -k (skeleton) refreshes go.version only, so your
 source code and documentation are never overwritten. -w (windows) refreshes the
 Makefile but never re-renders an existing .wxs, so its UpgradeCode/Component
@@ -135,8 +135,8 @@ Guid are never disturbed by a refresh.
   # Move to a new Go release, without touching any source or packaging file
   stubber refresh -k -g 1.27.3`,
 	Run: func(cmd *cobra.Command, args []string) {
-		if !helpers.ArchLinuxStub && !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
-			fmt.Println("Nothing to refresh: pass at least one of -A (archlinux), -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
+		if !helpers.AlpineStub && !helpers.DebianStub && !helpers.RedHatStub && !helpers.WindowsStub && !helpers.SkeletonStub {
+			fmt.Println("Nothing to refresh: pass at least one of -a (alpine), -d (debian), -r (redhat), -w (windows) or -k (skeleton)")
 			os.Exit(0)
 		}
 
@@ -207,7 +207,8 @@ Guid are never disturbed by a refresh.
 		m.Stubs.Alpine = m.Stubs.Alpine || helpers.AlpineStub
 		m.Stubs.Debian = m.Stubs.Debian || helpers.DebianStub
 		m.Stubs.RedHat = m.Stubs.RedHat || helpers.RedHatStub
-		m.Stubs.ArchLinux = m.Stubs.ArchLinux || helpers.ArchLinuxStub
+		// Arch Linux is no longer supported: older manifests may still claim it
+		m.Stubs.ArchLinux = false
 		m.Stubs.Windows = m.Stubs.Windows || helpers.WindowsStub
 		m.Stubs.Skeleton = m.Stubs.Skeleton || helpers.SkeletonStub
 
@@ -244,7 +245,6 @@ func init() {
 	createCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	createCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description (mandatory).")
-	createCmd.PersistentFlags().BoolVarP(&helpers.ArchLinuxStub, "archlinux", "A", false, "Create an Archlinux packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Create an Alpine packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Create a Debian packaging stub.")
 	createCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Create a RedHat packaging stub.")
@@ -271,7 +271,6 @@ func init() {
 	refreshCmd.PersistentFlags().StringVarP(&helpers.VersionNumber, "packagever", "V", "", "Package version number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.ReleaseNumber, "packagerel", "R", "", "Package release number.")
 	refreshCmd.PersistentFlags().StringVarP(&helpers.Description, "desc", "D", "", "Package description.")
-	refreshCmd.PersistentFlags().BoolVarP(&helpers.ArchLinuxStub, "archlinux", "A", false, "Refresh the Archlinux packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.AlpineStub, "alpine", "a", false, "Refresh the Alpine packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.DebianStub, "debian", "d", false, "Refresh the Debian packaging stub.")
 	refreshCmd.PersistentFlags().BoolVarP(&helpers.RedHatStub, "redhat", "r", false, "Refresh the RedHat packaging stub.")

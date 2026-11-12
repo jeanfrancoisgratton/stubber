@@ -4,8 +4,13 @@
 ___
 A CLI tool that generates the directory structure, build scripts, and packaging
 metadata for a new Go project, following a personal CI/CD convention: Alpine
-(APK), Debian/Ubuntu (DEB), RHEL/Fedora (RPM), Arch Linux (PKGBUILD), and
-Windows (.msi) packaging stubs, plus a ready-to-build Go skeleton.
+(APK), Debian/Ubuntu (DEB), RHEL/Fedora (RPM), and Windows (.msi) packaging
+stubs, plus a ready-to-build Go skeleton.
+
+> Arch Linux (`PKGBUILD`, `-A`) used to be supported as well; it is being
+> phased out, and was removed in the release following 3.1.0. See
+> [The project manifest](#the-project-manifest-softwarenamejson) for what this
+> means for already-scaffolded projects.
 
 Optionally, stubber also creates the project's git repository on its forge
 (Forgejo, GitHub or Bitbucket Cloud) and pushes the scaffolded code to it.
@@ -35,7 +40,6 @@ placeholders substituted at run time from the flags you pass.
   - [Alpine (`-a`)](#alpine--a)
   - [Debian (`-d`)](#debian--d)
   - [RedHat (`-r`)](#redhat--r)
-  - [ArchLinux (`-A`)](#archlinux--a)
   - [Windows (`-w`)](#windows--w)
 - [Template placeholders](#template-placeholders)
 - [Assets management](#assets-management)
@@ -50,7 +54,7 @@ placeholders substituted at run time from the flags you pass.
 ## How it works
 
 `stubber create` takes a software name and one or more "stub" flags
-(`-A`, `-a`, `-d`, `-r`, `-w`, `-k`). Each stub flag tells stubber which set of
+(`-a`, `-d`, `-r`, `-w`, `-k`). Each stub flag tells stubber which set of
 templated files to render into the project directory. Other flags (`-V`,
 `-D`, `-M`, `-u`, etc.) supply the values used to fill in the placeholders in
 those templates.
@@ -70,7 +74,7 @@ See [Caveats](#known-issues--caveats).
 
 ## Installation
 
-Pre-built packages (`.apk`, `.deb`, `.rpm`, Arch `PKGBUILD`) are published on
+Pre-built packages (`.apk`, `.deb`, `.rpm`) are published on
 the [Releases](https://github.com/jeanfrancoisgratton/stubber/releases) page.
 
 Otherwise, build it yourself — see [Building from source](#building-from-source).
@@ -78,8 +82,8 @@ Otherwise, build it yourself — see [Building from source](#building-from-sourc
 ## Quick start
 
 ```sh
-# Full project: Go skeleton + all five packaging stubs
-stubber create -A -a -d -r -w -k \
+# Full project: Go skeleton + all four packaging stubs
+stubber create -a -d -r -w -k \
   -V 1.0.0 -R 1 \
   -D "My awesome CLI tool" \
   -s utils \
@@ -88,8 +92,8 @@ stubber create -A -a -d -r -w -k \
 ```
 
 This creates a `mytool/` directory in the current working directory containing
-a buildable Go skeleton plus `__archlinux/`, `__alpine/`, `__debian/`,
-`__redhat/`, and `__windows/` packaging stubs.
+a buildable Go skeleton plus `__alpine/`, `__debian/`, `__redhat/`, and
+`__windows/` packaging stubs.
 
 Add `-G` to also create the (private) `jfgratton/mytool` repository on that
 forge and push everything to its `develop` branch; this needs a
@@ -143,16 +147,15 @@ stubber's own version is shown by the `stubber version` command (there is no
 ### `create` flags
 
 `stubber create` requires **exactly one** positional argument (the software
-name), **at least one** of `-A`, `-a`, `-d`, `-r`, `-w`, `-k`, and the three
+name), **at least one** of `-a`, `-d`, `-r`, `-w`, `-k`, and the three
 mandatory value flags `-D`, `-s`, `-u`:
 
 ```sh
-stubber create [-A] [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -u <url> [-G] [other flags] <SOFTWARENAME>
+stubber create [-a] [-d] [-r] [-w] [-k] -D <desc> -s <section> -u <url> [-G] [other flags] <SOFTWARENAME>
 ```
 
 | Stub flag | Shorthand | What it generates |
 |-----------|-----------|--------------------|
-| `--archlinux` | `-A` | `__archlinux/` — `PKGBUILD` + build helper scripts (Arch Linux) |
 | `--alpine`    | `-a` | `__alpine/` — `APKBUILD` + install/upgrade/deinstall scripts |
 | `--debian`    | `-d` | `__debian/` — control file, build scripts, maintainer scripts |
 | `--redhat`    | `-r` | `__redhat/` — spec file, `Makefile`-driven RPM build, changelog helper |
@@ -171,7 +174,7 @@ be supplied explicitly:
 | `--maintainer` | `-M` | `Jean-Francois Gratton <jean-francois@famillegratton.net>` | Maintainer name/email — `{{ MAINTAINER }}`. **Override this if you're not me.** |
 | `--packager` | `-P` | `APK Builder <builder@famillegratton.net>` | Packager name/email (Alpine) — `{{ PACKAGER }}`. **Override this too.** |
 | `--section` ⭑ | `-s` | `Packaging tool` | **Required.** Debian package section / RPM `Group` — `{{ PACKAGE SECTION }}` / `{{ SECTION }}`. |
-| `--depends` | `-e` | *(empty)* | Package dependencies, comma-separated — `{{ DEPENDENCIES }}`. Passed straight into the Debian `control` file, and rewritten into a quoted array for the Arch `PKGBUILD`. |
+| `--depends` | `-e` | *(empty)* | Package dependencies, comma-separated — `{{ DEPENDENCIES }}`. Passed straight into the Debian `control` file. |
 | `--url` ⭑ | `-u` | *(empty)* | **Required.** Git repository URL, `https://SERVER[:PORT]/OWNER/REPO` — `{{ URL }}`. With `-G`, also the repository to create. |
 | `--manufacturer` | `-m` | `famillegratton.net` | Windows `.msi` Manufacturer/Publisher field. |
 
@@ -195,7 +198,7 @@ at `create` time, applies only the flags you actually pass on the command line
 writes the updated manifest back.
 
 ```sh
-stubber refresh [-A] [-a] [-d] [-r] [-w] [-k] [value flags]
+stubber refresh [-a] [-d] [-r] [-w] [-k] [value flags]
 ```
 
 `refresh` takes **no positional argument**. Run it **from the project root** —
@@ -209,7 +212,6 @@ Which stubs get refreshed is driven entirely by the stub flags you pass:
 
 | Stub flag | Shorthand | Effect on `refresh` |
 |-----------|-----------|---------------------|
-| `--archlinux` | `-A` | Re-render `__archlinux/` (created if missing) |
 | `--alpine`    | `-a` | Re-render `__alpine/` (created if missing) |
 | `--debian`    | `-d` | Re-render `__debian/` (created if missing) |
 | `--redhat`    | `-r` | Re-render `__redhat/` (created if missing) |
@@ -219,7 +221,7 @@ Which stubs get refreshed is driven entirely by the stub flags you pass:
 - **Pass at least one stub flag.** If you pass none, `refresh` does nothing and
   says so — it never guesses which stubs to touch.
 - Stubs you *don't* pass are left completely untouched. So `refresh -d` rewrites
-  only `__debian/`, even if the project also has `__archlinux/`, `__redhat/`, etc.
+  only `__debian/`, even if the project also has `__alpine/`, `__redhat/`, etc.
 - **`-k` is deliberately conservative**: it re-renders only `go.version`. It will
   **never** overwrite your real source (`src/main.go`, `src/cmd/root.go`, …) or
   your edited docs (`README.md`, `CHANGELOG.md`, …), even though `create -k`
@@ -272,12 +274,6 @@ Generate RPM packaging only (`__redhat/`), with version/release set explicitly:
 stubber create -r -V 2.3.0 -R 1 -D "My project" -s "utils" -u "https://git.example.com/me/myproj" myproj
 ```
 
-Generate an Arch Linux `PKGBUILD` stub (`__archlinux/`):
-
-```sh
-stubber create -A -V 0.1.0 -R 1 -D "My awesome CLI tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
-```
-
 Generate a Windows `.msi` stub (`__windows/`):
 
 ```sh
@@ -288,7 +284,7 @@ Generate everything quietly (e.g. from a script), with a binary name that
 differs from the project name:
 
 ```sh
-stubber -q create -A -a -d -r -w -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
+stubber -q create -a -d -r -w -k -b mytoolctl -V 0.1.0 -R 1 -D "My tool" -s "utils" -u "https://git.example.com/me/mytool" mytool
 ```
 
 Bump the version and Go toolchain of an existing project, refreshing every
@@ -296,7 +292,7 @@ packaging stub it already has (run from inside the project root, no name needed)
 
 ```sh
 cd mytool
-stubber refresh -A -a -d -r -w -V 1.1.0 -R 1 -g 1.27.3
+stubber refresh -a -d -r -w -V 1.1.0 -R 1 -g 1.27.3
 ```
 
 Change just the Debian dependencies, leaving everything else as-is (pointing
@@ -476,7 +472,7 @@ owns:
     "alpine": true,
     "debian": true,
     "redhat": true,
-    "archlinux": true,
+    "archlinux": false,
     "windows": true,
     "skeleton": true
   }
@@ -497,11 +493,16 @@ never falls back to defaults, because that would silently overwrite your
 metadata with empty/wrong values. To recover, hand-write a minimal manifest (the
 JSON above is the full shape) or re-run `create`.
 
+The `"archlinux"` key is a leftover from when stubber still generated an Arch
+Linux stub. That support is being phased out: the key is kept for backwards
+compatibility, and stubber always writes it as `false`, even when refreshing
+a project whose manifest still says `true`. The project's existing
+`__archlinux/` directory, if any, is left alone. Delete it yourself.
+
 ## Generated layout
 
-The exact set of files generated depends on which of `-A` / `-a` / `-d` /
-`-r` / `-w` / `-k` you pass. Combined, a full run (`-A -a -d -r -w -k`)
-produces:
+The exact set of files generated depends on which of `-a` / `-d` / `-r` /
+`-w` / `-k` you pass. Combined, a full run (`-a -d -r -w -k`) produces:
 
 ```
 .
@@ -514,11 +515,6 @@ produces:
 │   ├── <binary>.post-upgrade
 │   ├── <binary>.pre-deinstall
 │   └── <binary>.post-deinstall
-├── __archlinux/
-│   ├── 1.install-build-deps.sh
-│   ├── 2.build-package.sh
-│   ├── Makefile
-│   └── PKGBUILD
 ├── __debian/
 │   ├── Makefile
 │   ├── control
@@ -634,28 +630,6 @@ make tag        # create and push v<version>
 There is no `git push` step: `commitcl` pushes its own commit, and nothing in
 the flow commits to the branch being built.
 
-### ArchLinux (`-A`)
-
-New in stubber v2.00.00. Generates `__archlinux/`:
-
-| File | Purpose |
-|------|---------|
-| `PKGBUILD` | Standard Arch package build recipe (`makepkg`) |
-| `Makefile` | `build` / `release` / `clean` / `info`, reading package metadata straight from `PKGBUILD` |
-| `1.install-build-deps.sh` | Installs `base-devel` via `pacman` |
-| `2.build-package.sh` | Runs `makepkg --force --syncdeps --noconfirm` and cleans up `src/`/`pkg/` |
-
-Typical workflow (from `__archlinux/`):
-
-```sh
-./1.install-build-deps.sh   # once, to get base-devel
-./2.build-package.sh        # builds the package via makepkg, output to /data
-```
-
-`{{ DEPENDENCIES }}` is rewritten on the way in: `-e "libc, bash-completion"`
-is Debian-shaped, and pacman wants each element quoted separately, so the
-generated `PKGBUILD` gets `depends=('libc' 'bash-completion')`.
-
 ### Windows (`-w`)
 
 Generates `__windows/`:
@@ -665,8 +639,8 @@ Generates `__windows/`:
 | `<SOFTWARENAME>.wxs` | WiX source for the `.msi`, built with `wixl` (from the `msitools` package — a from-scratch, C, Linux-native reimplementation of the WiX toolchain; no Windows, .NET, or mono involved) |
 | `Makefile` | `build` / `upload` / `release` / `clean` / `info`, reading package metadata straight from `<SOFTWARENAME>.json` via `jq` |
 
-Windows has no distro package manager, so there is no control/spec/PKGBUILD/
-APKBUILD equivalent to read metadata from. Instead the `Makefile` reads
+Windows has no distro package manager, so there is no control/spec/APKBUILD
+equivalent to read metadata from. Instead the `Makefile` reads
 `NAME`/`VERSION`/`BINARY`/`DESCRIPTION` straight out of the project's own
 `<SOFTWARENAME>.json` manifest at build time, via `jq`. Practically everything
 in the generated `Makefile` is fleet-generic and identical across projects;
@@ -711,18 +685,18 @@ stubber substitutes, and which flag/value feeds each one:
 | Placeholder | Source | Used by |
 |-------------|--------|---------|
 | `{{ SOFTWARE NAME }}` | The `<SOFTWARENAME>` positional argument | all stubs (windows also uses it for the `.wxs`/manifest filenames, not just file content) |
-| `{{ BINARY NAME }}` | `-b` / `--binaryname` (defaults to software name) | alpine, redhat, archlinux, skeleton |
-| `{{ PACKAGE VERSION }}` | `-V` / `--packagever` | alpine, debian, redhat, archlinux, skeleton |
-| `{{ PACKAGE RELEASE }}` | `-R` / `--packagerel` | alpine, debian, redhat, archlinux, skeleton |
-| `{{ DESCRIPTION }}` | `-D` / `--desc` | alpine, debian, redhat, archlinux, skeleton |
+| `{{ BINARY NAME }}` | `-b` / `--binaryname` (defaults to software name) | alpine, redhat, skeleton |
+| `{{ PACKAGE VERSION }}` | `-V` / `--packagever` | alpine, debian, redhat, skeleton |
+| `{{ PACKAGE RELEASE }}` | `-R` / `--packagerel` | alpine, debian, redhat, skeleton |
+| `{{ DESCRIPTION }}` | `-D` / `--desc` | alpine, debian, redhat, skeleton |
 | `{{ MAINTAINER }}` | `-M` / `--maintainer` | alpine, debian |
 | `{{ PACKAGER }}` | `-P` / `--packager` | alpine only |
 | `{{ SECTION }}` / `{{ PACKAGE SECTION }}` | `-s` / `--section` | redhat (`Group`), debian (`Section`), skeleton |
-| `{{ DEPENDENCIES }}` | `-e` / `--depends` | debian (comma-separated), archlinux (rewritten into a quoted `depends=()` array) |
-| `{{ URL }}` | `-u` / `--url` | alpine, redhat, archlinux, debian (`copyright`) |
+| `{{ DEPENDENCIES }}` | `-e` / `--depends` | debian (comma-separated) |
+| `{{ URL }}` | `-u` / `--url` | alpine, redhat, debian (`copyright`) |
 | `{{ GO VERSION }}` | `-g` / `--gover` | alpine, debian, redhat, skeleton |
 | `{{ GO MAJOR MINOR }}` | Derived from `{{ GO VERSION }}` (e.g. `1.26.4` → `1.26`) | skeleton (`go.mod`) |
-| `{{ ARCHITECTURE }}` | Hardcoded `amd64` (Debian); Alpine maps `amd64` → `x86_64` internally; Arch/RPM hardcode `x86_64` in their templates | debian |
+| `{{ ARCHITECTURE }}` | Hardcoded `amd64` (Debian); Alpine maps `amd64` → `x86_64` internally; RPM hardcodes `x86_64` in its template | debian |
 | `{{ COPYRIGHT YEAR }}` | Always the current year, generated automatically — no flag feeds it, and it is not stored in the manifest | debian (`copyright`) |
 | `{{ RELEASE DATE }}` | Today's date (`YYYY.MM.DD`), generated automatically | alpine, debian, redhat, skeleton |
 | `{{ UPGRADE CODE }}` | A freshly generated random UUID — no flag feeds it, and it is not stored in the manifest (the `.wxs` itself is the record) | windows only, and only when the `.wxs` doesn't already exist |
@@ -774,7 +748,7 @@ cd stubber/src
 
 `build.sh` just runs `go build` — there's no separate asset-bundle
 regeneration step. Templates under `src/assets/` (organized into `alpine/`,
-`archlinux/`, `debian/`, `redhat/`, and `skeleton/`) are embedded directly via
+`debian/`, `redhat/`, `windows/`, and `skeleton/`) are embedded directly via
 `//go:embed` in `src/assets/assets.go`, so editing a template and rebuilding
 is enough. `src/assets/template_handler.go` (`assets.ProcessEmbeddedAsset`)
 reads an embedded asset, substitutes placeholders, and writes it into the
@@ -785,10 +759,10 @@ The required Go version is tracked in `go.version` at the repo root
 
 ## Building packages
 
-The `__alpine/`, `__archlinux/`, `__debian/`, and `__redhat/` directories at
+The `__alpine/`, `__debian/`, `__redhat/`, and `__windows/` directories at
 the repo root are stubber's *own* packaging stubs (generated by stubber, for
 itself — dogfooding). The RPM workflow is described in the "RedHat (`-r`)"
-section above; the Alpine/Arch/Debian stubs assume the author's home-lab build
+section above; the Alpine/Debian stubs assume the author's home-lab build
 containers, which aren't published.
 
 `dontexec.sh`, at the repo root, creates or removes the `_dontexec` marker that
@@ -817,7 +791,7 @@ If you'd rather not build from source, grab a pre-built package from the
 - The packaging templates declare `GPL-3.0-or-later`, matching the `LICENSE`
   the skeleton ships (the full GPLv3 text, whose boilerplate grants "version 3
   ... or (at your option) any later version"). If your project uses a different
-  license, change it in the generated `PKGBUILD` / `APKBUILD` / `.spec` /
+  license, change it in the generated `APKBUILD` / `.spec` /
   `__debian/copyright` **and** replace `LICENSE` — stubber does not derive
   those fields from anything, and nothing cross-checks them.
 - Mainly tested on x86_64/amd64. Lightly tested on Apple Silicon (arm64);
@@ -830,7 +804,7 @@ If you'd rather not build from source, grab a pre-built package from the
   provides.
 - **Always review the generated files.** This is a generic stub generator; it
   doesn't validate the values you pass, and downstream packaging tools (`apk`,
-  `dpkg-buildpackage`, `rpmbuild`, `makepkg`) are unforgiving of malformed
+  `dpkg-buildpackage`, `rpmbuild`) are unforgiving of malformed
   metadata.
 
 See [ISSUES.md](docs/ISSUES.md) for the current open-issue tracker.

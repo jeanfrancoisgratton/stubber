@@ -64,15 +64,6 @@ func RefreshStub(softname string) *cerr.CustomError {
 		}
 	}
 
-	// ArchLinux ( -A )
-	if helpers.ArchLinuxStub {
-		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__archlinux"), os.FileMode(0755)); err == nil {
-			if e := stubArchLinux(softname); e != nil {
-				return e
-			}
-		}
-	}
-
 	// Windows ( -w ): the .wxs is only ever created if missing -- see stubWindows.
 	if helpers.WindowsStub {
 		if err = os.MkdirAll(filepath.Join(helpers.RootDir, "__windows"), os.FileMode(0755)); err == nil {

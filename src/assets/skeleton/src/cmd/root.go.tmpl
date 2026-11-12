@@ -24,7 +24,7 @@ This follows my template and allows you to package your software with minimal ef
 // buildVersion and buildDate are injected at link time via
 // `-ldflags "-X {{ SOFTWARE NAME }}/cmd.buildVersion=... -X {{ SOFTWARE NAME }}/cmd.buildDate=..."`
 // by every build path (see version-bump.sh and each __*/{Makefile,APKBUILD,
-// PKGBUILD,spec}); a plain `go build` leaves them at these fallbacks.
+// spec}); a plain `go build` leaves them at these fallbacks.
 var buildVersion = "dev"
 var buildDate = "unknown"
 

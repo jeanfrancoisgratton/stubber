@@ -56,7 +56,7 @@ func TestEveryEmbeddedSkeletonAssetIsRendered(t *testing.T) {
 }
 
 // TestEveryEmbeddedPackagingAssetIsRendered is a drift guard: every file
-// embedded under a packaging asset directory (alpine/, debian/, archlinux/, redhat/) must be
+// embedded under a packaging asset directory (alpine/, debian/, redhat/, windows/) must be
 // produced by CreateStub. The per-stub `paths` slices are maintained by hand, so
 // adding, renaming or removing an asset without updating them would otherwise go
 // unnoticed until a user's scaffold silently misses a file (e.g. a new Makefile).
@@ -85,11 +85,6 @@ func TestEveryEmbeddedPackagingAssetIsRendered(t *testing.T) {
 		{
 			name: "debian", assetDir: "debian", outDir: "__debian",
 			enable:   func() { helpers.DebianStub = true },
-			rendered: func(binary, software, base string) string { return base },
-		},
-		{
-			name: "archlinux", assetDir: "archlinux", outDir: "__archlinux",
-			enable:   func() { helpers.ArchLinuxStub = true },
 			rendered: func(binary, software, base string) string { return base },
 		},
 		{
