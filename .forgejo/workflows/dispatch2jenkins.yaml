@@ -1,0 +1,58 @@
+# Forgejo Actions, for reference: hand the package build to Jenkins instead of
+# running it here. Starts each package-build job (alpine-build, debian-build,
+# rpm-build) with its parameters TOOLNAME, BRANCH and GIT_URL; Jenkins then
+# runs buildpackage.sh in the builders as usual.
+#
+# Not through Jenkins' Forgejo webhook (generic-webhook-trigger): that path
+# drops every ref but main, and always builds main. buildWithParameters builds
+# the branch given.
+#
+# DISABLED: no automatic trigger, only "Run workflow" in the Actions tab (on the
+# branch to build). To enable on pushes, uncomment the push trigger below.
+#
+# Needs the repository (or org/user) secrets JENKINS_USER and JENKINS_TOKEN: a
+# Jenkins account with the Job/Build permission, and one of its API tokens
+# (with a token, Jenkins asks for no CSRF crumb).
+name: dispatch2jenkins
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - actions
+
+jobs:
+  start-jenkins-builds:
+    runs-on: debian
+    timeout-minutes: 5
+    env:
+      # The public URL, not the container's: it survives a renamed container,
+      # and a CI/CD moved off the current networks.
+      JENKINS_URL: https://jenkins.famillegratton.net:9988
+      JENKINS_JOBS: alpine-build debian-build rpm-build
+      JENKINS_USER: ${{ secrets.JENKINS_USER }}
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+      PKG_BRANCH: ${{ github.ref_name }}
+      PKG_GIT_URL: ${{ github.event.repository.ssh_url }}
+    steps:
+      - name: start the package-build jobs
+        run: |
+          set -eu
+          name="${GITHUB_REPOSITORY##*/}"
+          case "${name}" in
+            ""|*[!A-Za-z0-9._-]*) echo "Refusing: invalid repository name '${name}'" >&2; exit 1 ;;
+          esac
+          [ -n "${JENKINS_USER}" ] && [ -n "${JENKINS_TOKEN}" ] \
+            || { echo "ERROR: secrets JENKINS_USER and JENKINS_TOKEN must be set" >&2; exit 1; }
+
+          for job in ${JENKINS_JOBS}; do
+            # 201 Created, with the queue item in the Location header.
+            queue=$(curl -fsS -m 20 -o /dev/null -w '%header{location}' -X POST \
+                      -u "${JENKINS_USER}:${JENKINS_TOKEN}" \
+                      "${JENKINS_URL}/job/${job}/buildWithParameters" \
+                      --data-urlencode "TOOLNAME=${name}" \
+                      --data-urlencode "BRANCH=${PKG_BRANCH}" \
+                      --data-urlencode "GIT_URL=${PKG_GIT_URL}")
+            echo "started ${job} for ${name} (${PKG_BRANCH}): ${queue:-queued}"
+          done
+          # Started only: the builds' outcome is in Jenkins (and Mattermost), not here.

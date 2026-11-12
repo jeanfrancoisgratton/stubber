@@ -1,0 +1,63 @@
+# Forgejo Actions, for reference: hand the package build to TeamCity instead of
+# running it here. Same calls as gitrelay's relay-push.sh: list the active build
+# configurations of the Packages project, queue each with TOOLNAME, BRANCH and
+# GIT_URL. TeamCity then runs buildpackage.sh in the builders as usual.
+#
+# DISABLED: no automatic trigger, only "Run workflow" in the Actions tab (on the
+# branch to build). To enable on pushes, uncomment the push trigger below.
+#
+# Needs the repository (or org/user) secret TC_TOKEN: a TeamCity access token
+# allowed to queue builds in Packages (gitrelay's tc_token, in Vault, is one).
+name: dispatch2tc
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - actions
+
+jobs:
+  queue-tc-builds:
+    runs-on: debian
+    timeout-minutes: 5
+    env:
+      # The public URL, not the container's: it survives a renamed container,
+      # and a CI/CD moved off the current networks.
+      TC_URL: https://tc.famillegratton.net:18871
+      TC_PROJECT: Packages
+      TC_TOKEN: ${{ secrets.TC_TOKEN }}
+      PKG_BRANCH: ${{ github.ref_name }}
+      PKG_GIT_URL: ${{ github.event.repository.ssh_url }}
+      PKG_SHA: ${{ github.sha }}
+    steps:
+      - name: queue one build per active configuration of ${{ env.TC_PROJECT }}
+        run: |
+          set -eu
+          name="${GITHUB_REPOSITORY##*/}"
+          case "${name}" in
+            ""|*[!A-Za-z0-9._-]*) echo "Refusing: invalid repository name '${name}'" >&2; exit 1 ;;
+          esac
+          [ -n "${TC_TOKEN}" ] || { echo "ERROR: secret TC_TOKEN is not set" >&2; exit 1; }
+
+          types=$(curl -fsS -m 20 -G "${TC_URL}/app/rest/buildTypes" \
+                    --data-urlencode "locator=affectedProject:(id:${TC_PROJECT}),paused:false" \
+                    --data-urlencode "fields=buildType(id)" \
+                    -H "Authorization: Bearer ${TC_TOKEN}" -H 'Accept: application/json' \
+                  | jq -r '(.buildType // [])[].id')
+          [ -n "${types}" ] || { echo "Project ${TC_PROJECT} has no active build configuration." >&2; exit 1; }
+
+          for bt in ${types}; do
+            body=$(jq -n --arg bt "$bt" --arg n "$name" --arg b "$PKG_BRANCH" --arg u "$PKG_GIT_URL" --arg s "$PKG_SHA" '{
+              buildType: {id: $bt},
+              comment: {text: ("Forgejo Actions: " + $b + " of " + $n + " @ " + ($s[0:8]))},
+              properties: {property: [
+                {name: "TOOLNAME", value: $n},
+                {name: "BRANCH",   value: $b},
+                {name: "GIT_URL",  value: $u}
+              ]}}')
+            id=$(curl -fsS -m 20 -X POST "${TC_URL}/app/rest/buildQueue" \
+                   -H "Authorization: Bearer ${TC_TOKEN}" -H 'Content-Type: application/json' \
+                   -H 'Accept: application/json' -d "${body}" | jq -r '.id // "?"')
+            echo "queued ${bt} for ${name} (${PKG_BRANCH}): TeamCity build ${id}"
+          done
+          # Queued only: the builds' outcome is in TeamCity (and Mattermost), not here.

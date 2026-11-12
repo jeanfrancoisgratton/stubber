@@ -1,0 +1,71 @@
+# Forgejo Actions PoC: the Jenkins / TeamCity package build, driven by the
+# gitrelay runner. A push to the "actions" branch runs buildpackage.sh in each
+# builder container, through the host's docker socket (dtools), exactly as
+# Jenkins' package-build and TeamCity's Packages builds do for main.
+#
+# buildpackage.sh refreshes its own checkout (/projects/<repo>) in the builder:
+# this workflow needs no checkout of its own, it is only a dispatcher.
+name: validate
+
+on:
+  push:
+    branches:
+      - actions
+
+jobs:
+  package-build:
+    runs-on: debian
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - distro: alpine
+            builder: alpinebuilder
+          - distro: debian
+            builder: debbuilder
+          - distro: redhat
+            builder: rpmbuilder
+    name: ${{ matrix.distro }}
+    env:
+      # Values reach the shell through the environment, never interpolated
+      # into the script: they come from the push payload.
+      DISTRO: ${{ matrix.distro }}
+      BUILDER_CONTAINER: ${{ matrix.builder }}
+      PKG_TOOLNAME: ${{ github.event.repository.name }}
+      PKG_BRANCH: ${{ github.ref_name }}
+      PKG_GIT_URL: ${{ github.event.repository.ssh_url }}
+      # buildpackage.sh returns this when the project vetoes its own build with
+      # a _dontexec flag. Keep in sync with EXIT_SKIPPED in buildpackage.sh.
+      EXIT_SKIPPED: "78"
+    steps:
+      - name: check builder
+        run: |
+          set -eu
+          case "${PKG_TOOLNAME}" in
+            ""|*[!A-Za-z0-9._-]*) echo "Refusing to build: invalid TOOLNAME '${PKG_TOOLNAME}'" >&2; exit 1 ;;
+          esac
+          running=$(dtools --runtime docker -q inspect "${BUILDER_CONTAINER}" 2>/dev/null \
+                    | jq -r '.State.Running // empty' 2>/dev/null || true)
+          running="${running:-missing}"
+          if [ "${running}" != "true" ]; then
+            echo "ERROR: container ${BUILDER_CONTAINER} is not running (state: ${running})" >&2
+            exit 1
+          fi
+
+      - name: buildpackage.sh in ${{ matrix.builder }}
+        run: |
+          set -eu
+          set -- -t "${PKG_TOOLNAME}" -b "${PKG_BRANCH}"
+          [ -z "${PKG_GIT_URL}" ] || set -- "$@" -r "${PKG_GIT_URL}"
+          rc=0
+          # "--": dtools exec would otherwise read the script's own flags (-t TOOLNAME) as its own (-t, --tty).
+          dtools --runtime docker exec -u builder -- "${BUILDER_CONTAINER}" /opt/sbin/buildpackage.sh "$@" || rc=$?
+
+          # As in TeamCity, a _dontexec veto is a success, made visible: the
+          # builder log above says which flag and why.
+          if [ "${rc}" -eq "${EXIT_SKIPPED}" ]; then
+            echo "::warning::${DISTRO}: ${PKG_TOOLNAME} vetoed by a _dontexec flag; nothing was built."
+            exit 0
+          fi
+          exit "${rc}"
