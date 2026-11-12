@@ -58,6 +58,15 @@ install -Dpm 0755 %{_builddir}/%{name}-%{version}/%{_binaryname} %{buildroot}%{_
 
 
 %changelog
+* Wed Nov 11 2026 Binary package builder <builder@famillegratton.net> 3.2.0-1
+- fix: ensure that the docker socket is reachable
+- Version bump
+- Merge branch 'develop' into actions
+- PoC : forgejo actions
+- feature: Arch Linux support removed, version bump to 3.2.0
+- Merge branch 'main' into develop
+- chore: update changelog for 3.1.0-1
+
 * Fri Oct 30 2026 Binary package builder <builder@famillegratton.net> 3.1.0-1
 - housekeeping: version bump
 - Merge branch 'feature/v3' into develop
