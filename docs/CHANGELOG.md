@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 since 2.4.0. Version headings are plain text (no compare links), as entries may be
 written before anything is published.
 
+
+## 3.2.1 - 2026.11.25
+
+### Changed
+
+- `version-bump.sh` is now able to change both the Go runtime version to build against, as well as the package release number
+
 ## 3.2.0 - 2026.11.11
 
 ### Added
